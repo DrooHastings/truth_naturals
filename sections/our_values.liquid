@@ -1,0 +1,592 @@
+<script>
+  var mySwiper_{{ section.id }} = undefined;
+  
+
+  document.addEventListener("DOMContentLoaded", function() {
+    function initSwiper_{{ section.id }}() {
+        var screenWidth = $(window).width();
+        if(screenWidth < 768 && mySwiper_{{ section.id }} == undefined) {
+          	mySwiper_{{ section.id }} = new Swiper('#shopify-section-{{ section.id }} .our-values__swiper', {
+                slidesPerView: 1,
+                speed: 300,
+                spaceBetween: 0,
+                pagination: {
+                  el: '[data-value-pagination]'
+                },      
+                loop: true,
+                navigation: {
+                  nextEl: '[data-value-next]',
+                  prevEl: '[data-value-prev]',
+                },
+            });
+        } else if (screenWidth >= 768 && mySwiper_{{ section.id }} != undefined) {
+            mySwiper_{{ section.id }}.destroy();
+            mySwiper_{{ section.id }} = undefined;
+            jQuery('#shopify-section-{{ section.id }} .swiper-wrapper').removeAttr('style');
+            jQuery('#shopify-section-{{ section.id }} .swiper-slide').removeAttr('style');
+        }
+    }
+                   
+    setTimeout(initSwiper_{{ section.id }},500);
+
+    //Swiper plugin initialization on window resize
+    $(window).on('resize', function(){
+        initSwiper_{{ section.id }}();
+    });
+  });
+</script>
+
+
+<style>
+  .our-values__container {
+    padding-top: 70px;
+    min-height: 700px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .our-values__title {
+	font-size: {{ section.settings.title_size_desk }}px;
+    font-weight: {{ section.settings.title_weight }};
+  }
+  
+  .our-values__subtitle {
+	font-size: {{ section.settings.sub_title_size_desk }}px;
+    font-weight: {{ section.settings.sub_title_weight }};
+    color: {{ section.settings.sub_title_color }};
+    text-transform: uppercase;
+    margin-bottom: 48px;
+  }
+  .our-values-content__title {
+	font-size: 30px;
+    margin-bottom: 20px;
+    text-transform: uppercase; 
+  } 
+  
+  .our-values-content__description {
+/*     font-family: Lato; */
+    font-size: 18px;
+    line-height: 1.33;
+/*     color: #37404c; */
+  }
+
+  .our-values {
+    list-style: none;
+    position: relative;
+    padding-left: 0;
+  }
+  
+  /* Tabs   */
+  .our-values__field { display: none; }
+  /*  Swiper  */
+  .our-values__swiper { 
+    width: 100%;
+    max-width: 100%;
+  } 
+  .our-values__content {
+    padding: 10px 20px;
+    width: 100%;
+    margin-top: 25px;
+  }
+  /* Swiper   */
+  .our-values-swiper__button {
+    top: 14%;
+    background: transparent url({{ 'Arrow.svg' | asset_url }}) no-repeat center!important;
+  }
+  .our-values-swiper__button:hover,
+  .our-values-swiper__button:focus {background-color: transparent; outline: none;}
+  .our-values-swiper__button--next {
+    transform: rotate(180deg);
+  }
+  .our-values__figure {
+    display: inline-block;
+    border: 3px solid #fff;
+    max-width: 155px;
+    max-height: 155px;
+    margin-bottom: 0;
+  }
+  /* ---------------------    */
+  @media (min-width: 768px) {
+    /* Pagination */
+    .our-values-swiper__pagination {
+      display: none;
+    }
+    /* Content        */
+    .our-values__figure:not(:first-child) {
+      margin-left: -3px;
+    }
+    .our-values__content {
+      position: absolute;
+      left: 0;
+      display: none;
+      text-align: left;
+      max-width: 630px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    /* Tabs */
+    .our-values__box :checked + .our-values__figure {
+      position: relative; 
+      background: #37404c; 
+      fill: #c6b476;
+      color: #c6b476;
+      z-index: 1;
+    }
+    .our-values__figure:hover,
+    .our-values__figure:focus {
+      background: #d1c392;
+      cursor: pointer;
+      outline: none;
+    }
+    .our-values__box :checked ~ .our-values__content {
+      display: block; 
+    }
+
+    /* Swiper */
+    .our-values__swiper {
+      overflow: initial;
+    }
+    .our-values-swiper__list { 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+    }
+    .our-values-swiper__button {
+      display: none;
+    }
+    .our-values-swiper__item {
+      flex-shrink: 1;
+      position: initial;
+      max-width: 152px;
+      max-width: fit-content;
+      
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+     /* Content images | Tabs   */
+    .our-values__figure {
+      max-width: 150px;
+      max-height: 150px;
+    }
+  }
+  
+  @media only screen and (max-width: 991px) {
+    .our-values__title {
+      font-size: {{ section.settings.title_size_mob }}px;
+    }
+    
+    .our-values__subtitle {
+      font-size: {{ section.settings.sub_title_size_mob }}px;
+    }
+    
+    .our-values-content__title {
+      font-size: 20px;
+    }
+      }
+  
+  @media (max-width: 767.98px) {
+    .our-values__container {
+      padding-top: 25px; 
+    }
+    /* Slider Pagination  */
+    .our-values-swiper__pagination .swiper-pagination-bullet {
+      margin-left: 14px;
+      margin-right: 14px;
+      background-color: #d1c392;
+      width: 15px;
+      height: 15px;
+      opacity: 1;
+    }
+    .our-values-swiper__pagination .swiper-pagination-bullet-active {
+      background-color: #37404c;
+    }
+    /* Content         */
+    .our-values__content {
+      text-align: left;
+    }
+    .our-values-content__title {
+      font-size: 18px;     
+    }
+    .our-values__title {
+      font-size: 24px;
+    }
+    .our-values-content__description {
+      font-size: 18px;
+      line-height: 1.25;
+    }
+    .our-values__subtitle {
+      margin-bottom: 20px;
+      font-size: 18px;
+      font-weight: 500;
+    } 
+    /* Swiper */
+    .our-values__swiper {
+      max-width: 375px;
+    }
+    .swiper-slide-active .our-values__figure {
+      position: relative; 
+      background: #37404c; 
+      fill: #c6b476;
+      color: #c6b476;
+      z-index: 1;
+      display: inline-block;
+    } 
+  }
+</style>
+<style>
+    #shopify-section-{{ section.id }} {
+      background-color: {{ section.settings.color_bg }};
+      border-color: {{ section.settings.brdr_color }};
+    }
+</style>
+
+<div class="mh-our-story-banner-container our-values__container">
+
+  {% if section.settings.title != blank %}
+    <h2 class="our-values__title">{{ section.settings.title }}</h2>
+  {% endif %}
+  {% if section.settings.title != blank %}
+    <h3 class="our-values__subtitle">{{ section.settings.subtitle }}</h3>
+  {% endif %}
+
+    <div class="our-values__swiper swiper-container">
+      <ul class="our-values our-values-swiper__list swiper-wrapper">
+        <li class="our-values__box our-values-swiper__item swiper-slide">
+          <input class="our-values__field" type="radio" id="tab_1" name="tab-group" checked>
+          <label for="tab_1" class="our-values__figure">
+            <svg class="truth" height="155px" width="155px">
+              <use xlink:href="#truth_icon"></use>
+            </svg>
+          </label> 
+          <div class="our-values__content">
+            <h3 class="our-values-content__title">The Truth</h3>
+            <p class="our-values-content__description body-medium">Honesty and integrity is at the core of everything we do and what we stand for. We’re just a passionate bunch of health & wellness lovers and want to bring nothing but the best to our customers without all the unnecessary bells & whistles.</p>
+          </div> 
+        </li>
+        {% comment %}
+        {% for block in section.blocks %}
+          <li class="our-values__box our-values-swiper__item swiper-slide">
+            <input class="our-values__field" type="radio" id="tab_{{ forloop.index }}" name="tab-group" checked>
+            <label for="tab_{{ forloop.index }}" class="our-values__figure">
+              <svg class="truth" height="155px" width="155px">
+                <use xlink:href="#truth_icon"></use>
+              </svg>
+            </label> 
+            <div class="our-values__content">
+              <h3 class="our-values-content__title">{{ block.section.settings.title }}</h3>
+              <p class="our-values-content__description">{{ block.section.settings.description }}</p>
+            </div> 
+          </li>
+        {% endfor %}
+        {% endcomment %}
+        <li class="our-values__box our-values-swiper__item swiper-slide">
+          <input class="our-values__field" type="radio" id="tab_2" name="tab-group">
+          <label for="tab_2" class="our-values__figure">
+            <svg class="truth" height="155px" width="155px">
+              <use xlink:href="#sciense_icon"></use>
+            </svg>
+          </label> 
+          <div class="our-values__content">
+            <h3 class="our-values-content__title">The Science</h3>
+            <p class="our-values-content__description body-medium">With a Co-founder and Scientific Director at the helm who has a PhD in nutrition and neural development - and is also a practicing GP -  we’ll never mislead you or present you with anything that isn’t backed by scientific evidence. We’re pretty nerdy like that - and damn proud to be!</p>
+          </div> 
+        </li>
+        
+        <li class="our-values__box our-values-swiper__item swiper-slide">
+          <input class="our-values__field" type="radio" id="tab_3" name="tab-group">
+          <label for="tab_3" class="our-values__figure">
+            <svg class="truth" height="155px" width="155px">
+              <use xlink:href="#quality_icon"></use>
+            </svg>
+          </label> 
+          <div class="our-values__content">
+            <h3 class="our-values-content__title">The Quality</h3>
+            <p class="our-values-content__description body-medium">Quality isn't something we take lightly. It’s not easy maintaining the power of nature in its purest form and bringing it to thousands of people across the world, but where there’s a (good) will there’s a way. We want effectiveness over great marketing so that people can truly live happier and healthier lives; and that means we’ll never cut corners.</p>
+          </div> 
+        </li>
+        
+        <li class="our-values__box our-values-swiper__item swiper-slide">
+          <input class="our-values__field" type="radio" id="tab_4" name="tab-group">
+          <label for="tab_4" class="our-values__figure">
+            <svg class="truth" height="155px" width="155px">
+              <defs>
+                <polygon id="path-1" points="0 0.737 76.2629 0.737 76.2629 76.9998 0 76.9998"></polygon>
+              </defs>
+              <use xlink:href="#planet_icon"></use>
+            </svg>
+          </label> 
+          <div class="our-values__content">
+            <h3 class="our-values-content__title">The Earth</h3>
+            <p class="our-values-content__description body-medium">We want to better humankind and also better the earth in the process. We want to rekindle the relationship that humans have to nature and empower both parties as a result. Humans actually have an endocannabinoid system that interacts with CBD, so really, we’re just nature’s matchmakers. We also only use organic farming practices that support the ecosystem and use eco-packaging, and for every order made, we plant a tree.</p>
+          </div> 
+        </li>
+        
+        <li class="our-values__box our-values-swiper__item swiper-slide">
+          <input class="our-values__field" type="radio" id="tab_5" name="tab-group">
+          <label for="tab_5" class="our-values__figure">
+            <svg class="truth" height="155px" width="155px">
+              <use xlink:href="#people_icon"></use>
+            </svg>
+          </label> 
+          <div class="our-values__content">
+            <h3 class="our-values-content__title">The People</h3>
+            <p class="our-values-content__description body-medium">Truth people are honest people. We’re scattered across 7 countries but have one thing in common - we’re all super passionate about the power of plants and helping others access it in order to live their best life. Ultimately, we want to be what we want to see; so if we don’t personally love the product, we don’t want to sell it.</p><p class="our-values-content__description" style='font-style: italic;'><b>“We recruit nice people and teach them the skills, rather than recruiting skilled people and teaching them to be nice.” <br/>- Trent.</b></p>
+          </div> 
+        </li>
+      </ul>
+      <div class="swiper-pagination our-values-swiper__pagination" data-value-pagination></div>
+      <button type="button" class="swiper-button-prev our-values-swiper__button our-values-swiper__button--prev" data-value-prev></button>
+      <button type="button" class="swiper-button-next our-values-swiper__button our-values-swiper__button--next" data-value-next></button>
+    </div>
+
+</div>
+
+<style>
+  #shopify-section-{{ section.id }} {
+    background-color: {{ section.settings.section_background }};
+    --title_color: {{ section.settings.title_color }};
+    --description_color: {{ section.settings.description_color }};
+  }
+</style>
+
+{% schema %}
+  {
+    "name":"Our Value",
+    "class":"our-value",
+    "settings":[
+      {
+        "type":"text",
+        "id":"title",
+        "label":"Title",
+        "default":"Our Value"
+      },
+	  {
+        "type":     "range",
+        "id":       "title_size_desk",
+        "min":       6,
+        "max":       106,
+        "step":      1,
+        "unit":     "px",
+        "label":    "Font size on desktop",
+        "default":   30
+      },
+      {
+        "type":     "range",
+        "id":       "title_size_mob",
+        "min":       6,
+        "max":       106,
+        "step":      1,
+        "unit":     "px",
+        "label":    "Font size on mobile",
+        "default":   24
+      },
+      {
+        "type": "select",
+        "id": "title_weight",
+        "label": "Font weight",
+        "options": [
+          { "value": "100", "label": "Thin" },
+          { "value": "200", "label": "Extra Light" },
+          { "value": "300", "label": "Light" },
+          { "value": "400", "label": "Normal" },
+          { "value": "500", "label": "Medium" },
+          { "value": "600", "label": "Semi Bold" },
+          { "value": "700", "label": "Bold" },
+          { "value": "800", "label": "Extra Bold" },
+          { "value": "900", "label": "Black " }
+        ],
+        "default": "700"
+      },
+      {
+        "type":"textarea",
+        "id":"subtitle",
+        "label":"Sub Title",
+        "default":"Purity. Transparency. Efficacy."
+      },
+	  {
+        "type":     "range",
+        "id":       "sub_title_size_desk",
+        "min":       6,
+        "max":       106,
+        "step":      1,
+        "unit":     "px",
+        "label":    "Font size on desktop",
+        "default":   24
+      },
+      {
+        "type":     "range",
+        "id":       "sub_title_size_mob",
+        "min":       6,
+        "max":       106,
+        "step":      1,
+        "unit":     "px",
+        "label":    "Font size on mobile",
+        "default":   20
+      },
+      {
+        "type": "select",
+        "id": "sub_title_weight",
+        "label": "Font weight",
+        "options": [
+          { "value": "100", "label": "Thin" },
+          { "value": "200", "label": "Extra Light" },
+          { "value": "300", "label": "Light" },
+          { "value": "400", "label": "Normal" },
+          { "value": "500", "label": "Medium" },
+          { "value": "600", "label": "Semi Bold" },
+          { "value": "700", "label": "Bold" },
+          { "value": "800", "label": "Extra Bold" },
+          { "value": "900", "label": "Black " }
+        ],
+        "default": "700"
+      },
+      {
+        "type":"color",
+        "id":"sub_title_color",
+        "label":"Sub Title color",
+        "default":"#c6b476"
+      },
+      {
+        "type":"richtext",
+        "id":"description",
+        "label":"Description",
+        "default":"<p>We all live active lifestyles, and are constantly monitoring the latest trends in health, fitness and fatherhood. We think of ourselves as honest and genuine guys who continue to innovate healthy solutions to common life challenges. All of our products are supported by science as we promote the truth about the emerging power of plant based nutrition.</p>"
+      },
+      {
+        "type":"header",
+        "content":"Colors"
+      },
+      {
+        "type":"color",
+        "id":"section_background",
+        "label":"Section background color",
+        "default":"#fff"
+      },
+      {
+        "type":"color",
+        "id":"title_color",
+        "label":"Title color",
+        "default":"#231F20"
+      },
+      {
+        "type":"color",
+        "id":"description_color",
+        "label":"Description color",
+        "default":"#231F20"
+      }
+    ],
+    "blocks":[
+      {
+        "type":"values",
+        "name":"Values",
+        "settings":[
+          {
+            "type":"text",
+            "id":"values_title",
+            "label":"Name",
+            "info":"Use italic to display smaller text"
+          },
+		  {
+            "type":     "range",
+            "id":       "values_title_size_desk",
+            "min":       6,
+            "max":       106,
+            "step":      1,
+            "unit":     "px",
+            "label":    "Font size on desktop",
+            "default":   24
+          },
+          {
+            "type":     "range",
+            "id":       "values_title_size_mob",
+            "min":       6,
+            "max":       106,
+            "step":      1,
+            "unit":     "px",
+            "label":    "Font size on mobile",
+            "default":   20
+          },
+          {
+            "type": "select",
+            "id": "values_title_weight",
+            "label": "Font weight",
+            "options": [
+              { "value": "100", "label": "Thin" },
+              { "value": "200", "label": "Extra Light" },
+              { "value": "300", "label": "Light" },
+              { "value": "400", "label": "Normal" },
+              { "value": "500", "label": "Medium" },
+              { "value": "600", "label": "Semi Bold" },
+              { "value": "700", "label": "Bold" },
+              { "value": "800", "label": "Extra Bold" },
+              { "value": "900", "label": "Black " }
+            ],
+            "default": "700"
+          },
+          {
+            "type":"richtext",
+            "id":"description",
+            "label":"Description"
+          },
+		  {
+            "type":     "range",
+            "id":       "values_description_size_desk",
+            "min":       6,
+            "max":       106,
+            "step":      1,
+            "unit":     "px",
+            "label":    "Font size on desktop",
+            "default":   16
+          },
+          {
+            "type":     "range",
+            "id":       "values_description_size_mob",
+            "min":       6,
+            "max":       106,
+            "step":      1,
+            "unit":     "px",
+            "label":    "Font size on mobile",
+            "default":   15
+          },
+          {
+            "type": "select",
+            "id": "values_description_weight",
+            "label": "Font weight",
+            "options": [
+              { "value": "100", "label": "Thin" },
+              { "value": "200", "label": "Extra Light" },
+              { "value": "300", "label": "Light" },
+              { "value": "400", "label": "Normal" },
+              { "value": "500", "label": "Medium" },
+              { "value": "600", "label": "Semi Bold" },
+              { "value": "700", "label": "Bold" },
+              { "value": "800", "label": "Extra Bold" },
+              { "value": "900", "label": "Black " }
+            ],
+            "default": "400"
+          },
+          {
+            "type":"image_picker",
+            "id":"image",
+            "label":"Image"
+          },
+          {
+            "type":"color",
+            "id":"title_color",
+            "label":"Name color",
+            "default":"#231F20"
+          },
+          {
+            "type":"color",
+            "id":"description_color",
+            "label":"Description color",
+            "default":"#231F20"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

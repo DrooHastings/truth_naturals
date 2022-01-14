@@ -1,0 +1,103 @@
+<div class="row{% if settings.pages--center-content--enabled %} center{% endif %} custom-wholesale-page">
+
+  <div class="row">
+    <div class="columns">
+      {% include 'snippet-breadcrumbs' %}
+      <h1 class="page-title">{{ page.title }}</h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="columns large-12">
+      <div class="page-content rte-content colored-links">
+
+        {{ page.content }}
+      </div>
+    </div>
+
+    <div class="columns large-12">
+      {% form 'contact', class: "custom-affiliate-form" %}
+
+        {% if form.posted_successfully? %}
+        <div class="success feedback accent-text">
+          <p>{{ 'affiliate_form.success_feedback' | t }}</p>
+        </div>
+        {% endif %}
+
+        {% if form.errors %}
+        <div class="error feedback accent-text">
+          <p>{{ 'affiliate_form.error_feedback' | t }}:</p>
+          <ul>
+          {% for field in form.errors %}
+            <li>{{ field | capitalize | replace: 'Body', 'Message' }} {{ form.errors.messages[field] }}</li>
+          {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+
+        {% unless form.posted_successfully? %}
+        <input type="hidden" name="contact[application_type]" value="Affiliate application"/>
+        <div class="cwf-row">
+          <label class="cwf-header" for="contactFormFirstName">{{ 'affiliate_form.name' | t }}</label>
+          <div class="cwf-block half">
+            <input required="required" type="text" id="contactFormFirstName" name="contact[first_name]" class="styled-input{% if form.errors contains 'first_name' %} error{% endif %}" value="{{ contact.fields['first_name'] }}" />
+            <label class="cwf-under-input" for="contactFormFirstName">{{ 'affiliate_form.first_name' | t }}</label>
+          </div>
+          <div class="cwf-block half">
+            <input required="required" type="text" id="contactFormLastName" name="contact[last_name]" class="styled-input{% if form.errors contains 'last_name' %} error{% endif %}" value="{{ contact.fields['last_name'] }}" />
+            <label class="cwf-under-input" for="contactFormLastName">{{ 'affiliate_form.last_name' | t }}</label>
+          </div>
+        </div>
+
+        <div class="cwf-row">
+          <div class="cwf-block">
+            <label class="cwf-above-input" for="contactFormWebsiteName">{{ 'affiliate_form.website_name' | t }}</label>
+            <input type="text" id="contactFormWebsiteName" name="contact[website_name]" class="styled-input{% if form.errors contains 'website_name' %} error{% endif %}" placeholder="https://" value="{{ contact.fields.website_name }}" />
+          </div>
+        </div>
+
+        <div class="cwf-row">
+          <div class="cwf-block half">
+            <label class="cwf-above-input" for="contactFormPhone">{{ 'affiliate_form.phone' | t }}</label>
+            <input required="required" type="text" id="contactFormPhone" name="contact[phone]" class="styled-input{% if form.errors contains 'phone' %} error{% endif %}" value="{{ contact.fields.phone }}" />
+          </div>
+          <div class="cwf-block half">
+            <label class="cwf-above-input" for="contactFormEmail">{{ 'affiliate_form.email' | t }}</label>
+            <input required="required" type="text" id="contactFormEmail" name="contact[email]" class="styled-input{% if form.errors contains 'email' %} error{% endif %}" value="{{ contact.fields.email }}" />
+          </div>
+        </div>
+
+        <div class="cwf-row">
+          <div class="cwf-block">
+            <label class="cwf-above-input" for="contactFormTellUsAboutYou">{{ 'affiliate_form.tell_us_about_you_html' | t }}</label>
+            <textarea rows="10" cols="50" required="required" id="contactFormTellUsAboutYou" name="contact[tell_us_about_you]" class="styled-input{% if form.errors contains 'tell_us_about_you' %} error{% endif %}">{{ contact.fields.tell_us_about_you }}</textarea>
+          </div>
+        </div>
+
+        <p>
+          <input class="button styled-submit" type="submit" id="contactFormSubmit" value="{{ 'affiliate_form.button' | t }}" />
+        </p>
+
+        {% endunless %}
+
+        {% if form.posted_successfully? or form.errors %}
+          <script>
+            window.location.hash = '#page-content';
+          </script>
+        {% endif %}
+
+      {% endform %}
+
+    </div>
+  </div>
+
+</div>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function(){
+    $('.custom-affiliate-form').on('submit', function(){
+      localStorage.submitted_form = "affiliate";
+    });
+  });
+</script>

@@ -1,0 +1,97 @@
+{%comment%}{% section 'pages' %}{%endcomment%}
+<script type="text/javascript">
+(function (e) {
+    if (e.Beans3) return; var r = {};r._q = [];
+    function a(e) {r[e] = function () {r._q.push([e].concat([].slice.call(arguments, 0)))}}
+    var i = ["init", "get", "post", "put", "delete", "getAccountID", "setAccountID", "setAccountToken"];
+    for (var o = 0; o < i.length; o++) {a(i[o])}e.Beans3 = r
+})(window);
+</script>
+
+<link type="text/css" rel="stylesheet" href="https://s3-us-west-2.amazonaws.com/bnsre/static-v3/liana/lib/3.0/css/beans-loyalty-page.css">
+
+<link rel="stylesheet" href="https://trybeans.s3.amazonaws.com/static-v3/bamboo/lib/3.0/css/beans-referral-page.min.css">
+
+<!-- Faq Page -->
+
+{% section 'custom-page-with-accordion' %}
+
+<hr class='custom-hr'>
+
+{% section 'custom-guarantee' %}
+
+<hr class='custom-hr'>
+
+{% section 'featured-collection' %}
+
+<hr class='custom-hr'>
+
+{% section 'custom-reviews' %}
+
+<hr class='custom-hr'>
+
+{% section 'featured-images' %}
+
+<!-- About Us Page -->
+
+{% comment %}
+
+{% section 'custom-about-us' %}
+
+<hr class='custom-hr'>
+
+{% section 'custom-guarantee' %}
+
+<hr class='custom-hr'>
+
+{% section 'custom-reviews' %}
+
+{% section 'custom-non-slider-reviews' %}
+
+{% section 'featured-collection' %}
+
+{% section 'custom-faq-about-us' %}
+
+{% endcomment %}
+
+<!-- Contact Us Page -->
+
+{% comment %}
+
+{% section 'custom-contact-us'%}
+
+{% section 'custom-faq-contact-us' %}
+
+<hr class='custom-hr'>
+
+{% section 'custom-guarantee' %}
+
+<hr class='custom-hr'>
+
+{% section 'custom-reviews' %}
+
+{% section 'custom-non-slider-reviews' %}
+
+{% section 'featured-collection' %}
+
+{% endcomment %}
+
+<!-- Testimonials Page -->
+
+{% comment %}
+
+{% section 'custom-testimonials-video' %}
+
+{% section 'custom-testimonials-video-2' %}
+
+{% section 'custom-guarantee' %}
+
+<hr class='custom-hr'>
+
+{% section 'featured-collection' %}
+
+{% include 'custom-app-testimonials' %}
+
+{% section 'custom-faq-testimonials' %}
+
+{% endcomment %}

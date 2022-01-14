@@ -1,0 +1,38 @@
+<div class='cc-mobile-header'>
+  <h2 class='custom-section-title'>{{ section.settings.mobile_title }}</h2>
+  <p class='textarea'>{{ section.settings.mobile_text }}</p>
+  <img src='{{ section.settings.mobile_image | img_url: 'master' }}'>
+</div>
+
+{% schema %}
+  {
+    "name": "Mobile Header",
+    "settings": [
+      {
+        "type": "text",
+        "id": "mobile_title",
+        "label": "Mobile Page Title",
+        "default": "TRUTH CBD STORE"
+      },
+      {
+        "type": "textarea",
+        "id": "mobile_text",
+        "label": "Mobile Page Description",
+        "default": "Description"
+      },
+      {
+        "type": "image_picker",
+        "id": "mobile_image",
+        "label": "Image Under Description"
+      }
+
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}
+

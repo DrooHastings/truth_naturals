@@ -1,0 +1,21 @@
+$(document).ready(function(){
+  $(document).on('change', '.ccnt-select', function(){
+  	parent_form = $(this).parents('form');
+  	selected_option = $(this).find(':selected');
+  	new_price = selected_option.data('price');
+  	new_compare_price = selected_option.data('compare-price');
+  	parent_form.find('.actual-price').html(new_price);
+  	parent_form.find('.compare-price').html(new_compare_price);
+  });
+  $('.ncs-input, .ncs-select').change(function(){
+    bound_to = $(this).data('bound-to');
+//     debugger
+  	value = $(this).val();
+    $(this).parents('.new-custom-selector').find('.ncs-selected-option-value').html(value);
+    $('#'+bound_to).val(value).trigger('change');
+  });
+  $('.custom-product-buy-button').on('click', function(e){
+    e.preventDefault();
+    $('.addtocart').click();
+  });
+});

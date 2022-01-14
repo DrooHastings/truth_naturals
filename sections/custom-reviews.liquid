@@ -1,0 +1,97 @@
+{% if section.blocks.size > 0 %}
+<div class="cr-container custom-page-width swiper-container">
+  <div class="cr-wrapper swiper-wrapper">
+	{%for block in section.blocks%}
+  		<div class="cr-block swiper-slide">
+          <div class="cr-block-item">
+            <h2 class="custom-section-title">{{block.settings.title}}</h2>
+            {% if block.settings.show_stars %}
+            	<div class='stars-wrapper'><img class='stars-image' src='{{ 'stars.png' | asset_url }}'></div>
+            {% endif %}
+            <p class="textarea">{{block.settings.text}}</p>
+          </div>
+          <div class="cr-block-item">
+               {% if block.settings.video_youtube != blank %}
+              	<div class="youtube-player" data-id="{{ block.settings.video_youtube }}"></div>
+              {% elsif block.settings.video_vimeo != blank %}
+                <iframe width="560" height="315"
+                        src="https://player.vimeo.com/video/{{ block.settings.video_vimeo }}"
+                        frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+              {% elsif block.settings.video_wistia != blank %}
+                <script src="https://fast.wistia.com/embed/medias/{{ block.settings.video_wistia }}.jsonp" async=""></script>
+                <script src="https://fast.wistia.com/assets/external/E-v1.js" async=""></script>
+                <div class="video-wistia wistia_responsive_padding" style="padding:56.0% 0 0 0;position:relative;">
+                  <div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
+                    <div class="wistia_embed wistia_async_{{ block.settings.video_wistia }} seo=false videoFoam=true" style="height:100%;width:100%">
+                    </div>
+                  </div>
+                </div> 
+              {% endif %}
+          </div>
+  		</div>
+  	{%endfor%}
+  </div>
+  <div class="swiper-pagination"></div>
+</div>
+{% endif %}
+{% schema %}
+  {
+    "name": "Custom reviews with video",
+    "settings": [],
+	"blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Default title"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Default text"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_stars",
+          "label": "Show Stars?"
+        },
+		{
+          "id": "video_youtube",
+          "type": "text",
+          "label": "YouTube video ID"
+		},
+		{
+		  "id": "video_vimeo",
+          "type": "text",
+          "label": "Vimeo video ID"
+		},
+		{
+		  "id": "video_wistia",
+          "type": "text",
+          "label": "Wistia video ID",
+		  "default": "7q4yc7bjfq"
+		}
+      ]
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+
+{% endstylesheet %}
+
+{% javascript %}
+var reviewsSwiper = new Swiper('.cr-container', {
+  pagination: {
+    el: '.swiper-pagination',
+    type: 'bullets',
+	clickable: true
+  },
+});
+{% endjavascript %}

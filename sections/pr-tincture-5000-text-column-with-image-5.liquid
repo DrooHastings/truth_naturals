@@ -1,0 +1,398 @@
+{% include 'section-text-column-with-image' %}
+
+{% schema %}
+{
+  "name": "Text column with image",
+  "class": "image-with-text gd-stl",
+  "settings": [
+    {
+      "type": "checkbox",
+      "label": "Show section",
+      "id": "show",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "color",
+      "id": "ttl_color",
+      "label": "Text",
+      "default": "#252525"
+    },
+    {
+      "type": "color",
+      "id": "ttl_brdr_color",
+      "label": "Border bottom",
+      "default": "#daad67"
+    },
+    {
+      "type": "text",
+      "id": "ttl",
+      "label": "Text"
+    },
+    {
+      "type":     "range",
+      "id":       "ttl_size_desk",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on desktop",
+      "default":   22
+    },
+    {
+      "type":     "range",
+      "id":       "ttl_size_mob",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on mobile",
+      "default":   17
+    },
+    {
+      "type": "select",
+      "id": "ttl_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "100", "label": "Thin" },
+        { "value": "200", "label": "Extra Light" },
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black " }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "header",
+      "content": "Block"
+    },
+    {
+      "type": "color",
+      "id": "blck_img_color_bg",
+      "label": "Image block background",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "blck_txt_color_bg",
+      "label": "Text block background",
+      "default": "#fdf5ef"
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "img_desk",
+      "label": "Image on desktop"
+    },
+    {
+      "type": "image_picker",
+      "id": "img_mob",
+      "label": "Image on mobile"
+    },
+    {
+      "type":      "select",
+      "id":        "img_align",
+      "label":     "Image alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Column heading"
+    },
+    {
+      "type": "color",
+      "id": "col_ttl_color",
+      "label": "Text",
+      "default": "#231F20"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Text"
+    },
+    {
+      "type":     "range",
+      "id":       "col_ttl_size_desk",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on desktop",
+      "default":   50
+    },
+    {
+      "type":     "range",
+      "id":       "col_ttl_size_mob",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on mobile",
+      "default":   30
+    },
+    {
+      "type": "select",
+      "id": "col_ttl_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "100", "label": "Thin" },
+        { "value": "200", "label": "Extra Light" },
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black " }
+      ],
+      "default": "900"
+    },
+    {
+      "type":      "select",
+      "id":        "col_ttl_align",
+      "label":     "Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" },
+        { "value": "justify", "label": "In width" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Column subheading"
+    },
+    {
+      "type": "color",
+      "id": "col_sbttl_color",
+      "label": "Text",
+      "default": "#E38127"
+    },
+    {
+      "type": "richtext",
+      "id": "col_sbttl",
+      "label": "Text"
+    },
+    {
+      "type":     "range",
+      "id":       "col_sbttl_size_desk",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on desktop",
+      "default":   30
+    },
+    {
+      "type":     "range",
+      "id":       "col_sbttl_size_mob",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on mobile",
+      "default":   18
+    },
+    {
+      "type": "select",
+      "id": "col_sbttl_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "100", "label": "Thin" },
+        { "value": "200", "label": "Extra Light" },
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black " }
+      ],
+      "default": "300"
+    },
+    {
+      "type":      "select",
+      "id":        "col_sbttl_align",
+      "label":     "Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" },
+        { "value": "justify", "label": "In width" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Column description"
+    },
+    {
+      "type": "color",
+      "id": "col_descr_color",
+      "label": "Text",
+      "default": "#231F20"
+    },
+    {
+      "type": "richtext",
+      "id": "col_descr",
+      "label": "Text"
+    },
+    {
+      "type":     "range",
+      "id":       "col_descr_size_desk",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on desktop",
+      "default":   20
+    },
+    {
+      "type":     "range",
+      "id":       "col_descr_size_mob",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on mobile",
+      "default":   18
+    },
+    {
+      "type": "select",
+      "id": "col_descr_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "100", "label": "Thin" },
+        { "value": "200", "label": "Extra Light" },
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black " }
+      ],
+      "default": "400"
+    },
+    {
+      "type":      "select",
+      "id":        "col_descr_align",
+      "label":     "Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" },
+        { "value": "justify", "label": "In width" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Column button"
+    },
+    {
+      "type": "color",
+      "id": "col_btn_color",
+      "label": "Text",
+      "default": "#E38127"
+    },
+    {
+      "type": "color",
+      "id": "col_btn_color_hover",
+      "label": "Text on hover",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "col_btn_color_bg",
+      "label": "Background"
+    },
+    {
+      "type": "color",
+      "id": "col_btn_color_bg_hover",
+      "label": "Background on hover",
+      "default": "#E38127"
+    },
+    {
+      "type": "color",
+      "id": "col_btn_brdr_color",
+      "label": "Border",
+      "default": "#E38127"
+    },
+    {
+      "type": "color",
+      "id": "col_btn_brdr_color_hover",
+      "label": "Border on hover",
+      "default": "#E38127"
+    },
+    {
+      "type": "text",
+      "id": "col_btn",
+      "label": "Text",
+      "default": "LEARN MORE"
+    },
+    {
+      "type": "url",
+      "id": "col_btn_url",
+      "label": "Url"
+    },
+    {
+      "type": "checkbox",
+      "label": "Buy button?",
+      "id": "buy_button",
+      "default": false
+    },
+    {
+      "type":     "range",
+      "id":       "col_btn_size_desk",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on desktop",
+      "default":   16
+    },
+    {
+      "type":     "range",
+      "id":       "col_btn_size_mob",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on mobile",
+      "default":   16
+    },
+    {
+      "type": "select",
+      "id": "col_btn_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "100", "label": "Thin" },
+        { "value": "200", "label": "Extra Light" },
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black " }
+      ],
+      "default": "700"
+    }
+  ]
+}
+{% endschema %}

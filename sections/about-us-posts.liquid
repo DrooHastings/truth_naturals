@@ -1,0 +1,201 @@
+{% assign blog = blogs.truth-blog %} 
+{% if section.settings.ttl != empty %}
+  <h3 class="about-us-post__heading">{{ section.settings.ttl }}</h3>
+{% endif %}
+<div class="about-us-post">
+  {% for article in blog.articles limit: 3 %}
+    <a class="about-us-post__item" href="{{article.url}}">
+      <div class="about-us-post__img-wrap">
+        <img class="about-us-post__img" src="{{ article.image.src | img_url: '500x' }}" alt="{{ article.image.alt }}"/>
+      </div>
+      {% if block.settings.descr != empty %}
+        <h2 class="about-us-post__title">{{ article.title }}</h2>
+      {% endif %}
+    </a>
+  {% endfor %}
+</div>
+
+<style>
+  .about-us-post__container {
+    padding: 72px 20px;
+    text-align: center;
+  }
+  .about-us-post__heading {
+    margin-bottom: 36px;
+    font-size: {{ section.settings.ttl_size_desk }}px;
+    color: {{ section.settings.ttl_color }};
+    font-weight: {{ section.settings.ttl_weight }};
+    line-height: normal;
+  }
+  .about-us-post {
+    display: flex;
+    justify-content: center;
+  }
+  .about-us-post__item {
+    display: inline-block;
+    padding: 10px;
+    max-width: 290px;
+  }
+  .about-us-post__img-wrap {
+    margin-bottom: 25px;
+  }
+  .about-us-post__img {
+    width: 100%;
+    height: auto;
+  }
+  .about-us-post__title {
+    letter-spacing: 0.56px;
+    line-height: normal;
+    text-align: left;
+    font-size: {{ section.settings.descr_size_desk }}px;
+    color: {{ section.settings.descr_color }};
+    font-weight: {{ section.settings.descr_weight }};
+  }
+</style>
+
+
+<style>
+
+  @media screen and (max-width: 767.98px) {
+    .about-us-post__container {
+      padding-top: 40px;
+      padding-bottom: 20px;
+    }
+    .about-us-post {
+      flex-direction: column;
+      align-items: center;
+    }
+    .about-us-post__item {
+      display: flex;
+      max-width: 100%;
+    }
+    .about-us-post__img-wrap {
+      margin-right: 10px;
+      max-width: 50%;
+      margin-bottom: 0;
+    }
+    .about-us-post__heading {
+      font-size: {{ section.settings.ttl_size_mob }}px;
+      margin-bottom: 26px;
+    }
+
+    .about-us-post__title {
+      font-size: {{ section.settings.descr_size_mob }}px;
+    }
+  }
+</style>
+
+
+
+{% schema %}
+	{
+  "name": "Blog posts",
+  "class": "about-us-post__container",
+  "settings": [
+    {
+      "type": "color",
+      "id": "color_bg",
+      "label": "Background"
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "color",
+      "id": "ttl_color",
+      "label": "Text",
+      "default": "#37404c"
+    },
+    {
+      "type": "text",
+      "id": "ttl",
+      "label": "Heading"
+    },
+    {
+      "type":     "range",
+      "id":       "ttl_size_desk",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on desktop",
+      "default":   49
+    },
+    {
+      "type":     "range",
+      "id":       "ttl_size_mob",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on mobile",
+      "default":   30
+    },
+    {
+      "type": "select",
+      "id": "ttl_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "100", "label": "Thin" },
+        { "value": "200", "label": "Extra Light" },
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black " }
+      ],
+      "default": "900"
+    },
+    {
+      "type": "header",
+      "content": "Post Title"
+    },
+    {
+      "type": "color",
+      "id": "descr_color",
+      "label": "Text",
+      "default": "#37404c"
+    },
+    {
+      "type":     "range",
+      "id":       "descr_size_desk",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on desktop",
+      "default":   16
+    },
+    {
+      "type":     "range",
+      "id":       "descr_size_mob",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on mobile",
+      "default":   16
+    },
+    {
+      "type": "select",
+      "id": "descr_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "100", "label": "Thin" },
+        { "value": "200", "label": "Extra Light" },
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black " }
+      ],
+      "default": "400"
+    }
+  ]
+}
+{% endschema %}

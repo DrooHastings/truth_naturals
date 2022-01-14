@@ -1,0 +1,1334 @@
+{% comment %}<footer id="ftr-sctn--wrap">
+  <div id="ftr-sctn--content-wrap">
+    <div id="ftr-sctn--content">
+      {% if section.settings.logo_mob %}
+        <div id="ftr--logo-wrp">
+          <a href="/" title="{{ shop.name }}" id="ftr--logo">
+            <picture id="ftr--logo-pctr">
+              {% if section.settings.logo_desk %}
+                <source media="(min-width: 768px)" srcset="{{ section.settings.logo_desk | img_url: 'master' }}">
+              {% endif %}
+              <img src="{{ section.settings.logo_mob | img_url: 'master' }}" alt="{{ shop.name }}" id="ftr--logo-img">
+            </picture>
+          </a>
+        </div>
+      {% else %}
+        {{ shop.name }}
+      {% endif %}
+
+      {% assign k = true %}
+
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'menu' %}
+
+            {% if k %}
+              <div id="ftr-sctn--mn-wrp">
+            {% endif %}
+            {% assign k = false %}
+
+            {% if block.settings.linklist != blank %}
+              <div class="ftr-sctn--cntnr">
+                <h6 class="ftr-sctn--mn-ttl">{{ linklists[block.settings.linklist].title }}</h6>
+                <ul class="ftr-sctn--mn-list">
+                  {% for link in linklists[block.settings.linklist].links %}
+                    <li class="ftr-sctn--mn-item">
+                      <a href="{{ link.url }}" title="{{ link.title }}" class="ftr-sctn--mn-lnk">{{ link.title }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            {% endif %}
+
+          {% when 'menu_with_info' %}
+            <div class="ftr-sctn--cntnr ftr-sctn--cntnr-info">
+              {% if block.settings.linklist != blank %}
+                <h6 class="ftr-sctn--mn-ttl">{{ linklists[block.settings.linklist].title }}</h6>
+                <ul class="ftr-sctn--mn-list">
+                  {% for link in linklists[block.settings.linklist].links %}
+                    <li class="ftr-sctn--mn-item">
+                      <a href="{{ link.url }}" title="{{ link.title }}" class="ftr-sctn--mn-lnk">{{ link.title }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+              <div id="ftr-sctn--inf">
+                {% if block.settings.phone_number != empty %}
+                  <div class="ftr-sctn--inf-itm">
+                    <a href="tel:{{ block.settings.country_phone_code }}{{ block.settings.phone_number | remove: ' ' }}" target="_blank" id="ftr-sctn--inf-ph" class="ftr-sctn--inf-lnk">
+                      <span class="ftr-sctn--inf-txt">{{ block.settings.phone_number }}</span>
+                    </a>
+                  </div>
+                {% endif %}
+
+                {% if block.settings.email != empty %}
+                  <div class="ftr-sctn--inf-itm">
+                    <a href="mailto:{{ block.settings.email }}" target="_blank" id="ftr-sctn--inf-eml" class="ftr-sctn--inf-lnk">
+                      <span class="ftr-sctn--inf-txt">{{ block.settings.email }}</span>
+                    </a>
+                  </div>
+                {% endif %}
+
+                {% if block.settings.address_url != empty %}
+                  <div class="ftr-sctn--inf-itm">
+                    <a href="{{ block.settings.address_url }}" id="ftr-sctn--inf-adrs" class="ftr-sctn--inf-lnk">
+                      <span class="ftr-sctn--inf-txt">{{ block.settings.address }}</span>
+                    </a>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+            </div>
+
+          {% when 'subscribe_and_search' %}
+
+            <div class="ftr-sbscrptn-and-srch">
+              <div id="ftr-sctn--sbscrptn">
+                {% if block.settings.sbscrptn_txt != empty %}
+                  <a class="show-subscription-popup manual-optin-trigger" id="ftr--sbscrptn-btn" href="{{ settings.theme_optin }}" target="_blank" data-optin-slug="{{ settings.theme_optin }}">{{ block.settings.sbscrptn_txt }}</a>
+                {% endif %}
+              </div>
+
+              <div id="ftr-sctn--srch">
+                {% if block.settings.srch_title != empty %}
+                  <h6 class="ftr-sctn--mn-ttl" id="ftr-sctn--srch-ttl">{{ block.settings.srch_title }}</h6>
+                {% endif %}
+
+                <form class='ftr-search' action="/search" method="get" role="search" id="ftr--srch-frm">
+                  <input name="q" id="ftr--srch-fld" type="text" placeholder="{{ 'layout.header.search_placeholder' | t }}"/>
+                  <button id="ftr--srch-btn">
+                    <?xml version="1.0" encoding="UTF-8"?>
+                    <svg id="search-icon" width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <defs>
+                            <path d="M8.1245,14.1234 C5.3625,14.1234 3.1245,11.8904 3.1245,9.1244 C3.1245,6.3624 5.3585,4.1244 8.1245,4.1244 C10.8855,4.1244 13.1235,6.3584 13.1235,9.1244 C13.1235,11.8864 10.8895,14.1234 8.1245,14.1234 M19.7255,18.2914 L15.8305,14.3964 C15.6545,14.2214 15.4165,14.1234 15.1665,14.1234 L14.5295,14.1234 C15.6075,12.7444 16.2485,11.0114 16.2485,9.1244 C16.2485,4.6364 12.6115,0.9994 8.1245,0.9994 C3.6365,0.9994 -0.0005,4.6364 -0.0005,9.1244 C-0.0005,13.6114 3.6365,17.2484 8.1245,17.2484 C10.0105,17.2484 11.7445,16.6074 13.1235,15.5294 L13.1235,16.1664 C13.1235,16.4164 13.2215,16.6544 13.3965,16.8304 L17.2915,20.7254 C17.6585,21.0924 18.2525,21.0924 18.6155,20.7254 L19.7215,19.6194 C20.0885,19.2524 20.0885,18.6584 19.7255,18.2914" id="path-1"></path>
+                        </defs>
+                        <g id="Origins-AUS" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="1d-Home" transform="translate(-1146.000000, -6634.000000)">
+                                <g id="Group-8" transform="translate(876.000000, 6596.000000)">
+                                    <g id="Group-2-Copy" transform="translate(270.000000, 38.000000)">
+                                        <g id="icon/fontawesome/search">
+                                            <g id="color/3BB44A" transform="translate(0.000000, -1.000000)">
+                                                <mask id="mask-2">
+                                                    <use xlink:href="#path-1"></use>
+                                                </mask>
+                                                <use id="Mask" xlink:href="#path-1"></use>
+                                                <g id="color/37404C" mask="url(#mask-2)" fill-rule="nonzero">
+                                                    <g transform="translate(0.000000, 1.000000)" id="4a4a4a">
+                                                        <rect x="0" y="0" width="20" height="20"></rect>
+                                                    </g>
+                                                </g>
+                                            </g>
+                                        </g>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </svg>
+                  </button>
+                </form>
+              </div>
+
+              <style>
+
+                #ftr-sctn--wrap {
+                  border-top: solid 1px {{ section.settings.top_border_color }};
+                }
+
+                #ftr-sctn--copyright {
+                  border-top: solid 1px {{ section.settings.copyright_top_border_color }};
+                }
+
+                #shopify-section-{{ section.id }} #ftr--sbscrptn-btn {
+                  font-size: {{ block.settings.sbscrptn_btn_size_mob }}px;
+                  color: {{ block.settings.sbscrptn_btn_color }};
+                  background-color: {{ block.settings.sbscrptn_btn_color_bg }};
+                  border-color: {{ block.settings.sbscrptn_btn_brdr_color }};
+                  font-weight: {{ block.settings.sbscrptn_btn_weight }};
+                }
+
+                @media screen and (min-width: 768px) {
+                  #shopify-section-{{ section.id }} #ftr--sbscrptn-btn {
+                    font-size: {{ block.settings.sbscrptn_btn_size_desk }}px;
+                  }
+
+                  #shopify-section-{{ section.id }} #ftr--sbscrptn-btn:hover {
+                    color: {{ block.settings.sbscrptn_btn_color_hover }};
+                    background-color: {{ block.settings.sbscrptn_btn_color_bg_hover }};
+                    border-color: {{ block.settings.sbscrptn_btn_brdr_color_hover }};
+                  }
+
+                  #shopify-section-{{ section.id }} #ftr--srch-fld {
+                    font-size: {{ block.settings.srch_fld_size_desk }}px;
+                    color: {{ block.settings.srch_fld_color }};
+                    background-color: {{ block.settings.srch_fld_color_bg }};
+                    font-weight: {{ block.settings.srch_fld_weight }};
+                  }
+
+                  #shopify-section-{{ section.id }} #ftr--srch-fld::placeholder {
+                    color: {{ block.settings.srch_fld_plchldr_color }};
+                  }
+
+                  #shopify-section-{{ section.id }} #ftr--srch-btn {
+                    background-color: {{ block.settings.srch_btn_color_bg }};
+                    border-color: {{ block.settings.srch_btn_brdr_color }};
+                    color: {{ block.settings.srch_btn_icon_color }};
+                    transition: none;
+                  }
+
+                  #shopify-section-{{ section.id }} #ftr--srch-btn:hover {
+                    background-color: {{ block.settings.srch_btn_color_bg_hover }};
+                    border-color: {{ block.settings.srch_btn_brdr_color_hover }};
+                    color: {{ block.settings.srch_btn_icon_color_hover }};
+                  }
+
+                  #search-icon {
+                  	color:
+                  }
+                }
+              </style>
+            </div>
+
+          {% when 'social_icons' %}
+
+            <div id="ftr-sctn--soc-icns">
+              {% if block.settings.title != empty %}
+                <h6 class="ftr-sctn--mn-ttl">{{ block.settings.title }}</h6>
+              {% endif %}
+
+              <ul id="ftr-sctn--soc-icns-list">
+                {% if settings.instagram-follow-url != '' %}
+                  <li class="ftr-sctn--soc-icns-itm">
+                    <a href="{{ settings.instagram-follow-url }}" title="{{ shop.name }} on Instagram" rel="me" target="_blank" class="ftr-sctn--soc-icns-lnk">
+                      <svg width="34px" height="30px" viewBox="0 0 34 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="ftr-sctn--soc-icns-svg">
+                          <g id="Origins-AUS" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                              <g id="1d-Home" transform="translate(-242.000000, -6631.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                                  <g id="instagram-copy-2" transform="translate(242.000000, 6631.000000)">
+                                      <path d="M17.019306,7.30837889 C12.3370974,7.30837889 8.56041028,10.7424969 8.56041028,15 C8.56041028,19.2575031 12.3370974,22.6916211 17.019306,22.6916211 C21.7015146,22.6916211 25.4782017,19.2575031 25.4782017,15 C25.4782017,10.7424969 21.7015146,7.30837889 17.019306,7.30837889 Z M17.019306,20.0005578 C13.9935391,20.0005578 11.5199195,17.7580051 11.5199195,15 C11.5199195,12.2419949 13.9861771,9.99944215 17.019306,9.99944215 C20.0524348,9.99944215 22.5186925,12.2419949 22.5186925,15 C22.5186925,17.7580051 20.0450729,20.0005578 17.019306,20.0005578 L17.019306,20.0005578 Z M27.7972201,6.99375209 C27.7972201,7.99118599 26.9137845,8.78779427 25.824214,8.78779427 C24.7272814,8.78779427 23.8512078,7.9844918 23.8512078,6.99375209 C23.8512078,6.00301238 24.7346434,5.19970992 25.824214,5.19970992 C26.9137845,5.19970992 27.7972201,6.00301238 27.7972201,6.99375209 Z M33.3996741,8.81457101 C33.2745207,6.4113578 32.6708397,4.28260627 30.7346434,2.52872922 C28.805809,0.77485217 26.4647048,0.225928818 23.82176,0.105433449 C21.0978336,-0.0351444829 12.9334164,-0.0351444829 10.20949,0.105433449 C7.57390721,0.219234631 5.23280291,0.768157983 3.2966066,2.52203503 C1.36041028,4.27591208 0.764091258,6.40466362 0.63157592,8.80787683 C0.476974693,11.2847261 0.476974693,18.7085797 0.63157592,21.185429 C0.756729294,23.5886422 1.36041028,25.7173937 3.2966066,27.4712708 C5.23280291,29.2251478 7.56654525,29.7740712 10.20949,29.8945666 C12.9334164,30.0351445 21.0978336,30.0351445 23.82176,29.8945666 C26.4647048,29.7807654 28.805809,29.231842 30.7346434,27.4712708 C32.6634778,25.7173937 33.2671587,23.5886422 33.3996741,21.185429 C33.5542753,18.7085797 33.5542753,11.2914203 33.3996741,8.81457101 Z M29.8806557,23.8430213 C29.3064225,25.155082 28.1947661,26.1659043 26.7444594,26.6947451 C24.5726802,27.477965 19.419306,27.2972219 17.019306,27.2972219 C14.619306,27.2972219 9.45856979,27.4712708 7.29415261,26.6947451 C5.85120782,26.1725985 4.73955138,25.1617762 4.15795629,23.8430213 C3.2966066,21.8682361 3.4953796,17.182305 3.4953796,15 C3.4953796,12.817695 3.30396856,8.12506973 4.15795629,6.15697869 C4.73218942,4.844918 5.84384586,3.83409573 7.29415261,3.30525494 C9.46593175,2.52203503 14.619306,2.70277809 17.019306,2.70277809 C19.419306,2.70277809 24.5800422,2.52872922 26.7444594,3.30525494 C28.1874041,3.82740154 29.2990606,4.83822381 29.8806557,6.15697869 C30.7420054,8.13176392 30.5432324,12.817695 30.5432324,15 C30.5432324,17.182305 30.7420054,21.8749303 29.8806557,23.8430213 Z" id="Shape"></path>
+                                  </g>
+                              </g>
+                          </g>
+                      </svg>
+                    </a>
+                  </li>
+                {% endif %}
+
+                {% if settings.facebook-follow-url != '' %}
+                  <li class="ftr-sctn--soc-icns-itm">
+                    <a href="{{ settings.facebook-follow-url }}" title="{{ shop.name }} on Facebook" rel="me" target="_blank" class="ftr-sctn--soc-icns-lnk">
+                      <svg width="16px" height="30px" viewBox="0 0 16 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="ftr-sctn--soc-icns-svg">
+                          <g id="Origins-AUS" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                              <g id="1d-Home" transform="translate(-304.000000, -6631.000000)" fill="#FFFFFF">
+                                  <path d="M308.648429,6661 L308.648429,6647.58219 L304,6647.58219 L304,6642.25017 L308.648429,6642.25017 L308.648429,6638.04885 C308.648429,6633.4845 311.533348,6631 315.745512,6631 C317.76369,6631 319.497174,6631.14654 320,6631.21089 L320,6635.98053 L317.078906,6635.98053 C314.787972,6635.98053 314.345557,6637.03532 314.345557,6638.57624 L314.345557,6642.25017 L319.515261,6642.25017 L318.80624,6647.58219 L314.345557,6647.58219 L314.345557,6661" id="Fill-1"></path>
+                              </g>
+                          </g>
+                      </svg>
+                    </a>
+                  </li>
+                {% endif %}
+
+
+                {% if settings.twitter-follow-url != '' %}
+                  <li class="ftr-sctn--soc-icns-itm">
+                    <a href="{{ settings.twitter-follow-url }}" title="{{ shop.name }} on Twitter" rel="me" target="_blank" class="ftr-sctn--soc-icns-lnk">
+                      <svg width="36px" height="29px" viewBox="0 0 36 29" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="ftr-sctn--soc-icns-svg">
+                          <g id="Origins-AUS" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                              <g id="1d-Home" transform="translate(-350.000000, -6631.000000)">
+                                  <g id="Group-3" transform="translate(350.000000, 6631.000000)">
+                                      <g id="Clip-2"></g>
+                                      <path d="M32.29948,7.22734928 C32.3224109,7.54464573 32.3224109,7.86194217 32.3224109,8.17886576 C32.3224109,17.853238 24.8988159,29 11.3301172,29 C7.14992795,29 3.26671261,27.799046 0,25.7148073 C0.593947748,25.7826663 1.1649646,25.8057831 1.78184324,25.8057831 C5.23087526,25.8057831 8.40624021,24.6499441 10.9417956,22.6790522 C7.69801391,22.6108204 4.97976317,20.5038378 4.04297976,17.6041734 C4.50009398,17.6716594 4.95683228,17.7171473 5.43687739,17.7171473 C6.0992419,17.7171473 6.76160642,17.6265444 7.37848506,17.4677098 C3.99749389,16.7883748 1.46193848,13.8428496 1.46193848,10.2858484 L1.46193848,10.1952455 C2.44420776,10.7388627 3.58661738,11.078903 4.79706785,11.1243909 C2.8095984,9.81009013 1.50780026,7.56738966 1.50780026,5.02939097 C1.50780026,3.67034804 1.8731909,2.42427905 2.51262452,1.33667185 C6.14472777,5.77733064 11.6041601,8.67736793 17.7255811,8.99466437 C17.6116785,8.45067435 17.5432617,7.88431325 17.5432617,7.31795215 C17.5432617,3.28519266 20.8325293,0 24.9213708,0 C27.0452979,0 28.9643506,0.883657543 30.3120105,2.31093226 C31.9791993,1.99363581 33.5783472,1.38215971 34.9947998,0.543617172 C34.4463379,2.24307332 33.2813733,3.67034804 31.7510181,4.57674951 C33.2358875,4.41791486 34.6748951,4.01001556 36,3.44402731 C34.9947998,4.8936731 33.7384876,6.18522995 32.29948,7.22734928" fill="#FFFFFF"></path>
+                                  </g>
+                              </g>
+                          </g>
+                      </svg>
+                    </a>
+                  </li>
+                {% endif %}
+
+                {% if settings.youtube-follow-url != '' %}
+                  <li class="ftr-sctn--soc-icns-itm">
+                    <a href="{{ settings.youtube-follow-url }}" title="{{ shop.name }} on YouTube" rel="me" target="_blank" class="ftr-sctn--soc-icns-lnk">
+                      <svg width="41px" height="30px" viewBox="0 0 41 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="ftr-sctn--soc-icns-svg">
+                          <g id="Origins-AUS" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                              <g id="1d-Home" transform="translate(-417.000000, -6631.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                                  <g id="youtube-white-copy" transform="translate(437.500000, 6646.000000) scale(1, -1) translate(-437.500000, -6646.000000) translate(417.000000, 6631.000000)">
+                                      <path d="M40.1442695,4.6953125 C39.6713658,2.84375 38.2826803,1.390625 36.5186745,0.8984375 C33.3209447,0 20.5,0 20.5,0 C20.5,0 7.67905529,0 4.48132552,0.8984375 C2.71731966,1.390625 1.3286342,2.84375 0.855730502,4.6953125 C0,8.046875 0,15.03125 0,15.03125 C0,15.03125 0,22.015625 0.855730502,25.3671875 C1.3286342,27.2109375 2.71731966,28.609375 4.48132552,29.1015625 C7.67905529,30 20.5,30 20.5,30 C20.5,30 33.3209447,30 36.5186745,29.1015625 C38.2826803,28.609375 39.6713658,27.2109375 40.1442695,25.3671875 C41,22.015625 41,15.03125 41,15.03125 C41,15.03125 41,8.0390625 40.1442695,4.6953125 Z M16.303918,21.375 L16.303918,8.6875 L27.0155621,15.03125 L16.303918,21.375 L16.303918,21.375 Z" id="Shape"></path>
+                                  </g>
+                              </g>
+                          </g>
+                      </svg>
+                    </a>
+                  </li>
+                {% endif %}
+              </ul>
+            </div>
+
+            <style>
+              #shopify-section-{{ section.id }} .ftr-sctn--soc-icns-lnk path {
+                fill: {{ block.settings.soc_icons_color }};
+              }
+
+              @media screen and (min-width: 768px) {
+                #shopify-section-{{ section.id }} .ftr-sctn--soc-icns-lnk path:hover {
+                  fill: {{ block.settings.soc_icons_color_hover }};
+                }
+              }
+            </style>
+
+        {% endcase %}
+      {% endfor %}
+    </div>
+  </div>
+
+  {% if section.settings.show_payment_icons %}
+    {% unless shop.enabled_payment_types == empty %}
+      <ul id="ftr--payment-icons">
+        {% for type in shop.enabled_payment_types %}
+          {% if type != 'google_pay' %}
+            <li class="ftr--payment-icon">
+              {% capture icon_name %}payment-{{type}}{% endcapture %}
+              {% include 'snippet-symbol' with icon_name %}
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    {% endunless %}
+  {% endif %}
+
+  <p id="ftr-sctn--copyright">
+    &copy; {{ "now" | date: "%Y" }}
+    {% if section.settings.copyright != empty %}
+        {{ section.settings.copyright }}
+    {% else %}
+      {{ shop.name }}
+    {% endif %}
+  </p>
+</footer>
+  {% comment %}<div class="sixteen columns mobile_only">
+    <p class="mobile_only">
+      {% if settings.show_multiple_currencies %}
+        <label for="currencies">{{ 'layout.general.pick_a_currency' | t }}: </label>
+        {% include 'currencies-switcher' %}
+      {% endif %}
+    </p>
+  </div>{% endcomment %}
+  <style>
+    #ftr-sctn--content-wrap {
+      background-color: {{ section.settings.color_bg }};
+    }
+
+    #shopify-section-{{ section.id }} .ftr-sctn--mn-ttl,
+    #shopify-section-{{ section.id }} #ftr-sctn--srch-ttl {
+      font-size: {{ section.settings.menu_title_size_mob }}px;
+      color: {{ section.settings.menu_title_color }};
+      font-weight: {{ section.settings.menu_title_weight }};
+    }
+
+    #shopify-section-{{ section.id }} .ftr-sctn--mn-lnk,
+    #shopify-section-{{ section.id }} .ftr-sctn--inf-lnk {
+      font-size: {{ section.settings.menu_item_size_mob }}px;
+      color: {{ section.settings.menu_item_color }};
+      font-weight: {{ section.settings.menu_item_weight }};
+    }
+
+    #shopify-section-{{ section.id }} #ftr--payment-icons {
+      background-color: {{ section.settings.payment_icons_color_bg }};
+    }
+
+    #shopify-section-{{ section.id }} #ftr-sctn--copyright {
+      font-size: {{ section.settings.copyright_size_mob }}px;
+      color: {{ section.settings.copyright_color }};
+      font-weight: {{ section.settings.copyright_weight }};
+      background: {{ section.settings.copyright_color_bg }};
+    }
+
+    @media screen and (min-width: 768px) {
+      #shopify-section-{{ section.id }} .ftr-sctn--mn-ttl,
+      #shopify-section-{{ section.id }} #ftr-sctn--srch-ttl {
+        font-size: {{ section.settings.menu_title_size_desk }}px;
+      }
+
+      #shopify-section-{{ section.id }} .ftr-sctn--mn-lnk,
+      #shopify-section-{{ section.id }} .ftr-sctn--inf-lnk {
+        font-size: {{ section.settings.menu_item_size_desk }}px;
+      }
+
+      #shopify-section-{{ section.id }} .ftr-sctn--mn-lnk:hover,
+      #shopify-section-{{ section.id }} .ftr-sctn--inf-lnk:hover {
+        color: {{ section.settings.menu_item_color_hover }};
+      }
+
+      #shopify-section-{{ section.id }} #ftr-sctn--copyright {
+        font-size: {{ section.settings.copyright_size_desk }}px;
+        color: {{ section.settings.copyright_color }};
+        font-weight: {{ section.settings.copyright_weight }};
+        background: {{ section.settings.copyright_color_bg }};
+        margin: 0;
+        padding: 15px 0;
+      }
+    }
+  </style>
+{% endcomment %}
+
+<!-- New Footer -->
+<footer id="ftr-sctn--wrap">
+  <div id="ftr-sctn--content-wrap">
+    <div id="ftr-sctn--content">
+<!--       {% if section.settings.logo_mob %}
+        <div id="ftr--logo-wrp">
+          <a href="/" title="{{ shop.name }}" id="ftr--logo">
+            <picture id="ftr--logo-pctr">
+              {% if section.settings.logo_desk %}
+                <source media="(min-width: 768px)" srcset="{{ section.settings.logo_desk | img_url: 'master' }}">
+              {% endif %}
+              <img src="{{ section.settings.logo_mob | img_url: 'master' }}" alt="{{ shop.name }}" id="ftr--logo-img">
+            </picture>
+          </a>
+        </div>
+      {% endif %} -->
+
+      {% assign k = true %}
+
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'menu' %}
+
+            {% if k %}
+              <div id="ftr-sctn--mn-wrp">
+                {% endif %}
+                {% assign k = false %}
+
+                {% if block.settings.linklist != blank %}
+                  <div class="ftr-sctn--cntnr">
+                    <h6 class="ftr-sctn--mn-ttl">{{ linklists[block.settings.linklist].title }}</h6>
+                    <ul class="ftr-sctn--mn-list">
+                      {% for link in linklists[block.settings.linklist].links %}
+                        {% if link.title == "02079981820" %}
+                          <li class="ftr-sctn--mn-item">
+                            <a href="tel:02079981820" title="{{ link.title }}" class="ftr-sctn--mn-lnk">{{ link.title }}</a>
+                          </li>
+                        {% else %}
+                        <li class="ftr-sctn--mn-item">
+                          <a href="{{ link.url }}" title="{{ link.title }}" class="ftr-sctn--mn-lnk">{{ link.title }}</a>
+                        </li>
+                        {% endif %}
+                      {% endfor %}
+                    </ul>
+                  </div>
+                {% endif %}
+
+              {% when 'menu_with_info' %}
+                <div class="ftr-sctn--cntnr ftr-sctn--cntnr-info">
+              {% if block.settings.linklist != blank %}
+                <h6 class="ftr-sctn--mn-ttl">{{ linklists[block.settings.linklist].title }}</h6>
+                <ul class="ftr-sctn--mn-list">
+                  {% for link in linklists[block.settings.linklist].links %}
+                    <li class="ftr-sctn--mn-item">
+                      <a href="{{ link.url }}" title="{{ link.title }}" class="ftr-sctn--mn-lnk">{{ link.title }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+              <div id="ftr-sctn--inf">
+                {% if block.settings.phone_number != empty %}
+                  <div class="ftr-sctn--inf-itm">
+                    <a href="tel:{{ block.settings.country_phone_code }}{{ block.settings.phone_number | remove: ' ' }}" target="_blank" id="ftr-sctn--inf-ph" class="ftr-sctn--inf-lnk">
+                      <span class="ftr-sctn--inf-txt">{{ block.settings.phone_number }}</span>
+                    </a>
+                  </div>
+                {% endif %}
+
+                {% if block.settings.email != empty %}
+                  <div class="ftr-sctn--inf-itm">
+                    <a href="mailto:{{ block.settings.email }}" target="_blank" id="ftr-sctn--inf-eml" class="ftr-sctn--inf-lnk">
+                      <span class="ftr-sctn--inf-txt">{{ block.settings.email }}</span>
+                    </a>
+                  </div>
+                {% endif %}
+
+                {% if block.settings.address_url != empty %}
+                  <div class="ftr-sctn--inf-itm">
+                    <a href="{{ block.settings.address_url }}" id="ftr-sctn--inf-adrs" class="ftr-sctn--inf-lnk">
+                      <span class="ftr-sctn--inf-txt">{{ block.settings.address }}</span>
+                    </a>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+            <a href="tel:020-7998-1820">020 7998 1820</a>
+
+            </div>
+
+          {% when 'subscribe_and_search' %}
+
+      		<div class="ftr-sbscrptn-and-srch">
+<!--               <div id="ftr-sctn--srch"> -->
+                  {% if block.settings.srch_title != empty %}
+                    <h6 class="ftr-sctn--mn-ttl" id="ftr-sctn--srch-ttl">{{ block.settings.srch_title }}</h6>
+                  {% endif %}
+
+                <form class='ftr-search' action="/search" method="get" role="search" id="ftr--srch-frm">
+                  <input name="q" id="ftr--srch-fld" type="text" placeholder="{{ 'layout.header.search_placeholder' | t }}"/>
+                  <button id="ftr--srch-btn">
+                    <?xml version="1.0" encoding="UTF-8"?>
+                    <svg id="search-icon" width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                      <defs>
+                        <path d="M8.1245,14.1234 C5.3625,14.1234 3.1245,11.8904 3.1245,9.1244 C3.1245,6.3624 5.3585,4.1244 8.1245,4.1244 C10.8855,4.1244 13.1235,6.3584 13.1235,9.1244 C13.1235,11.8864 10.8895,14.1234 8.1245,14.1234 M19.7255,18.2914 L15.8305,14.3964 C15.6545,14.2214 15.4165,14.1234 15.1665,14.1234 L14.5295,14.1234 C15.6075,12.7444 16.2485,11.0114 16.2485,9.1244 C16.2485,4.6364 12.6115,0.9994 8.1245,0.9994 C3.6365,0.9994 -0.0005,4.6364 -0.0005,9.1244 C-0.0005,13.6114 3.6365,17.2484 8.1245,17.2484 C10.0105,17.2484 11.7445,16.6074 13.1235,15.5294 L13.1235,16.1664 C13.1235,16.4164 13.2215,16.6544 13.3965,16.8304 L17.2915,20.7254 C17.6585,21.0924 18.2525,21.0924 18.6155,20.7254 L19.7215,19.6194 C20.0885,19.2524 20.0885,18.6584 19.7255,18.2914" id="path-1"></path>
+                      </defs>
+                      <g id="Origins-AUS" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <g id="1d-Home" transform="translate(-1146.000000, -6634.000000)">
+                          <g id="Group-8" transform="translate(876.000000, 6596.000000)">
+                            <g id="Group-2-Copy" transform="translate(270.000000, 38.000000)">
+                              <g id="icon/fontawesome/search">
+                                <g id="color/3BB44A" transform="translate(0.000000, -1.000000)">
+                                  <mask id="mask-2">
+                                    <use xlink:href="#path-1"></use>
+                                  </mask>
+                                  <use id="Mask" xlink:href="#path-1"></use>
+                                  <g id="color/37404C" mask="url(#mask-2)" fill-rule="nonzero">
+                                    <g transform="translate(0.000000, 1.000000)" id="4a4a4a">
+                                      <rect x="0" y="0" width="20" height="20"></rect>
+                                    </g>
+                                  </g>
+                                </g>
+                              </g>
+                            </g>
+                          </g>
+                        </g>
+                      </g>
+                    </svg>
+                  </button>
+                </form>
+
+              <div id="ftr-sctn--sbscrptn">
+                {% if block.settings.sbscrptn_txt != empty %}
+                  <a onclick="Privy('show', 2344764);" class="show-subscription-popup manual-optin-trigger" id="ftr--sbscrptn-btn"  target="_blank" data-optin-slug="{{ settings.theme_optin }}">{{ block.settings.sbscrptn_txt }}</a>
+                {% endif %}
+              </div>
+<!--               </div> -->
+
+              <style>
+                #shopify-section-{{ section.id }} #ftr--sbscrptn-btn {
+                  font-size: {{ block.settings.sbscrptn_btn_size_mob }}px;
+                  color: {{ block.settings.sbscrptn_btn_color }};
+                  background-color: {{ block.settings.sbscrptn_btn_color_bg }};
+                  border-color: {{ block.settings.sbscrptn_btn_brdr_color }};
+                  font-weight: {{ block.settings.sbscrptn_btn_weight }};
+                  transition: none;
+                }
+
+                #shopify-section-{{ section.id }} #ftr--srch-btn {
+                  	color: {{ block.settings.sbscrptn_btn_color }};
+                    background-color: {{ block.settings.srch_btn_color_bg }};
+                    border-color: {{ block.settings.srch_btn_brdr_color }};
+                	transition: none;
+                }
+
+                 #shopify-section-{{ section.id }} #ftr--srch-btn svg {
+                      color: {{ block.settings.srch_btn_icon_color }}
+         		}
+
+                #shopify-section-{{ section.id }} #ftr--srch-btn:hover {
+                    background-color: {{ block.settings.srch_btn_color_bg_hover }};
+                    border-color: {{ block.settings.srch_btn_brdr_color_hover }};
+                 }
+
+                #shopify-section-{{ section.id }} #ftr--srch-btn:hover  svg{
+                    color: {{ block.settings.srch_btn_icon_color_hover }};
+                 }
+
+                @media screen and (min-width: 768px) {
+                  #shopify-section-{{ section.id }} #ftr--sbscrptn-btn {
+                    font-size: {{ block.settings.sbscrptn_btn_size_desk }}px;
+                  }
+
+                  #shopify-section-{{ section.id }} #ftr--sbscrptn-btn:hover {
+                    color: {{ block.settings.sbscrptn_btn_color_hover }};
+                    background-color: {{ block.settings.sbscrptn_btn_color_bg_hover }};
+                    border-color: {{ block.settings.sbscrptn_btn_brdr_color_hover }};
+                  }
+
+                  #shopify-section-{{ section.id }} #ftr--srch-fld {
+                    font-size: {{ block.settings.srch_fld_size_desk }}px;
+                    color: {{ block.settings.srch_fld_color }};
+                    background-color: {{ block.settings.srch_fld_color_bg }};
+                    font-weight: {{ block.settings.srch_fld_weight }};
+                  }
+
+                  #shopify-section-{{ section.id }} #ftr--srch-fld::placeholder {
+                    color: {{ block.settings.srch_fld_plchldr_color }};
+                  }
+
+                  #shopify-section-{{ section.id }} #ftr--srch-btn {
+                    background-color: {{ block.settings.srch_btn_color_bg }};
+                    border-color: {{ block.settings.srch_btn_brdr_color }};
+                    color: {{ block.settings.srch_btn_icon_color }};
+                    transition: none;
+                  }
+                  #shopify-section-{{ section.id }} #ftr--srch-btn:hover {
+                    background-color: {{ block.settings.srch_btn_color_bg_hover }};
+                    border-color: {{ block.settings.srch_btn_brdr_color_hover }};
+                    color: {{ block.settings.srch_btn_icon_color_hover }};
+                  }
+
+                  #search-icon {
+                  	color:
+                  }
+                }
+              </style>
+            </div>
+
+          {% when 'social_icons' %}
+
+            <div id="ftr-sctn--soc-icns">
+              {% if section.settings.logo_mob %}
+                <div id="ftr--logo-wrp">
+                  <a href="/" title="{{ shop.name }}" id="ftr--logo">
+                    <picture id="ftr--logo-pctr">
+                      {% if section.settings.logo_desk %}
+                        <source media="(min-width: 768px)" srcset="{{ section.settings.logo_desk | img_url: 'master' }}">
+                      {% endif %}
+                      <img src="{{ section.settings.logo_mob | img_url: 'master' }}" alt="{{ shop.name }}" id="ftr--logo-img">
+                    </picture>
+                  </a>
+                </div>
+              {% else %}
+                {{ shop.name }}
+              {% endif %}
+
+              <ul id="ftr-sctn--soc-icns-list">
+                {% if settings.instagram-follow-url != '' %}
+                  <li class="ftr-sctn--soc-icns-itm">
+                    <a href="{{ settings.instagram-follow-url }}" title="{{ shop.name }} on Instagram" rel="me" target="_blank" class="ftr-sctn--soc-icns-lnk">
+                      <svg width="34px" height="30px" viewBox="0 0 34 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="ftr-sctn--soc-icns-svg">
+                          <g id="Origins-AUS" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                              <g id="1d-Home" transform="translate(-242.000000, -6631.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                                  <g id="instagram-copy-2" transform="translate(242.000000, 6631.000000)">
+                                      <path d="M17.019306,7.30837889 C12.3370974,7.30837889 8.56041028,10.7424969 8.56041028,15 C8.56041028,19.2575031 12.3370974,22.6916211 17.019306,22.6916211 C21.7015146,22.6916211 25.4782017,19.2575031 25.4782017,15 C25.4782017,10.7424969 21.7015146,7.30837889 17.019306,7.30837889 Z M17.019306,20.0005578 C13.9935391,20.0005578 11.5199195,17.7580051 11.5199195,15 C11.5199195,12.2419949 13.9861771,9.99944215 17.019306,9.99944215 C20.0524348,9.99944215 22.5186925,12.2419949 22.5186925,15 C22.5186925,17.7580051 20.0450729,20.0005578 17.019306,20.0005578 L17.019306,20.0005578 Z M27.7972201,6.99375209 C27.7972201,7.99118599 26.9137845,8.78779427 25.824214,8.78779427 C24.7272814,8.78779427 23.8512078,7.9844918 23.8512078,6.99375209 C23.8512078,6.00301238 24.7346434,5.19970992 25.824214,5.19970992 C26.9137845,5.19970992 27.7972201,6.00301238 27.7972201,6.99375209 Z M33.3996741,8.81457101 C33.2745207,6.4113578 32.6708397,4.28260627 30.7346434,2.52872922 C28.805809,0.77485217 26.4647048,0.225928818 23.82176,0.105433449 C21.0978336,-0.0351444829 12.9334164,-0.0351444829 10.20949,0.105433449 C7.57390721,0.219234631 5.23280291,0.768157983 3.2966066,2.52203503 C1.36041028,4.27591208 0.764091258,6.40466362 0.63157592,8.80787683 C0.476974693,11.2847261 0.476974693,18.7085797 0.63157592,21.185429 C0.756729294,23.5886422 1.36041028,25.7173937 3.2966066,27.4712708 C5.23280291,29.2251478 7.56654525,29.7740712 10.20949,29.8945666 C12.9334164,30.0351445 21.0978336,30.0351445 23.82176,29.8945666 C26.4647048,29.7807654 28.805809,29.231842 30.7346434,27.4712708 C32.6634778,25.7173937 33.2671587,23.5886422 33.3996741,21.185429 C33.5542753,18.7085797 33.5542753,11.2914203 33.3996741,8.81457101 Z M29.8806557,23.8430213 C29.3064225,25.155082 28.1947661,26.1659043 26.7444594,26.6947451 C24.5726802,27.477965 19.419306,27.2972219 17.019306,27.2972219 C14.619306,27.2972219 9.45856979,27.4712708 7.29415261,26.6947451 C5.85120782,26.1725985 4.73955138,25.1617762 4.15795629,23.8430213 C3.2966066,21.8682361 3.4953796,17.182305 3.4953796,15 C3.4953796,12.817695 3.30396856,8.12506973 4.15795629,6.15697869 C4.73218942,4.844918 5.84384586,3.83409573 7.29415261,3.30525494 C9.46593175,2.52203503 14.619306,2.70277809 17.019306,2.70277809 C19.419306,2.70277809 24.5800422,2.52872922 26.7444594,3.30525494 C28.1874041,3.82740154 29.2990606,4.83822381 29.8806557,6.15697869 C30.7420054,8.13176392 30.5432324,12.817695 30.5432324,15 C30.5432324,17.182305 30.7420054,21.8749303 29.8806557,23.8430213 Z" id="Shape"></path>
+                                  </g>
+                              </g>
+                          </g>
+                      </svg>
+                    </a>
+                  </li>
+                {% endif %}
+
+                {% if settings.facebook-follow-url != '' %}
+                  <li class="ftr-sctn--soc-icns-itm">
+                    <a href="{{ settings.facebook-follow-url }}" title="{{ shop.name }} on Facebook" rel="me" target="_blank" class="ftr-sctn--soc-icns-lnk">
+                      <svg width="16px" height="30px" viewBox="0 0 16 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="ftr-sctn--soc-icns-svg">
+                          <g id="Origins-AUS" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                              <g id="1d-Home" transform="translate(-304.000000, -6631.000000)" fill="#FFFFFF">
+                                  <path d="M308.648429,6661 L308.648429,6647.58219 L304,6647.58219 L304,6642.25017 L308.648429,6642.25017 L308.648429,6638.04885 C308.648429,6633.4845 311.533348,6631 315.745512,6631 C317.76369,6631 319.497174,6631.14654 320,6631.21089 L320,6635.98053 L317.078906,6635.98053 C314.787972,6635.98053 314.345557,6637.03532 314.345557,6638.57624 L314.345557,6642.25017 L319.515261,6642.25017 L318.80624,6647.58219 L314.345557,6647.58219 L314.345557,6661" id="Fill-1"></path>
+                              </g>
+                          </g>
+                      </svg>
+                    </a>
+                  </li>
+                {% endif %}
+
+
+                {% if settings.twitter-follow-url != '' %}
+                  <li class="ftr-sctn--soc-icns-itm">
+                    <a href="{{ settings.twitter-follow-url }}" title="{{ shop.name }} on Twitter" rel="me" target="_blank" class="ftr-sctn--soc-icns-lnk">
+                      <svg width="36px" height="29px" viewBox="0 0 36 29" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="ftr-sctn--soc-icns-svg">
+                          <g id="Origins-AUS" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                              <g id="1d-Home" transform="translate(-350.000000, -6631.000000)">
+                                  <g id="Group-3" transform="translate(350.000000, 6631.000000)">
+                                      <g id="Clip-2"></g>
+                                      <path d="M32.29948,7.22734928 C32.3224109,7.54464573 32.3224109,7.86194217 32.3224109,8.17886576 C32.3224109,17.853238 24.8988159,29 11.3301172,29 C7.14992795,29 3.26671261,27.799046 0,25.7148073 C0.593947748,25.7826663 1.1649646,25.8057831 1.78184324,25.8057831 C5.23087526,25.8057831 8.40624021,24.6499441 10.9417956,22.6790522 C7.69801391,22.6108204 4.97976317,20.5038378 4.04297976,17.6041734 C4.50009398,17.6716594 4.95683228,17.7171473 5.43687739,17.7171473 C6.0992419,17.7171473 6.76160642,17.6265444 7.37848506,17.4677098 C3.99749389,16.7883748 1.46193848,13.8428496 1.46193848,10.2858484 L1.46193848,10.1952455 C2.44420776,10.7388627 3.58661738,11.078903 4.79706785,11.1243909 C2.8095984,9.81009013 1.50780026,7.56738966 1.50780026,5.02939097 C1.50780026,3.67034804 1.8731909,2.42427905 2.51262452,1.33667185 C6.14472777,5.77733064 11.6041601,8.67736793 17.7255811,8.99466437 C17.6116785,8.45067435 17.5432617,7.88431325 17.5432617,7.31795215 C17.5432617,3.28519266 20.8325293,0 24.9213708,0 C27.0452979,0 28.9643506,0.883657543 30.3120105,2.31093226 C31.9791993,1.99363581 33.5783472,1.38215971 34.9947998,0.543617172 C34.4463379,2.24307332 33.2813733,3.67034804 31.7510181,4.57674951 C33.2358875,4.41791486 34.6748951,4.01001556 36,3.44402731 C34.9947998,4.8936731 33.7384876,6.18522995 32.29948,7.22734928" fill="#FFFFFF"></path>
+                                  </g>
+                              </g>
+                          </g>
+                      </svg>
+                    </a>
+                  </li>
+                {% endif %}
+
+                {% if settings.youtube-follow-url != '' %}
+                  <li class="ftr-sctn--soc-icns-itm">
+                    <a href="{{ settings.youtube-follow-url }}" title="{{ shop.name }} on YouTube" rel="me" target="_blank" class="ftr-sctn--soc-icns-lnk">
+                      <svg width="41px" height="30px" viewBox="0 0 41 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="ftr-sctn--soc-icns-svg">
+                          <g id="Origins-AUS" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                              <g id="1d-Home" transform="translate(-417.000000, -6631.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                                  <g id="youtube-white-copy" transform="translate(437.500000, 6646.000000) scale(1, -1) translate(-437.500000, -6646.000000) translate(417.000000, 6631.000000)">
+                                      <path d="M40.1442695,4.6953125 C39.6713658,2.84375 38.2826803,1.390625 36.5186745,0.8984375 C33.3209447,0 20.5,0 20.5,0 C20.5,0 7.67905529,0 4.48132552,0.8984375 C2.71731966,1.390625 1.3286342,2.84375 0.855730502,4.6953125 C0,8.046875 0,15.03125 0,15.03125 C0,15.03125 0,22.015625 0.855730502,25.3671875 C1.3286342,27.2109375 2.71731966,28.609375 4.48132552,29.1015625 C7.67905529,30 20.5,30 20.5,30 C20.5,30 33.3209447,30 36.5186745,29.1015625 C38.2826803,28.609375 39.6713658,27.2109375 40.1442695,25.3671875 C41,22.015625 41,15.03125 41,15.03125 C41,15.03125 41,8.0390625 40.1442695,4.6953125 Z M16.303918,21.375 L16.303918,8.6875 L27.0155621,15.03125 L16.303918,21.375 L16.303918,21.375 Z" id="Shape"></path>
+                                  </g>
+                              </g>
+                          </g>
+                      </svg>
+                    </a>
+                  </li>
+                {% endif %}
+              </ul>
+            </div>
+
+            <style>
+              #shopify-section-{{ section.id }} .ftr-sctn--soc-icns-lnk path {
+                fill: {{ block.settings.soc_icons_color }};
+              }
+
+              @media screen and (min-width: 768px) {
+                #shopify-section-{{ section.id }} .ftr-sctn--soc-icns-lnk path:hover {
+                  fill: {{ block.settings.soc_icons_color_hover }};
+                }
+              }
+            </style>
+
+        {% endcase %}
+      {% endfor %}
+    </div>
+
+    <style>
+      #shopify-section-{{ section.id }} #ftr-sctn--content {
+      	display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+      }
+    </style>
+  </div>
+
+  {% if section.settings.show_payment_icons %}
+    {% unless shop.enabled_payment_types == empty %}
+      <ul id="ftr--payment-icons">
+        {% for type in shop.enabled_payment_types %}
+          {% if type != 'google_pay' %}
+            <li class="ftr--payment-icon">
+              {% capture icon_name %}payment-{{type}}{% endcapture %}
+              {% include 'snippet-symbol' with icon_name %}
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    {% endunless %}
+  {% endif %}
+
+  <p id="ftr-sctn--copyright">
+    &copy; {{ "now" | date: "%Y" }}
+    {% if section.settings.copyright != empty %}
+        {{ section.settings.copyright }}
+    {% else %}
+      {{ shop.name }}
+    {% endif %}
+  </p>
+</footer>
+
+{% comment %}<div class="sixteen columns mobile_only">
+  <p class="mobile_only">
+    {% if settings.show_multiple_currencies %}
+      <label for="currencies">{{ 'layout.general.pick_a_currency' | t }}: </label>
+      {% include 'currencies-switcher' %}
+    {% endif %}
+  </p>
+</div>{% endcomment %}
+
+<style>
+  #ftr-sctn--content-wrap {
+    background-color: {{ section.settings.color_bg }};
+  }
+
+  #ftr-sctn--wrap {
+    border-top: solid 1px {{ section.settings.top_border_color }};
+  }
+
+  #ftr-sctn--copyright {
+    border-top: solid 1px {{ section.settings.copyright_top_border_color }};
+  }
+
+   #shopify-section-{{ section.id }} .ftr-sctn--mn-ttl,
+  #shopify-section-{{ section.id }} #ftr-sctn--srch-ttl {
+    font-size: {{ section.settings.menu_title_size_mob }}px;
+    color: {{ section.settings.menu_title_color }};
+    font-weight: {{ section.settings.menu_title_weight }};
+  }
+  #shopify-section-{{ section.id }} .ftr-sctn--mn-lnk,
+  #shopify-section-{{ section.id }} .ftr-sctn--inf-lnk {
+    font-size: {{ section.settings.menu_item_size_mob }}px;
+    color: {{ section.settings.menu_item_color }};
+    font-weight: {{ section.settings.menu_item_weight }};
+  }
+  #shopify-section-{{ section.id }} #ftr--payment-icons {
+    background-color: {{ section.settings.payment_icons_color_bg }};
+  }
+  #shopify-section-{{ section.id }} #ftr-sctn--copyright {
+    font-size: {{ section.settings.copyright_size_mob }}px;
+    color: {{ section.settings.copyright_color }};
+    font-weight: {{ section.settings.copyright_weight }};
+    background: {{ section.settings.copyright_color_bg }};
+  }
+  @media screen and (min-width: 768px) {
+    #shopify-section-{{ section.id }} .ftr-sctn--mn-ttl,
+    #shopify-section-{{ section.id }} #ftr-sctn--srch-ttl {
+      font-size: {{ section.settings.menu_title_size_desk }}px;
+    }
+    #shopify-section-{{ section.id }} .ftr-sctn--mn-lnk,
+    #shopify-section-{{ section.id }} .ftr-sctn--inf-lnk {
+      font-size: {{ section.settings.menu_item_size_desk }}px;
+    }
+    #shopify-section-{{ section.id }} .ftr-sctn--mn-lnk:hover,
+    #shopify-section-{{ section.id }} .ftr-sctn--inf-lnk:hover {
+      color: {{ section.settings.menu_item_color_hover }};
+    }
+    #shopify-section-{{ section.id }} #ftr-sctn--copyright {
+      font-size: {{ section.settings.copyright_size_desk }}px;
+      color: {{ section.settings.copyright_color }};
+      font-weight: {{ section.settings.copyright_weight }};
+      background: {{ section.settings.copyright_color_bg }};
+      margin: 0;
+      padding: 15px 0;
+    }
+  }
+  @media screen and (max-width: 767px) {
+    #ftr-sctn--mn-wrp {
+      order: 1;
+    }
+
+    #ftr-sctn--soc-icns {
+      order: 2;
+    }
+
+    #ftr-sbscrptn-and-srch {
+      order: 0;
+    }
+  }
+
+  @media screen and (min-width: 768px) {
+  	#ftr-sctn--mn-wrp {
+      order: 2;
+    }
+
+    #ftr-sctn--soc-icns {
+      order: 0;
+    }
+
+    #ftr-sbscrptn-and-srch {
+      order: 1;
+    }
+  }
+
+  @media screen and (min-width: 768px) and (max-width: 1023px) {
+  	#ftr-sctn--mn-wrp {
+      order: 2;
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+</style>
+
+<!-- End New Footer -->
+
+{% schema %}
+{
+  "name": "Footer",
+	"class": "footer-section ftr-sctn gd-stl",
+  "settings": [
+	{
+      "type": "color",
+      "id": "top_border_color",
+      "label": "Top border color",
+      "default": "#cfc8c1"
+    },
+    {
+      "type": "color",
+      "id": "color_bg",
+      "label": "Background",
+      "default": "#37404C"
+    },
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_desk",
+      "label": "Logo on desktop"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_mob",
+      "label": "Logo on mobile"
+    },
+    {
+      "type": "header",
+      "content": "Menu"
+    },
+    {
+      "type": "paragraph",
+      "content": "Heading"
+    },
+    {
+      "type": "color",
+      "id": "menu_title_color",
+      "label": "Text",
+      "default": "#fff"
+    },
+    {
+      "type":     "range",
+      "id":       "menu_title_size_desk",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on desktop",
+      "default":   14
+    },
+    {
+      "type":     "range",
+      "id":       "menu_title_size_mob",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on mobile",
+      "default":   14
+    },
+    {
+      "type": "select",
+      "id": "menu_title_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "100", "label": "Thin" },
+        { "value": "200", "label": "Extra Light" },
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black " }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "paragraph",
+      "content": "Item"
+    },
+    {
+      "type": "color",
+      "id": "menu_item_color",
+      "label": "Text",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "menu_item_color_hover",
+      "label": "Text",
+      "default": "#78BFB5"
+    },
+    {
+      "type":     "range",
+      "id":       "menu_item_size_desk",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on desktop",
+      "default":   14
+    },
+    {
+      "type":     "range",
+      "id":       "menu_item_size_mob",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on mobile",
+      "default":   14
+    },
+    {
+      "type": "select",
+      "id": "menu_item_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "100", "label": "Thin" },
+        { "value": "200", "label": "Extra Light" },
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black " }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "header",
+      "content": "Copyright"
+    },
+	{
+      "type": "color",
+      "id": "copyright_top_border_color",
+      "label": "Copyright top border color",
+      "default": "#cfc8c1"
+    },
+    {
+      "type": "color",
+      "id": "copyright_color_bg",
+      "label": "Background",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "copyright_color",
+      "label": "Text",
+      "default": "#37404C"
+    },
+    {
+      "type": "text",
+      "id": "copyright",
+      "label": "Text",
+      "default": "TruthOrigins / <br>11th Hour Bioscience ANZ Pty, Ltd."
+    },
+    {
+      "type":     "range",
+      "id":       "copyright_size_desk",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on desktop",
+      "default":   14
+    },
+    {
+      "type":     "range",
+      "id":       "copyright_size_mob",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on mobile",
+      "default":   14
+    },
+    {
+      "type": "select",
+      "id": "copyright_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "100", "label": "Thin" },
+        { "value": "200", "label": "Extra Light" },
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black " }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "header",
+      "content": "Payment icons"
+    },
+    {
+      "type": "color",
+      "id": "payment_icons_color_bg",
+      "label": "Background",
+      "default": "#ECECEC"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": {
+        "de": "Zahlungs-Buttons anzeigen",
+        "en": "Show payment icons",
+        "es": "Mostrar iconos de pago",
+        "fr": "Afficher les icônes de paiement",
+        "it": "Mostra le icone di pagamento",
+        "ja": "支払いアイコンを表示する",
+        "pt-BR": "Exibir ícones de pagamento"
+      },
+      "default": false
+    }
+	],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Menu",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "link_list",
+          "id": "linklist",
+          "label": "Menu"
+        }
+      ]
+    },
+    {
+      "type": "menu_with_info",
+      "name": "Menu with info",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "link_list",
+          "id": "linklist",
+          "label": "Menu"
+        },
+        {
+          "type": "header",
+          "content": "Info"
+        },
+        {
+          "type": "paragraph",
+          "content": "Telephone"
+        },
+        {
+          "type": "text",
+          "id": "country_phone_code",
+          "label": "Country Phone Code",
+          "default": "61",
+          "info": "Ex: 61"
+        },
+        {
+          "type": "text",
+          "id": "phone_number",
+          "label": "Phone number",
+          "default": "99 9999 9999",
+          "info": "Ex: 99 9999 9999"
+        },
+        {
+          "type": "paragraph",
+          "content": "Email"
+        },
+        {
+          "type": "text",
+          "id": "email",
+          "label": "Email"
+        },
+        {
+          "type": "paragraph",
+          "content": "Address"
+        },
+        {
+          "type": "text",
+          "id": "address",
+          "label": "Text"
+        },
+        {
+          "type": "url",
+          "id": "address_url",
+          "label": "Link"
+        }
+      ]
+    },
+    {
+      "type": "social_icons",
+      "name": "Social icons",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Social icons"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "FOLLOW US"
+        },
+        {
+          "type": "color",
+          "id": "soc_icons_color",
+          "label": "Icons",
+          "default": "#FFF"
+        },
+        {
+          "type": "color",
+          "id": "soc_icons_color_hover",
+          "label": "Icons on hover",
+          "default": "#78BFB5"
+        }
+      ]
+    },
+    {
+      "type": "subscribe_and_search",
+      "name": "Subscription and Search",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Subscribe"
+        },
+        {
+          "type": "color",
+          "id": "sbscrptn_btn_brdr_color",
+          "label": "Border",
+          "default": "#78BFB5"
+        },
+        {
+          "type": "color",
+          "id": "sbscrptn_btn_brdr_color_hover",
+          "label": "Border on hover",
+          "default": "#78BFB5"
+        },
+        {
+          "type": "color",
+          "id": "sbscrptn_btn_color_bg",
+          "label": "Background"
+        },
+        {
+          "type": "color",
+          "id": "sbscrptn_btn_color_bg_hover",
+          "label": "Background on hover",
+          "default": "#78BFB5"
+        },
+        {
+          "type": "color",
+          "id": "sbscrptn_btn_color",
+          "label": "Text",
+          "default": "#78BFB5"
+        },
+        {
+          "type": "color",
+          "id": "sbscrptn_btn_color_hover",
+          "label": "Text on hover",
+          "default": "#fff"
+        },
+        {
+          "type":"text",
+          "id": "sbscrptn_txt",
+          "label": "Subscription",
+          "default":"JOIN THE CLUB & SAVE 10% NOW!"
+        },
+        {
+          "type":     "range",
+          "id":       "sbscrptn_btn_size_desk",
+          "min":       6,
+          "max":       106,
+          "step":      1,
+          "unit":     "px",
+          "label":    "Font size on desktop",
+          "default":   16
+        },
+        {
+          "type":     "range",
+          "id":       "sbscrptn_btn_size_mob",
+          "min":       6,
+          "max":       106,
+          "step":      1,
+          "unit":     "px",
+          "label":    "Font size on mobile",
+          "default":   16
+        },
+        {
+          "type": "select",
+          "id": "sbscrptn_btn_weight",
+          "label": "Font weight",
+          "options": [
+            { "value": "100", "label": "Thin" },
+            { "value": "200", "label": "Extra Light" },
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" },
+            { "value": "800", "label": "Extra Bold" },
+            { "value": "900", "label": "Black " }
+          ],
+          "default": "700"
+        },
+        {
+          "type": "header",
+          "content": "Search"
+        },
+        {
+          "type": "text",
+          "id": "srch_title",
+          "label": "Heading",
+          "default": "LOOKING FOR SOMETHING?"
+        },
+        {
+          "type": "paragraph",
+          "content": "Field"
+        },
+        {
+          "type": "color",
+          "id": "srch_fld_color_bg",
+          "label": "Background",
+          "default": "#fff"
+        },
+        {
+          "type": "color",
+          "id": "srch_fld_color",
+          "label": "Text",
+          "default": "#231F20"
+        },
+        {
+          "type": "color",
+          "id": "srch_fld_plchldr_color",
+          "label": "Placeholder",
+          "default": "#76869C"
+        },
+        {
+          "type":     "range",
+          "id":       "srch_fld_size_desk",
+          "min":       6,
+          "max":       106,
+          "step":      1,
+          "unit":     "px",
+          "label":    "Font size on desktop",
+          "default":   14
+        },
+        {
+          "type": "select",
+          "id": "srch_fld_weight",
+          "label": "Font weight",
+          "options": [
+            { "value": "100", "label": "Thin" },
+            { "value": "200", "label": "Extra Light" },
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" },
+            { "value": "800", "label": "Extra Bold" },
+            { "value": "900", "label": "Black " }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "header",
+          "content": "Button"
+        },
+        {
+          "type": "color",
+          "id": "srch_btn_brdr_color",
+          "label": "Border",
+          "default": "#cdcfd2"
+        },
+        {
+          "type": "color",
+          "id": "srch_btn_brdr_color_hover",
+          "label": "Border on hover",
+          "default": "#cdcfd2"
+        },
+        {
+          "type": "color",
+          "id": "srch_btn_color_bg",
+          "label": "Background",
+          "default": "#fff"
+        },
+        {
+          "type": "color",
+          "id": "srch_btn_color_bg_hover",
+          "label": "Background on hover",
+          "default": "#cdcfd2"
+        },
+		{
+          "type": "color",
+          "id": "srch_btn_icon_color",
+          "label": "Icon color",
+          "default": "#37404c"
+        },
+        {
+          "type": "color",
+          "id": "srch_btn_icon_color_hover",
+          "label": "Icon color on hover",
+          "default": "#ffffff"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,32 @@
+{% comment %}{% section 'product' %}{% endcomment %}
+
+{% section 'custom-product' %}
+
+{% section 'custom-left-right-image-4' %}
+
+{% section 'custom-left-right-image-2' %}
+
+{% section 'custom-left-right-image' %}
+
+<div id='frequently-bought-together'></div>
+
+<hr class="custom-hr">
+
+{% section 'custom-text-with-images' %}
+
+{% section 'custom-compare-to-similar-2' %}
+
+{% section 'custom-reviews' %}
+
+{% section 'custom-non-slider-reviews'%}
+
+{% section 'custom-bulk-buy-2' %}
+
+<script>
+  $(window).on('load', function() {
+    function insert(){
+      $('.cbb-frequently-bought-form').appendTo('.cbb-frequently-bought-selector-list');
+    }
+    setTimeout(insert, 1000);
+  }); 
+</script>

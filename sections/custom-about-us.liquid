@@ -1,0 +1,54 @@
+<div class='custom-about-us'>
+    <div class='cau-video'>
+      {% if section.settings.video_youtube != blank %}
+        <div class="youtube-player" data-id="{{ section.settings.video_youtube }}"></div>
+      {% elsif section.settings.video_vimeo != blank %}
+        <iframe width="560" height="315"
+              src="https://player.vimeo.com/video/{{ section.settings.video_vimeo }}"
+              frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+      {% elsif section.settings.video_wistia != blank %}
+        <script src="https://fast.wistia.com/embed/medias/{{ section.settings.video_wistia }}.jsonp" async=""></script>
+        <script src="https://fast.wistia.com/assets/external/E-v1.js" async=""></script>
+        <div class="video-wistia wistia_responsive_padding" style="padding:56.0% 0 0 0;position:relative;">
+          <div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
+            <div class="wistia_embed wistia_async_{{ section.settings.video_wistia }} seo=false videoFoam=true" style="height:100%;width:100%">
+            </div>
+          </div>
+        </div> 
+      {% endif %}
+    </div>
+  <div class='cau-text'>
+    <h1 class='cau-title'>{{ page.title }}</h1>
+    <div class='cau-desc'>{{ page.content }}</div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "About Us Page",
+    "settings": [
+		{
+          "id": "video_youtube",
+          "type": "text",
+          "label": "YouTube video ID"
+		},
+		{
+		  "id": "video_vimeo",
+          "type": "text",
+          "label": "Vimeo video ID"
+		},
+		{
+		  "id": "video_wistia",
+          "type": "text",
+          "label": "Wistia video ID",
+		  "default": "7q4yc7bjfq"
+		}
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

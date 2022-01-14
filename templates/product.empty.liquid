@@ -1,0 +1,13 @@
+{% include 'product-content.zipifypages', contentprt: 'header' %}{% comment %}{% section 'product' %}{% endcomment %}
+
+<!-- {% section 'custom-product' %} -->
+
+<script>
+  $(window).on('load', function() {
+    function insert(){
+      $('.cbb-frequently-bought-form').appendTo('.cbb-frequently-bought-selector-list');
+    }
+    setTimeout(insert, 1000);
+  });
+</script>
+{% include 'product-content.zipifypages', contentprt: 'footer' %}

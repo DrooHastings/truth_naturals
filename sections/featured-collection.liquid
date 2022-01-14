@@ -1,0 +1,128 @@
+{% if section.settings.home-product-slider-collection == blank or collections[section.settings.home-product-slider-collection].handle != section.settings.home-product-slider-collection %}
+  {% for c in collections %}
+    {% if c.products-count > 0 %}
+      {% assign collection = c %}
+    {% endif %}
+  {% endfor %}
+{% else %}
+  {% assign collection = collections[section.settings.home-product-slider-collection] %}
+{% endif %}
+
+{%- assign slider_limit = section.settings.max_products -%}
+
+{% comment %}
+<div class="product-slider{% if collection.products.size < 4 and collection.products.size != 0 %} disabled{% endif %} {{ settings.color-icons-theme }} length--{{ collection.products.size }}">
+  <div class="row header">
+    <div class="columns">
+     <h2 class="font-headings clearfix custom-section-title">
+      {% if collection.products.size %}
+        {{ collection.title | link_to: collection.url }}
+      {% else %}
+        {{ 'homepage.onboarding.product_slider.placeholder.title' | t }}
+      {% endif %}
+     </h2>
+   </div>
+  </div>
+  <div class="row content">
+    <div class="product-grid clearfix">
+      {% if collection.products.size and collection.products.size > 0 %}
+        {% for product in collection.products limit: slider_limit %}
+          {% include 'about_us_product_item' with 'product-slider' %}
+        {% endfor %}
+      {% else %}
+        {% for i in (1..6) %}
+          {% include 'about_us_product_item', type: 'product-placeholder', index: i %}
+        {% endfor %}
+      {% endif %}
+    </div> <!-- .product-grid.clearfix -->
+  </div> <!-- .row.content -->
+</div><!-- #product-slider -->
+{% endcomment %}
+<div class="featured-collection-container {% if collection.products.size <= 4 and collection.products.size != 0 %}slider-disabled-on-desktop{% endif %}">
+  <div class="row header">
+    <div class="columns">
+     <h2 class="clearfix custom-section-title">
+      {% if collection.products.size %}
+        {{ collection.title | link_to: collection.url }}
+      {% else %}
+        {{ 'homepage.onboarding.product_slider.placeholder.title' | t }}
+      {% endif %}
+     </h2>
+   </div>
+  </div>
+  <div class="row content featured-collection-content">
+    <div class="product-grid clearfix swiper-container">
+      <div class="swiper-wrapper">
+        {% if collection.products.size and collection.products.size > 0 %}
+          {% for product in collection.products limit: slider_limit %}
+            <div class="swiper-slide">
+              {% include 'snippet-product-item' with 'product-slider' %}
+            </div>
+          {% endfor %}
+        {% else %}
+          {% for i in (1..6) %}
+            <div class="swiper-slide">
+              {% include 'snippet-product-item', type: 'product-placeholder', index: i %}
+            </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+    <div class="swiper-button-prev swiper-button-black"></div>
+    <div class="swiper-button-next swiper-button-black"></div>
+  </div>
+</div>
+<style>
+  #shopify-section-{{ section.id }}{
+    --accents_color: {{ section.settings.accents_color }};
+    --product_button_background: {{ section.settings.product_button_background }};
+    --product_button_color: {{ section.settings.product_button_color }};
+  }
+</style>
+{% schema %}
+{
+  "name": "Featured collection",
+  "class": "section--featured-collection",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "home-product-slider-collection",
+      "label": "Choose collection"
+    },
+    {
+      "label": "Amount of products to show",
+      "id": "max_products",
+      "type": "range",
+      "min": 4,
+      "max": 20,
+      "step": 4,
+      "default": 12
+    },
+		{
+      "type":"color",
+      "id":"product_button_background",
+      "label":"Product details button background color",
+      "default":"#4D4D4D"
+		},
+		{
+      "type":"color",
+      "id":"product_button_color",
+      "label":"Product details button text color",
+      "default":"#fff"
+		},
+		{
+      "type":"color",
+      "id":"accents_color",
+      "label":"Accents color",
+      "default":"#02B875",
+      "info":"Used for price, add to cart button, variants selector"
+		}
+  ],
+  "presets": [
+    {
+      "name": "Featured collection",
+      "category": "Collection"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,57 @@
+<div class='custom-page-width'>
+  <div class='cc-flex-container cc-twi-flex-container'>
+    <div class='cc-twi-text-wrapper'>
+      <h2 class='cc-twi-title'>{{ section.settings.image_title }}</h2>
+      <p class='textarea'>{{ section.settings.image_desc }}</p>
+    </div>
+    <div class='cc-twi-image-wrapper'>
+      <img class='cc-twi-image' src='{{ section.settings.image | img_url: 'master' }}'>
+    </div>
+  </div>
+</div>
+
+<hr class='custom-hr'>
+
+<style>
+  .cc-twi-title{
+    color: {{ section.settings.image_title_color }};
+  }
+</style>
+
+{% schema %}
+  {
+    "name": "Text With Image Section",
+    "settings": [
+      {
+        "type": "text",
+        "id": "image_title",
+        "label": "Title",
+        "default": "Our Promise to You - No Compromises, Ever."
+      },
+      {
+        "type": "color",
+        "id": "image_title_color",
+        "label": "Title Color",
+        "default": "#228452"
+      },
+      {
+        "type": "textarea",
+        "id": "image_desc",
+        "label": "Description",
+		"default": "<b>We're sticklers for quality:</b> You'll never find any harmful chemicals, artificial colours, flavours, sweeteners or preservatives in any of our products.<br><br><b>FREE FROM:</b> GMO's, pesticides, wheat, gluten, corn, lactose & soy. We also practice Organic Hemp Farming.<br><br>In other words, TRUTH CBD Oils have been <b>carefully manufactured</b> to help you take <b>The Natural Path to Health & Wellness.</b>"
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      }
+
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

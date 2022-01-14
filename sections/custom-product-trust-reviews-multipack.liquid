@@ -1,0 +1,255 @@
+<div class="custom-trust-reviews">
+  {% if section.settings.title != blank %}
+  	<h2 class="ctr-title">{{ section.settings.title }}</h2>
+  {% endif %}
+  {% if section.blocks.size > 0 %}
+  	<div class="ctr-container-wrapper">
+      <div class="ctr-nav ctr-button-prev">{% include 'custom-nav' %}</div>
+      <div class="ctr-nav ctr-button-next">{% include 'custom-nav' %}</div>
+      <div class="ctr-container swiper-container">
+        <div class="swiper-wrapper">
+          {% for block in section.blocks %}
+            <div class="ctr-block swiper-slide">
+              {% assign stars_quantity = block.settings.stars %}
+              {% include 'trust-stars' %}
+              {% if block.settings.title != blank %}
+                <p class="ctrb-title">{{ block.settings.title }}</p>
+              {% endif %}
+              {% if block.settings.text != blank %}
+                <div class="ctrb-text {% if section.settings.max_height %}less_text{% endif %}">{{ block.settings.text }}
+              		{% if block.settings.text_more != blank %}
+                  		<span class="three-dots">...</span>
+                    	<div class="ctrb-text more_text">{{ block.settings.text_more }}</div>
+                    {% endif %}
+              	</div>
+              {% endif %}
+
+
+              {% if block.settings.author != blank %}
+                <p class="ctrb-author">{{ block.settings.author }}</p>
+              {% endif %}
+              {% if block.settings.text_more != blank %}
+              	<span class="ctrb-action ctrb-show-more">{{ section.settings.show_more }}</span>
+              	<span class="ctrb-action ctrb-show-less">{{ section.settings.show_less }}</span>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+  	<script>
+      var ctr_{{ section.id | remove: '-' }} = new Swiper('#shopify-section-{{ section.id }} .ctr-container', {
+          spaceBetween: 25,
+          slidesPerView: {{ section.settings.grid_desktop }},
+          slidesPerGroup: {{ section.settings.grid_desktop }},
+          navigation: {
+            nextEl: '#shopify-section-{{ section.id }} .ctr-button-next',
+            prevEl: '#shopify-section-{{ section.id }} .ctr-button-prev',
+          },
+          breakpoints: {
+            1024: {
+              slidesPerView: {{ section.settings.grid_tablet }},
+              slidesPerGroup: {{ section.settings.grid_tablet }},
+            },
+            767: {
+              slidesPerView: {{ section.settings.grid_mobile }},
+              slidesPerGroup: {{ section.settings.grid_mobile }},
+            }
+          }
+      });
+
+      document.addEventListener("DOMContentLoaded", function(event) {
+        $('.ctrb-action').on('click', function(){
+			$(this).parent().toggleClass('expanded');
+        });
+      });
+  	</script>
+  {% endif %}
+
+</div>
+
+<style>
+  #shopify-section-{{ section.id }}{
+    --bg_color: {{ section.settings.bg_color }};
+    --reviews_bg_color: {{ section.settings.reviews_bg_color }};
+    --text_color: {{ section.settings.text_color }};
+    --additional_color: {{ section.settings.additional_color }};
+    --stars_color: {{ section.settings.stars_color }};
+    --links_color: {{ section.settings.links_color }};
+    --block_max_height: {{ section.settings.block_max_height}}px;
+    order: {{ section.settings.order }};
+  }
+</style>
+
+{% schema %}
+  {
+    "name": "Trustlike reviews",
+    "settings": [
+		{
+			"type": "text",
+			"label": "Section Order",
+			"id": "order",
+			"default": "0"
+		},
+		{
+			"type": "text",
+			"label": "Section title",
+			"id": "title",
+			"info": "Leave empty if not needed."
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+            "type":      "range",
+            "id":        "grid_desktop",
+            "min":       3,
+            "max":        7,
+            "step":       1,
+            "unit":       "rev",
+            "label":     "How many reviews to show on desktop?",
+            "default":   5
+        },
+		{
+            "type":      "range",
+            "id":        "grid_tablet",
+            "min":       1,
+            "max":        5,
+            "step":       1,
+            "unit":       "rev",
+            "label":     "How many reviews to show on tablets?",
+            "default":   4
+        },
+		{
+            "type":      "range",
+            "id":        "grid_mobile",
+            "min":       1,
+            "max":        3,
+            "step":       1,
+            "unit":       "rev",
+            "label":     "How many reviews to show on mobile?",
+            "default":   1
+        },
+		{
+			"type": "checkbox",
+			"label": "Enable max height for blocks (not expanded)?",
+			"id": "max_height",
+			"default": true
+		},
+		{
+            "type":      "range",
+            "id":        "block_max_height",
+            "min":       10,
+            "max":        110,
+            "step":       1,
+            "unit":       "px",
+            "label":     "Review block (not expanded) max height",
+            "default":   64
+        },
+		{
+			"type": "text",
+			"label": "Show more text",
+			"id": "show_more",
+			"default": "More >"
+		},
+		{
+			"type": "text",
+			"label": "Show less text",
+			"id": "show_less",
+			"default": "Less"
+		},
+		{
+			"type": "header",
+			"content": "Colors"
+		},
+		{
+			"type": "color",
+			"label": "Background color",
+			"id": "bg_color",
+			"default": "#fff"
+		},
+		{
+			"type": "color",
+			"label": "Reviews background color",
+			"id": "reviews_bg_color",
+			"default": "#f8f9fa"
+		},
+		{
+			"type": "color",
+			"label": "Text color",
+			"id": "text_color",
+			"default": "#000"
+		},
+		{
+			"type": "color",
+			"label": "Additional color",
+			"id": "additional_color",
+			"default": "#f2f2f2"
+		},
+		{
+			"type": "color",
+			"label": "Stars color",
+			"id": "stars_color",
+			"default": "#32b275"
+		},
+		{
+			"type": "color",
+			"label": "Links color",
+			"id": "links_color",
+			"default": "#32b275"
+		}
+	],
+	"blocks": [
+		{
+			"type": "review",
+			"name": "Review",
+			"settings": [
+				{
+                  "type": "text",
+                  "label": "Author name",
+                  "id": "author",
+				  "default": "Author Name"
+                },
+				{
+				  "type": "text",
+                  "label": "Title",
+                  "id": "title",
+				  "default": "Review Title"
+				},
+				{
+					"type": "richtext",
+					"label": "Short text",
+					"id": "text",
+					"default": "<p>Some review text</p>"
+				},
+				{
+					"type": "richtext",
+					"label": "Additional text",
+					"info": "Use it if you want to show more text.",
+					"id": "text_more",
+					"default": "<p>Some more review text</p>"
+				},
+                {
+                    "type":      "range",
+                    "id":        "stars",
+                    "min":       1,
+                    "max":        5,
+                    "step":       1,
+                    "unit":       "st",
+                    "label":     "Rating",
+                    "default":   4
+                }
+			]
+		}
+
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

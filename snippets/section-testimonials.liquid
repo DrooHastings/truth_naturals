@@ -1,0 +1,69 @@
+<div class="tstmnls--wrp">
+  {% if section.settings.ttl != empty %}
+    <h2 class="tstmnls--ttl">{{ section.settings.ttl }}</h3>
+  {% endif %}
+
+  <div class="tstmnls--cntnr">
+    {% for block in section.blocks %}
+      <div class="tstmnls--itm">
+        {% if block.settings.sbttl != empty %}
+          <h4 class="tstmnls--sbttl">{{ block.settings.sbttl }}</h4>
+        {% endif %}
+
+        {% if block.settings.descr != empty %}
+          <p class="tstmnls--descr body-medium">{{ block.settings.descr }}</p>
+        {% endif %}
+  		
+  	  {% assign stars_quantity = block.settings.rating %}
+        {% include 'trust-stars' %}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+
+<style>
+  #shopify-section-{{ section.id }} {
+    background-color: {{ section.settings.color_bg }};
+  }
+
+  #shopify-section-{{ section.id }} .tstmnls--ttl {
+    font-size: {{ section.settings.ttl_size_mob }}px;
+    color: {{ section.settings.ttl_color }};
+    font-weight: {{ section.settings.ttl_weight }};
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  #shopify-section-{{ section.id }} .tstmnls--sbttl {
+    font-size: {{ section.settings.sbttl_size_mob }}px;
+    color: {{ section.settings.sbttl_color }};
+    font-weight: {{ section.settings.sbttl_weight }};
+  }
+
+  #shopify-section-{{ section.id }} .tstmnls--descr {
+    font-size: {{ section.settings.descr_size_mob }}px;
+    color: {{ section.settings.descr_color }};
+    font-weight: {{ section.settings.descr_weight }};
+  }
+
+  #shopify-section-{{ section.id }} svg .tp-star__canvas,
+  #shopify-section-{{ section.id }} svg .tp-star__canvas--half {
+    fill: {{ section.settings.star_color }};
+  }
+
+  @media screen and (min-width: 768px) {
+    #shopify-section-{{ section.id }} .tstmnls--ttl {
+      font-size: {{ section.settings.ttl_size_desk }}px;
+    }
+
+    #shopify-section-{{ section.id }} .tstmnls--sbttl {
+      font-size: {{ section.settings.sbttl_size_desk }}px;
+    }
+
+    #shopify-section-{{ section.id }} .tstmnls--descr {
+      font-size: {{ section.settings.descr_size_desk }}px;
+    }
+  }
+</style>

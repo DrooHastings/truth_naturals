@@ -1,0 +1,210 @@
+<div class="widgets">
+  <div class="featured-promo">
+    <div class="row custom-promo{% if section.blocks.size == 0 %} empty{% endif %}">
+      {%- assign column_count = section.blocks.size -%}
+
+      {% if column_count > 0 %}
+        {% if column_count == 1 %}
+          {% assign column_class = 'large-12' %}
+        {% elsif column_count == 2 %}
+          {% assign column_class = 'large-6' %}
+        {% endif %}
+      {% endif %}
+
+      {% for block in section.blocks limit: column_count %}
+
+        {% if block.type == 'text' %}
+          {% assign widget_text_align = block.settings.home-featured-promo-text-align %}
+        {% endif %}
+
+        <div class="columns{% if block.type == 'text' %} custom-promo-text {{ widget_text_align}}{% endif %} {{ column_class }}" {{ block.shopify_attributes }}>
+
+          {% case block.type %}
+            {% when 'text' %}
+              {% if block.settings.home-featured-promo-title.size > 0 %}
+                <h3 class="title">{{ block.settings.home-featured-promo-title }}</h3>
+              {% endif %}
+				{% if block.settings.show_stars %}
+          			<div class='stars-wrapper'><img class='stars-image' src='{{ 'stars.png' | asset_url }}'></div>
+          		{% endif %}
+              <div class="description">
+                {% if block.settings.home-featured-promo-description.size > 0 %}
+                  <p class="textarea">{{ block.settings.home-featured-promo-description | escape }}</p>
+                {% endif %}
+
+                {% if block.settings.home-featured-promo-link-text.size > 0 %}
+                  <p class="call-to-action">
+                    <a class="button" href="{{ block.settings.home-featured-promo-link-url }}">
+                      {{ block.settings.home-featured-promo-link-text | escape }}
+                    </a>
+                  <p>
+                {% endif %}
+              </div>
+
+            {% when 'image' %}
+              {% comment %} Block settings {% endcomment %}
+              {% assign widget_image_link = block.settings.home-featured-promo-image-link %}
+
+              {% if block.settings.image == blank %}
+                {% include 'placeholder-image' %}
+              {% else %}
+                {% assign widget_alt = block.settings.image.alt | default: '' %}
+
+                {% if widget_image_link != empty %}
+                  {{ block.settings.image | img_url: '1400x800' | img_tag: widget_alt | link_to: widget_image_link }}
+                {% else %}
+                  {{ block.settings.image | img_url: '1400x800' | img_tag: widget_alt }}
+                {% endif %}
+              {% endif %}
+
+            {% when 'video' %}
+              {% comment %} Block settings {% endcomment %}
+              <div class="vimeo-wrapper">
+                <div class="flex-video">
+                 {% if block.settings.video_youtube != blank %}
+                  <div class="youtube-player" data-id="{{ block.settings.video_youtube }}"></div>
+                {% elsif block.settings.video_vimeo != blank %}
+                  <iframe width="560" height="315"
+                          src="https://player.vimeo.com/video/{{ block.settings.video_vimeo }}"
+                          frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                {% elsif block.settings.video_wistia != blank %}
+                  <script src="https://fast.wistia.com/embed/medias/{{ block.settings.video_wistia }}.jsonp" async=""></script>
+                  <script src="https://fast.wistia.com/assets/external/E-v1.js" async=""></script>
+                  <div class="video-wistia wistia_responsive_padding" style="padding:56.0% 0 0 0;position:relative;">
+                    <div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
+                      <div class="wistia_embed wistia_async_{{ block.settings.video_wistia }} seo=false videoFoam=true" style="height:100%;width:100%">
+                      </div>
+                    </div>
+                  </div> 
+                {% endif %}
+                </div>
+              </div>
+          {% endcase %}
+        </div>
+      {% endfor %}
+
+      {% if column_count == 0 %}
+        {% include 'snippet-no-blocks' %}
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Featured promotion",
+  "class": "section--featured-promotion",
+  "max_blocks": 2,
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "home-featured-promo-title",
+          "label": "Title",
+          "default": "Featured promotion"
+        },
+        {
+          "type": "textarea",
+          "id": "home-featured-promo-description",
+          "label": "Description",
+          "default": "Use a combination of image, video and text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store"
+        },
+        {
+          "type": "select",
+          "id": "home-featured-promo-text-align",
+          "label": "Alignment",
+          "options": [
+            {
+              "value": "text-left",
+              "label": "Left"
+            },
+            {
+              "value": "text-center",
+              "label": "Center"
+            },
+            {
+              "value": "text-right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Call to action button"
+        },
+        {
+          "type": "text",
+          "id": "home-featured-promo-link-text",
+          "label": "Text",
+          "default": "Call to action"
+        },
+        {
+          "type": "url",
+          "id": "home-featured-promo-link-url",
+          "label": "Link to"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_stars",
+          "label": "Show Stars?"
+        }
+      ]
+    },
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+		{
+          "id": "video_youtube",
+          "type": "text",
+          "label": "YouTube video ID"
+		},
+		{
+		  "id": "video_vimeo",
+          "type": "text",
+          "label": "Vimeo video ID"
+		},
+		{
+		  "id": "video_wistia",
+          "type": "text",
+          "label": "Wistia video ID",
+		  "default": "7q4yc7bjfq"
+		}
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "home-featured-promo-image-link",
+          "label": "Link to"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured promotion",
+      "category": "Promotional",
+      "blocks": [
+        {
+          "type": "video"
+        },
+        {
+          "type": "text"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

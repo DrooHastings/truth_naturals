@@ -1,0 +1,276 @@
+<article class="product-page" itemscope itemtype="http://schema.org/Product" data-product-zoom-enabled="false" data-js-class="ProductPage">
+  <meta itemprop="url" content="{{ shop.url }}{{ product.url }}" />
+  <meta itemprop="image" content="{{ product.featured_image.src | product_img_url: 'grande' }}" />
+  <div class='custom-page-width'>
+    <div class='cp-flex-container'>
+      <div class='cp-flex-wrapper'>
+          <div data-position="photos" class='cp-main-images'>
+            <div class="photos">
+              <div class="container clearfix">
+                {% for image in product.images %}
+                <a class="photo" href="{{ image.src | product_img_url: '2048x' }}" data-zoom="{{ image.src | product_img_url: '2048x' }}" rel="gallery" data-image-id="{{ image.id }}">
+                  <img src="{{ image.src | product_img_url: '1200x' }}" alt="{{ image.alt | escape }}" />
+                </a>
+                {% endfor %}
+                {% if product.metafields.c_f.video != blank %}
+                  <a class="photo" data-zoom=".">
+                    <div class="youtube-player" data-id="{{ product.metafields.c_f.video }}"></div>
+                  </a>
+                {% elsif product.metafields.c_f.video_wistia != blank %}
+                <a class="photo" data-zoom=".">
+                  	<img>
+                	<script src="https://fast.wistia.com/embed/medias/{{ product.metafields.c_f.video_wistia }}.jsonp" async=""></script>
+                    <script src="https://fast.wistia.com/assets/external/E-v1.js" async=""></script>
+                    <div class="video-wistia wistia_responsive_padding" style="padding:56.0% 0 0 0;position:relative;">
+                      <div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
+                        <div class="wistia_embed wistia_async_{{ product.metafields.c_f.video_wistia }} seo=false videoFoam=true" style="height:100%;width:100%">
+                        </div>
+                      </div>
+                    </div> 
+                </a>
+                {% endif %}                
+              </div>
+            </div>
+          </div>
+          <div data-position="thumbs" class='cp-thumb-images'>
+            <div class="thumbs">
+              {% if product.images.size > 1 %}
+                {% for image in product.images %}
+                <div class="thumb">
+                  <img src="{{ image.src | product_img_url: '188x' }}" alt="{{ image.alt | escape }}" />
+                </div>
+                {% endfor %}
+              	{% if product.metafields.c_f.video or product.metafields.c_f.video_wistia %}
+                  <div class="thumb">
+                    <img src="{{ 'video.png' | asset_url }}" alt="Product Video">
+                  </div>
+              	{% endif %}
+              
+              {% endif %}
+            </div>
+          </div>
+          <div class='mobile-product-slider'>
+            <div class="swiper-button-prev-products"></div>
+            <div class='cp-mobile-slider swiper-container'>
+              <div class='cp-mobile-wrapper swiper-wrapper'>
+                {% for image in product.images %}
+                <div class='swiper-slide'>
+                  <img src="{{ image.src | product_img_url: '500x' }}" alt="{{ image.alt | escape }}" />
+                </div>
+                {% endfor %}
+                {% if product.metafields.c_f.video != blank %}
+                  <div class='swiper-slide'>
+                    <div class="youtube-player" data-id="{{ product.metafields.c_f.video }}"></div>
+                  </div>
+                {% elsif product.metafields.c_f.video_wistia != blank %}
+                	<div class='swiper-slide'>
+                	<script src="https://fast.wistia.com/embed/medias/{{ product.metafields.c_f.video_wistia }}.jsonp" async=""></script>
+                    <script src="https://fast.wistia.com/assets/external/E-v1.js" async=""></script>
+                    <div class="video-wistia wistia_responsive_padding" style="padding:56.0% 0 0 0;position:relative;">
+                      <div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
+                        <div class="wistia_embed wistia_async_{{ product.metafields.c_f.video_wistia }} seo=false videoFoam=true" style="height:100%;width:100%">
+                        </div>
+                      </div>
+                    </div> 
+                </div>
+                {% endif %}
+              </div>
+              <div class='swiper-pagination'></div>
+            </div>
+            <div class="swiper-button-next-products"></div>
+        </div>
+      </div>
+      <div class='cp-flex-wrapper'>
+        <h1 class='cp-title'>{{ product.title }}</h1>
+        {% if product.description contains '[Collection]' %}
+       	 	<p class="body-medium">{{ product.description | split: '[Description]' | first | split: '[Collection]' | last}}</p>
+        {% else %}
+        	<p class="body-medium">{{ product.description | split: '[Description]' | first }}</p>
+        {% endif %}
+        <div data-position="cart-form">
+          <form class="cart-form" action="/cart/add" method="post" enctype="multipart/form-data">
+
+            {% comment %}
+            <!-- Adding line items - https://docs.shopify.com/manual/configuration/store-customization/page-specific/product-page/get-customization-information-for-products -->
+            <div>
+              <label for="line-item-1">Line Item 1</label>
+              <input type="text" id="line-item-1" name="properties[line-item-1]">
+            </div>
+
+            <div>
+              <label for="line-item-2">Line Item 2</label>
+              <input type="text" id="line-item-2" name="properties[line-item-2]">
+            </div>
+            {% endcomment %}
+
+            <div class="variants {% unless product.variants.size > 1 %}hidden{% endunless %}">
+              <select id="variant-listbox" name="id" class="medium">
+                {% for variant in product.variants %}
+                <option data-sku="{{ variant.sku }}" {% if variant.inventory_quantity <= 0 and variant.available == false %}DISABLED {% endif %}{% if variant == product.selected_or_first_available_variant %}selected="selected" {% endif %} value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            {% include 'snippet-product-low-in-stock' %}
+            <div class="quanity-cart-row clearfix cp-quantity-cart">
+              {% include 'snippet-quantity' %}
+
+              <p class='cp-price'>
+                {% assign variant = product.selected_or_first_available_variant %}
+                {% if variant.price < variant.compare_at_price %}<span class="compare-price">{{ variant.compare_at_price | money }}</span>&nbsp;{% endif %}
+                <span class="actual-price">{{ variant.price | money }}</span>
+              </p>
+              
+              <div class="add-to-cart">
+                <input type="submit" name="add" id="add" {%if variant.available%}value="{{ 'products.add_to_cart' | t }}"{%else%}value="{{ 'products.custom_sold_out' | t }}" disabled="disabled"{%endif%} class="purchase button">
+              </div>
+            </div>
+          </form>
+          
+          <div class='cp-social-proof'>
+            <span>{{ 'products.social_proof' | t }}</span><br/>
+            <a class='certificate-of-analysis' href='{{ settings.certificate_of_analysis_link }}' target="_blank">{{ settings.certificate_of_analysis_text }}</a>
+            <div class="cp-badges-desktop"><img src='{{ settings.product_image_1 | img_url: 'master' }}'></div>
+            <div class="cp-badges-mobile"><img src='{{ settings.product_image_1_mobile | img_url: 'master' }}'></div>
+            <div class="cp-payment-icons-desktop"><img src='{{ settings.product_image_2 | img_url: 'master'  }}'></div>
+            <div class="cp-payment-icons-mobile"><img src="{{ settings.product_image_2_mobile | img_url: 'master' }}"></div>
+          </div>
+
+		  {%comment%}
+          {% include 'snippet-product-unavailable' %}
+		  {%endcomment%}
+        </div>
+
+      </div>
+    </div>
+    <div class='cp-description-container'>
+      <button class="accordion active">{{ 'products.description'| t}}<span class='chevron'></span></button>
+      <div class="accordion-panel active">
+        {% if product.description contains '[Description]' %}
+        <p>{{ product.description | split: '[Description]' | last }}</p>
+        {% else %}
+        <p>{{ product.description }}</p>
+        {% endif %}
+      </div>
+      <button class="accordion">{{ 'products.payments' | t }}<span class='chevron'></span></button>
+      <div class='accordion-panel'>
+        <p>{{ settings.product_payments }}</p>
+      </div>
+      <button class="accordion">{{ 'products.shipping' | t }}<span class='chevron'></span></button>
+      <div class='accordion-panel'>
+        <p>{{ settings.product_shipping }}</p>
+      </div>
+      <button class="accordion">{{ 'products.faq' | t }}<span class='chevron'></span></button>
+      <div class='accordion-panel'>
+        <p>{{ settings.product_faq }}</p>
+      </div>
+    </div>
+  </div>
+</article>
+
+<style>
+  .cp-social-proof a{
+    color: {{ section.settings.accent_color }};
+    text-decoration: underline;
+  }
+  .cp-description-container .accordion{
+    background-color: {{ section.settings.bg_color }};
+    color: {{ section.settings.accent_color }};
+    font-weight: bold;
+  }
+  .cp-description-container .chevron{
+    color: {{ section.settings.arrow_color }};
+  }
+  .accordion-panel.active{
+    border: 1px solid {{ section.settings.bg_color }};
+  }
+</style>
+
+<script>
+  // variables to pass to shop.js
+  var product_title = '{{ product.title | escape }}';
+  var product_variant_size = {{ product.variants.size }};
+  var product_options_size = {{ product.options.size }};
+  var product_options_first = '{{ product.options.first | escape }}';
+  var product_json = {{ product | json }};
+  var product_language_was = '{{ 'products.was' | t | escape }}';
+
+  var selectCallback = function(variant, selector) {
+    theme.variantSelected(variant, selector);
+    // add your selectCallback code here...
+    if (BOLD && BOLD.recurring_orders && BOLD.recurring_orders.app && BOLD.recurring_orders.app.ee &&
+            typeof BOLD.recurring_orders.app.ee.emit === 'function'){
+          BOLD.recurring_orders.app.ee.emit('variant_changed');
+        }
+  };
+
+  theme.products = {
+    size_chart: {
+      label: '{{ "products.size_chart" | t }}'
+    },
+    low_in_stock: {
+      one: '{{ "products.low_in_stock" | t: count: 1 }}',
+      other: '{{ "products.low_in_stock" | t: count: 2 }}'
+    }
+  };
+
+  jQuery(function($) {
+    function setOptionSelectors() {
+      new Shopify.OptionSelectors("variant-listbox", {
+        product: {{ product | json }},
+        onVariantSelected: selectCallback,
+        enableHistoryState: true
+      });
+    }
+
+    $(document).on("set-option-selectors", setOptionSelectors);
+    setOptionSelectors();
+  });
+</script>
+
+{% schema %}
+  {
+    "name": "Custom Product",
+    "settings": [
+		{
+			"type": "color",
+			"label": "Accent Color",
+			"id": "accent_color",
+			"default": "#32b275"
+		},
+		{
+			"type": "color",
+			"label": "Tab Background Color",
+			"id": "bg_color",
+			"default": "#ebebeb"
+		},
+		{
+			"type": "color",
+			"label": "Arrow Color",
+			"id": "arrow_color",
+			"default": "#b3b3b4"
+		}
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+var productSwiper = new Swiper('.cp-mobile-slider', {
+    loop: false,
+    spaceBetween: 10,
+    slidesPerView: 1,
+	autoHeight: true,
+    navigation: {
+      nextEl: '.swiper-button-next-products',
+      prevEl: '.swiper-button-prev-products'
+  	},
+	pagination: {
+      el: '.swiper-pagination',
+      type: 'bullets',
+	  clickable: true
+    }
+});
+{% endjavascript %}
+

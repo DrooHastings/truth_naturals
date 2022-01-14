@@ -1,0 +1,199 @@
+{% include 'section-testimonials' %}
+
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "class": "testimonials gd-stl",
+  "settings": [
+    {
+      "type": "color",
+      "id": "color_bg",
+      "label": "Background"
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "color",
+      "id": "ttl_color",
+      "label": "Text",
+      "default": "#231F20"
+    },
+    {
+      "type": "text",
+      "id": "ttl",
+      "label": "Heading"
+    },
+    {
+      "type":     "range",
+      "id":       "ttl_size_desk",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on desktop",
+      "default":   49
+    },
+    {
+      "type":     "range",
+      "id":       "ttl_size_mob",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on mobile",
+      "default":   30
+    },
+    {
+      "type": "select",
+      "id": "ttl_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "100", "label": "Thin" },
+        { "value": "200", "label": "Extra Light" },
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black " }
+      ],
+      "default": "900"
+    },
+    {
+      "type": "header",
+      "content": "Subheading"
+    },
+    {
+      "type": "color",
+      "id": "sbttl_color",
+      "label": "Text",
+      "default": "#231F20"
+    },
+    {
+      "type":     "range",
+      "id":       "sbttl_size_desk",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on desktop",
+      "default":   20
+    },
+    {
+      "type":     "range",
+      "id":       "sbttl_size_mob",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on mobile",
+      "default":   20
+    },
+    {
+      "type": "select",
+      "id": "sbttl_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "100", "label": "Thin" },
+        { "value": "200", "label": "Extra Light" },
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black " }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "header",
+      "content": "Description"
+    },
+    {
+      "type": "color",
+      "id": "descr_color",
+      "label": "Text",
+      "default": "#231F20"
+    },
+    {
+      "type":     "range",
+      "id":       "descr_size_desk",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on desktop",
+      "default":   16
+    },
+    {
+      "type":     "range",
+      "id":       "descr_size_mob",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on mobile",
+      "default":   16
+    },
+    {
+      "type": "select",
+      "id": "descr_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "100", "label": "Thin" },
+        { "value": "200", "label": "Extra Light" },
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black " }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "header",
+      "content": "Rating"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star",
+      "default": "#00B67A"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "text",
+          "id": "sbttl",
+          "label": "Subheading"
+        },
+        {
+          "type": "textarea",
+          "id": "descr",
+          "label": "Description"
+        },
+        {
+          "type":      "range",
+          "id":        "rating",
+          "min":        1,
+          "max":        5,
+          "step":       1,
+          "label":     "Rating",
+          "default":    5
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

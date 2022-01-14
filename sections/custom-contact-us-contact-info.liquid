@@ -1,0 +1,339 @@
+<div class="contact-us-contact-info__list">
+  {% for block in section.blocks %}
+    <div class="contact-us-contact-info__item">
+      {% if block.settings.image != blank %}
+      <div class="contact-us-contact-info__image-wrap">
+        <img class="contact-us-contact-info__image" src="{{ block.settings.image | img_url: 'master' }}" alt="">
+      </div>
+      {% endif %}
+
+      {% if block.settings.title != blank %}
+      <h2 class="contact-us-contact-info__title">{{ block.settings.title }}</h2>
+      {% endif %}
+
+      {% if block.settings.description != blank %}
+      <div class="contact-us-contact-info__desc">
+        {{ block.settings.description }}
+      </div> 
+      {% endif %}
+
+      {% if block.settings.title != blank %}
+      <a class="contact-us-contact-info__link" href="{{ block.settings.linkUrl}}">{{ block.settings.link }}</a>
+      {% endif %}
+    </div>
+  {% endfor %}
+  </div>
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --section_background: {{ section.settings.section_background }};
+    --title_color: {{ section.settings.title_color }};
+    --description_color: {{ section.settings.description_color }};
+    --link_color: {{ section.settings.link_color }};
+
+    --title_size_desk: {{ section.settings.title_size_desk }}px;
+    --description_size_desk: {{ section.settings.description_size_desk }}px;
+    --link_size_desk: {{ section.settings.link_size_desk }}px;
+
+    --title_size_mob: {{ section.settings.title_size_mob }}px;
+    --description_size_mob: {{ section.settings.description_size_mob }}px;
+    --link_size_mob: {{ section.settings.link_size_mob }}px;
+
+    --title_weight: {{ section.settings.title_weight }};
+    --description_weight: {{ section.settings.description_weight }};
+    --link_weight: {{ section.settings.link_weight }};
+  }
+</style>
+<style>
+
+  #shopify-section-{{ section.id }} p {margin-bottom: 0;}
+  #shopify-section-{{ section.id }} date,
+  #shopify-section-{{ section.id }} time {font-size: inherit;}
+  .contact-us-contact-info__list {
+    max-width: 1200px;
+    margin-left: auto;   
+    margin-right: auto;
+    display: flex;
+    justify-content: space-around;
+    text-align: center;  
+  }
+
+  .contact-us__contact-info {
+    padding: 20px 24px 85px;
+    background-color: var(--section_background);
+  }
+  .contact-us-contact-info__item {
+    max-width: 320px;
+    padding: 10px;
+    display: inline-flex;
+    flex-direction: column;
+    flex: 1 1 33%;
+  }
+  .contact-us-contact-info__image-wrap {
+    margin-bottom: 5px;
+  }
+  .contact-us-contact-info__image {
+    max-width: 100%;
+    height: auto;
+  }
+  
+    .contact-us-contact-info__title {
+      color: var(--title_color);
+      font-size: var(--title_size_desk);
+      font-weight: var(--title_weight);
+      letter-spacing: 0.56px;
+      margin-bottom: 20px;
+    }
+    .contact-us-contact-info__desc {
+      color: var(--description_color);
+      font-size: var(--description_size_desk);
+      font-weight: var(--description_weight);
+    }
+  .contact-us-contact-info__desc p{
+      color: inherit;
+      font-size: inherit;
+      font-weight: inherit;
+    }
+    .contact-us-contact-info__link.contact-us-contact-info__link {
+      color: var(--link_color);
+      font-size: var(--link_size_desk);
+      font-weight: var(--link_weight);
+      text-decoration: underline;
+    }
+   .contact-us-contact-info__link.contact-us-contact-info__link:hover,
+   .contact-us-contact-info__link.contact-us-contact-info__link:focus {
+     color: var(--link_hover_color);
+     outline: none;
+   }
+  
+
+  @media (max-width: 767.98px) {
+    .contact-us__contact-info {
+      padding-bottom: 35px;
+      padding-top: 10px;
+    }
+    .contact-us-contact-info__list {
+      flex-direction: column;
+      align-items: center;
+    }
+    .contact-us-contact-info__item {
+      max-width: 100%;
+    }
+    .contact-us-contact-info__item:not(:last-child) {
+      margin-bottom: 10px;
+    }
+    .contact-us-contact-info__title {
+      font-size: var(--title_size_mob);
+    }
+    .contact-us-contact-info__desc {
+      font-size: var(--description_size_mob);
+    }
+  }
+  
+
+</style>
+{% schema %}
+{
+  "name": "Contact Info",
+  "class": "contact-us__contact-info",
+  "settings": [
+    {
+      "type":"header",
+      "content":"Section"
+    },
+    {
+      "type": "color",
+      "id": "section_background",
+      "label": "Background"
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Text",
+      "default": "#231F20"
+    },
+    {
+      "type":     "range",
+      "id":       "title_size_desk",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on desktop",
+      "default":   49
+    },
+    {
+      "type":     "range",
+      "id":       "title_size_mob",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on mobile",
+      "default":   30
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "100", "label": "Thin" },
+        { "value": "200", "label": "Extra Light" },
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black " }
+      ],
+      "default": "900"
+    },
+    {
+      "type": "header",
+      "content": "Description"
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Text",
+      "default": "#231F20"
+    },
+    {
+      "type":     "range",
+      "id":       "description_size_desk",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on desktop",
+      "default":   20
+    },
+    {
+      "type":     "range",
+      "id":       "description_size_mob",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on mobile",
+      "default":   20
+    },
+    {
+      "type": "select",
+      "id": "description_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "100", "label": "Thin" },
+        { "value": "200", "label": "Extra Light" },
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black " }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "header",
+      "content": "Link"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Text",
+      "default": "#231F20"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "Active State",
+      "default": "#37404c "
+    },
+    {
+      "type":     "range",
+      "id":       "link_size_desk",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on desktop",
+      "default":   16
+    },
+    {
+      "type":     "range",
+      "id":       "link_size_mob",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on mobile",
+      "default":   16
+    },
+    {
+      "type": "select",
+      "id": "link_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "100", "label": "Thin" },
+        { "value": "200", "label": "Extra Light" },
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black " }
+      ],
+      "default": "400"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "contact-info",
+      "name": "Contact Info",
+      "settings": [
+        {
+          "type":"image_picker",
+          "id":"image",
+          "label":"Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading"
+        },
+        {
+          "type": "html",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "text",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "url",
+          "id": "linkUrl",
+          "label": "Link URL"
+        }
+
+      ]
+    }
+  ],
+  "presets": [
+  	{
+      "name": "Contact Info",
+      "category": "Text"
+  	}
+  ]
+}
+{% endschema %}
+

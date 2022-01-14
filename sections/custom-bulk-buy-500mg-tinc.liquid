@@ -1,0 +1,129 @@
+<hr class='custom-hr'>
+
+<div class='custom-page-width cbb-section'>
+  <h2 class='cbb-title'>{{ section.settings.section_title }}</h2>
+  <h2 class='custom-section-title'>{{ section.settings.section_after_title }}</h2>
+  <div class='cbb-container'>
+    {% for block in section.blocks %}
+        {% assign product = all_products[block.settings.product] %}
+        <div class='cbb-block'>
+          <span class='cbb-product-announcement'>{{ block.settings.block_announcement }}</span>
+          <img src="{{ product.featured_image | img_url: 'master' }}">
+          <h3 class='cbb-product-title'>{{ block.settings.block_title }}</h3>
+          {% if product.price < product.compare_at_price %}
+              <h3 class='cbb-saved-percentage'>{{ product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price }}% OFF</h3>
+              <div class='cbb-compare-price'>REGULAR PRICE: <span>{{ product.compare_at_price | money }}</span></div> 
+          {% endif %}
+          <div class='cbb-price'>SPECIAL BULK PRICE: <span>{{ product.price | money }}</span></div>
+          {% if product.price < product.compare_at_price %}
+            <div class='cbb-save-amount'>You save: <span>{{ product.compare_at_price | minus: product.price | money }}</span> </div>
+          {% endif %}
+          <div data-position="cart-form">
+            <form class="cart-form cbb-form" action="/cart/add" method="post" enctype="multipart/form-data">
+              <div class="variants" {% unless product.variants.size > 1 %}hidden{% endunless %}>
+                <select name="id" class="medium" >
+                  {% for variant in product.variants %}
+                  <option data-sku="{{ variant.sku }}" {% if variant.inventory_quantity <= 0 and variant.available == false %}DISABLED {% endif %}{% if variant == product.selected_or_first_available_variant %}selected="selected" {% endif %} value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="quanity-cart-row clearfix cp-quantity-cart">
+                <div class="add-to-cart">
+                  <input type="submit" name="add" id="add" value="{{ block.settings.block_button }}" class="purchase button cbb-submit">
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  #shopify-section-{{section.id}} .cbb-saved-percentage, #shopify-section-{{section.id}} .custom-section-title, #shopify-section-{{section.id}} .cbb-product-announcement{
+    color: {{ section.settings.accent_color}};
+  }
+  #shopify-section-{{section.id}} .cbb-save-amount{
+    color: {{ section.settings.save_color}};
+  }
+  #shopify-section-{{ section.id }} .cbb-block, #shopify-section-{{ section.id }} .cbb-section{
+    border: 1px solid {{ section.settings.border_color }};
+  }
+  #shopify-section-{{ section.id }} .cbb-title{
+    background-color: {{ section.settings.border_color }};
+  }
+</style>
+
+{% schema %}
+  {
+    "name": "Bulk Buy",
+    "settings": [
+        {
+            "type": "text",
+            "id": "section_title",
+            "label": "Title",
+            "default": "BULK BUY: Truth"
+        },
+        {
+            "type": "text",
+            "id": "section_after_title",
+            "label": "After Title",
+            "default": "ORDER THREE OR MORE & SAVE!"
+        },
+        {
+            "type": "color",
+            "id": "accent_color",
+            "label": "Accent Color",
+            "default": "#f7921e"
+        },
+        {
+            "type": "color",
+            "id": "save_color",
+            "label": "Save Amount Color",
+            "default": "#228452"
+        },
+        {
+            "type": "color",
+            "id": "border_color",
+            "label": "Border Color",
+            "default": "#ebebeb"
+        }
+    ],
+    "blocks": [
+        {
+            "name": "Product Block",
+            "type": "product",
+            "settings": [
+                {
+                    "type": "product",
+                    "id": "product",
+                    "label": "Product"
+                },
+                {
+                    "type": "text",
+                    "id": "block_title",
+                    "label": "Title",
+                    "default": "Some Bottles"
+                },
+                {
+                    "type": "text",
+                    "id": "block_announcement",
+                    "label": "Announcement Bar"
+                },
+                {
+                    "type": "text",
+                    "id": "block_button",
+                    "label": "Button Text",
+                    "default": "BULK BUY"
+                }
+            ]
+        }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

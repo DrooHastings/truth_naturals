@@ -1,0 +1,265 @@
+<div class="contact-us__main">
+
+  {% if section.settings.subtitle != blank %}
+    <h3 class="contact-us-main__subtitle">{{ section.settings.subtitle }}</h3>
+  {% endif %}
+
+  {% if section.settings.title != blank %}
+  <h2 class="contact-us-main__title">{{ section.settings.title }}</h2>
+  {% endif %}
+
+  {% if section.settings.description != blank %}
+  <div class="contact-us-main__desc">
+    {{ section.settings.description }}
+  </div>
+  {% endif %}
+ 
+
+</div>
+
+<style>
+    #shopify-section-{{ section.id }} {
+      --section_background: {{ section.settings.section_background }};
+    
+      --subtitle_color: {{ section.settings.subtitle_color }};
+      --subtitle_size_desk: {{ section.settings.subtitle_size_desk }}px;
+      --subtitle_size_mob: {{ section.settings.subtitle_size_mob }}px;
+      --subtitle_weight: {{ section.settings.subtitle_weight }};
+  
+      --title_color: {{ section.settings.title_color }};
+      --title_size_desk: {{ section.settings.title_size_desk }}px;
+      --title_size_mob: {{ section.settings.title_size_mob }}px;
+      --title_weight: {{ section.settings.title_weight }};
+      
+      --description_color: {{ section.settings.description_color }};
+      --description_size_desk: {{ section.settings.description_size_desk }}px;
+      --description_size_mob: {{ section.settings.description_size_mob }}px;
+      --description_weight: {{ section.settings.description_weight }};
+    }
+</style>
+<style>
+        
+    #shopify-section-{{ section.id }} p {margin-bottom: 0;}
+    .contact-us__main{
+      background-color: var(--section_background);
+      padding: 50px 24px 20px;
+      text-align: center;  
+    }
+    .contact-us-main__subtitle {
+      color: var(--subtitle_color);
+      text-transform: uppercase;
+      font-size: var(--subtitle_size_desk);
+      font-weight: var(--subtitle_weight);
+      letter-spacing: 0.56px;
+      margin-bottom: 5px;      
+    }
+    .contact-us-main__title {
+      color: var(--title_color);
+      font-size: var(--title_size_desk);
+      font-weight: var(--title_weight);
+      margin-bottom: 15px;
+    }
+    .contact-us-main__desc {
+      color: var(--description_color);
+      font-size: var(--description_size_desk);
+      font-weight: var(--description_weight);
+      max-width: 624px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+  @media only screen and (max-width: 767.98px) {
+    .contact-us__main{
+      padding-bottom: 10px;
+    }
+    .contact-us-main__subtitle {
+      font-size: var(--subtitle_size_mob); 
+    }
+    .contact-us-main__title {
+      font-size: var(--title_size_mob);
+    }
+    .contact-us-main__desc {
+      font-size: var(--description_size_mob);
+    }
+  }
+  
+</style>
+
+{% schema %}
+  {
+    "name":"Head",
+    "class":"contact-us-main",
+    "settings":[
+      {
+        "type":"header",
+        "content":"Section"
+      },
+      {
+        "type":"color",
+        "id":"section_background",
+        "label":"Section background color",
+        "default":"#fffbf7"
+      },
+      {
+        "type":"header",
+        "content":"Subheading"
+      },
+      {
+        "type":"text",
+        "id":"subtitle",
+        "label":"Sub Title"
+      },
+      {
+        "type":"color",
+        "id":"subtitle_color",
+        "label":"Subtitle color",
+        "default":"#37404c"
+      },
+      {
+        "type":     "range",
+        "id":       "subtitle_size_desk",
+        "min":       6,
+        "max":       106,
+        "step":      1,
+        "unit":     "px",
+        "label":    "Font size on desktop",
+        "default":   18
+      },
+      {
+        "type":     "range",
+        "id":       "subtitle_size_mob",
+        "min":       6,
+        "max":       106,
+        "step":      1,
+        "unit":     "px",
+        "label":    "Font size on mobile",
+        "default":   16
+      },
+      {
+        "type": "select",
+        "id": "subtitle_weight",
+        "label": "Font weight",
+        "options": [
+          { "value": "100", "label": "Thin" },
+          { "value": "200", "label": "Extra Light" },
+          { "value": "300", "label": "Light" },
+          { "value": "400", "label": "Normal" },
+          { "value": "500", "label": "Medium" },
+          { "value": "600", "label": "Semi Bold" },
+          { "value": "700", "label": "Bold" },
+          { "value": "800", "label": "Extra Bold" },
+          { "value": "900", "label": "Black " }
+        ],
+        "default": "600"
+      },
+      {
+        "type":"header",
+        "content":"Heading"
+      },
+      {
+        "type":"text",
+        "id":"title",
+        "label":"Title"
+      },
+      {
+        "type":"color",
+        "id":"title_color",
+        "label":"Title color",
+        "default":"#37404c"
+      },
+      {
+        "type":     "range",
+        "id":       "title_size_desk",
+        "min":       6,
+        "max":       106,
+        "step":      1,
+        "unit":     "px",
+        "label":    "Font size on desktop",
+        "default":   40
+      },
+      {
+        "type":     "range",
+        "id":       "title_size_mob",
+        "min":       6,
+        "max":       106,
+        "step":      1,
+        "unit":     "px",
+        "label":    "Font size on mobile",
+        "default":   30
+      },
+      {
+        "type": "select",
+        "id": "title_weight",
+        "label": "Font weight",
+        "options": [
+          { "value": "100", "label": "Thin" },
+          { "value": "200", "label": "Extra Light" },
+          { "value": "300", "label": "Light" },
+          { "value": "400", "label": "Normal" },
+          { "value": "500", "label": "Medium" },
+          { "value": "600", "label": "Semi Bold" },
+          { "value": "700", "label": "Bold" },
+          { "value": "800", "label": "Extra Bold" },
+          { "value": "900", "label": "Black " }
+        ],
+        "default": "700"
+      },
+      {
+        "type":"header",
+        "content":"Description"
+      },
+      {
+        "type":"richtext",
+        "id":"description",
+        "label":"Description"
+      },
+      {
+        "type":"header",
+        "content":"Colors"
+      },
+      {
+        "type":"color",
+        "id":"description_color",
+        "label":"Description color",
+        "default":"#37404c"
+      },
+      {
+        "type":     "range",
+        "id":       "description_size_desk",
+        "min":       6,
+        "max":       106,
+        "step":      1,
+        "unit":     "px",
+        "label":    "Font size on desktop",
+        "default":   18
+      },
+      {
+        "type":     "range",
+        "id":       "description_size_mob",
+        "min":       6,
+        "max":       106,
+        "step":      1,
+        "unit":     "px",
+        "label":    "Font size on mobile",
+        "default":   16
+      },
+      {
+        "type": "select",
+        "id": "description_weight",
+        "label": "Font weight",
+        "options": [
+          { "value": "100", "label": "Thin" },
+          { "value": "200", "label": "Extra Light" },
+          { "value": "300", "label": "Light" },
+          { "value": "400", "label": "Normal" },
+          { "value": "500", "label": "Medium" },
+          { "value": "600", "label": "Semi Bold" },
+          { "value": "700", "label": "Bold" },
+          { "value": "800", "label": "Extra Bold" },
+          { "value": "900", "label": "Black " }
+        ],
+        "default": "400"
+      }
+    ]
+  }
+{% endschema %}

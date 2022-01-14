@@ -1,0 +1,38 @@
+<ul class="template-account__navlist navlist">
+  <li class="navlist__item">
+    <a href="/account" class="navlist__link" data-id="account">
+      My Account
+    </a>
+  </li>
+  <li class="navlist__item">
+    <a href="/account?view=orders" class="navlist__link" data-id="orders">
+      Order History
+    </a>
+  </li>
+  {% if section.settings.enable_account_page %}
+  <li class="navlist__item">
+    <a href="/account?view=loyalty" class="navlist__link" data-id="loyalty">
+      Loyalty
+    </a>
+  </li>
+  {% endif %}
+  <li class="navlist__item">
+    <a href="/account/logout" class="navlist__link">
+      Log Out
+    </a>
+  </li>
+</ul>
+
+{% schema %}
+{
+	"name": "Account Page",
+	"settings": [
+		{
+          "type": "checkbox",
+          "id": "enable_account_page",
+          "label": "Show Account Page",
+          "default": true
+      	}
+	]
+}
+{% endschema %}

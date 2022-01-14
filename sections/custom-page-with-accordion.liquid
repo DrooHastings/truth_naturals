@@ -1,0 +1,67 @@
+<h2 class='custom-section-title'>{{ page.title | upcase }}</h2>
+<div class="custom-page-width faq-page">
+{% if page.content contains '[' %}
+    {% assign cut_desc = page.content | split: '[' %}
+      {% assign size = cut_desc.size | minus: 1 %}
+    {% for i in (1..size) %}
+      {% assign cut_name = cut_desc[i] | split: ']' | first %}
+      {% assign cut_description = cut_desc[i] | split: ']' | last %}
+      <button class="accordion body-large" data-name='{{ cut_name | handleize }}'>{{ cut_name }}<span class='chevron'></span></button>
+      <div class="accordion-panel body-medium">
+        <div>{{ cut_description }}</div>
+      </div>
+    {% endfor %}
+  {% else %}
+      {{ page.content }}
+  {% endif %}
+<style>
+  #shopify-section-{{ section.id }} .accordion{
+    color: {{ section.settings.accordion_text_color }};
+    background-color: {{ section.settings.accordion_bg_color }};
+  }
+  #shopify-section-{{ section.id }} .accordion-panel{
+    border: 1px solid {{ section.settings.accordion_bg_color }};
+  }
+</style>
+</div>
+{% schema %}
+  {
+    "name": "Page with accordion",
+	"class":"custom-page-with-accordion",
+    "settings": [
+		{
+          "type": "color",
+          "id": "accordion_text_color",
+          "label": "Accordion Title Text Color",
+          "default": "#32b274"
+        },
+        {
+          "type": "color",
+          "id": "accordion_bg_color",
+          "label": "Accordion Title Background Color",
+          "default": "#ebebeb"
+        }
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+.faq-page .accordion{
+	margin-top: 5px;
+	margin-bottom: 0;
+}
+.faq-page .accordion:first-of-type{
+	margin-top: 0;
+}
+{% endstylesheet %}
+
+{% javascript %}
+$(window).load(function() {
+	str = window.location.href;
+	res = str.split('#');
+	$(".accordion[data-name='" + res[1] + "']").click();
+})
+
+
+
+{% endjavascript %}

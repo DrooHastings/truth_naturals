@@ -1,0 +1,135 @@
+<div class='custom-testimonials-video'>
+  <h2 class='custom-section-title'>{{ section.settings.section_title }}</h2>
+  <div class='ct-container'>
+    {% for block in section.blocks %}
+        <div class='ct-block'>
+        {% if block.type == 'video' %}
+          <div class='ct-video'>
+            {% if block.settings.video_youtube != blank %}
+              <div class="youtube-player" data-id="{{ block.settings.video_youtube }}"></div>
+            {% elsif block.settings.video_vimeo != blank %}
+              <iframe width="560" height="315"
+                      src="https://player.vimeo.com/video/{{ block.settings.video_vimeo }}"
+                      frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+            {% elsif block.settings.video_wistia != blank %}
+              <script src="https://fast.wistia.com/embed/medias/{{ block.settings.video_wistia }}.jsonp" async=""></script>
+              <script src="https://fast.wistia.com/assets/external/E-v1.js" async=""></script>
+              <div class="video-wistia wistia_responsive_padding" style="padding:56.0% 0 0 0;position:relative;">
+                <div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
+                  <div class="wistia_embed wistia_async_{{ block.settings.video_wistia }} seo=false videoFoam=true" style="height:100%;width:100%">
+                  </div>
+                </div>
+              </div> 
+            {% endif %}
+            <h3>{{ block.settings.text }}</h3>
+          </div>
+        {% else %}
+            <div class='ct-testimonial'>
+              {% if block.settings.image %}
+                <div class='ctt-image'>
+                  <img src='{{ block.settings.image | img_url: 'master'}}'>
+                </div>
+              {% endif %}
+              <div class='ctt-text'>
+                <p class='textarea'>
+                  {{ block.settings.text }}
+                </p>
+                <p class='ctt-author'>
+                    {{ block.settings.author }}
+                </p>
+              </div>
+            </div>
+        {% endif %}
+          <hr class='custom-hr'>
+        </div>
+    {% endfor %}
+  </div>
+</div>
+
+<hr class='custom-hr'>
+
+<style>
+  #shopify-section-{{ section.id }} .ctt-author{
+    color: {{ section.settings.color }};
+  }
+</style>
+
+{% schema %}
+  {
+    "name": "Testimonials Video",
+    "settings": [
+		{
+			"type": "text",
+			"id": "section_title",
+			"label": "Title",
+			"default": "WHAT OUR CUSTOMERS ARE SAYING"
+		},
+		{
+			"type": "color",
+			"id": "color",
+			"label": "Author Color",
+			"info": "If you use Text Blocks",
+			"default": "#8a8a8a"
+		}
+	],
+	"blocks": [
+		{
+			"type": "video",
+			"name": "Video Block",
+			"settings": [
+				{
+                  "id": "video_youtube",
+                  "type": "text",
+                  "label": "YouTube video ID"
+                },
+                {
+                  "id": "video_vimeo",
+                  "type": "text",
+                  "label": "Vimeo video ID"
+                },
+                {
+                  "id": "video_wistia",
+                  "type": "text",
+                  "label": "Wistia video ID",
+                  "default": "7q4yc7bjfq"
+                },
+				{
+					"type": "text",
+					"id": "text",
+					"label": "Text Under Video",
+					"default": "<b>Mark Mene - Personal Trainer</b>"
+				}
+			]
+		},
+		{
+			"type": "text",
+			"name": "Text Block",
+			"settings": [
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Image"
+				},
+				{
+					"type": "textarea",
+					"id": "text",
+					"label": "Testimonial Text",
+					"default": "Text"
+				},
+				{
+					"type": "text",
+					"id": "author",
+					"label": "Testimonial Author",
+					"default": "Christian M."
+				}
+			]
+		}
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

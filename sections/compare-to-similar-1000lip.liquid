@@ -1,0 +1,206 @@
+<div class='custom-page-width ccts'>
+  <h2 class='ccts-title'>{{ section.settings.section_title }}</h2>
+  <div class='ccts-navigation-mobile'>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+  </div>
+  <div class='ccts-container'>
+    <div class='ccts-text-wrapper'>
+      <div class='ccts-compare'>
+        <p class='ccts-odd'>Price</p>
+        <p class='ccts-even'>Shipping</p>
+        <p class='ccts-odd'>Size</p>
+        <p class='ccts-even'># of Servings</p>
+        <p class='ccts-odd'>CBD per Serving</p>
+      </div>
+    </div>
+    <div class="ccts-products-container swiper-container">
+      <div class='ccts-products-wrapper swiper-wrapper'>
+        {% for block in section.blocks %}
+          {% assign similar_product = all_products[block.settings.product] %}
+            {% if similar_product.available %}
+          <div class='ccts-block swiper-slide'>
+            <div class='ccts-product'>
+              <img src='{{ similar_product.featured_image | img_url: 'master' }}'>
+              {% if similar_product.title == product.title %}
+              <p><b>This item: </b>{{ similar_product.title }}</p>
+              {% else %}
+              <p>{{ similar_product.title }}</p>
+              {% endif %}
+              <div data-position="cart-form">
+                <form class="cart-form" action="/cart/add" method="post" enctype="multipart/form-data">
+                  <div class="variants {% unless similar_product.variants.size > 1 %}invisible{% endunless %}" >
+                    <select name="id" class="medium" >
+                      {% for variant in similar_product.variants %}
+                      <option data-sku="{{ variant.sku }}" {% if variant.inventory_quantity <= 0 and variant.available == false %}DISABLED {% endif %}{% if variant == similar_product.selected_or_first_available_variant %}selected="selected" {% endif %} value="{{ variant.id }}">{{ variant.title }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <div class="quanity-cart-row clearfix cp-quantity-cart">
+                    <div class="add-to-cart">
+                      <input type="submit" name="add" id="add" value="ADD TO CART" class="purchase button">
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class='ccts-compare'>
+              <p class='ccts-product-price ccts-product-odd'>{{ similar_product.price | money }}</p>
+              <p class='ccts-product-even'>{{ block.settings.shipping }}</p>
+              <p class='ccts-product-odd'>{{ block.settings.size }}</p>
+              <p class='ccts-product-even'>{{ block.settings.servings }}</p>
+              <p class='ccts-product-odd'>{{ block.settings.cbd }}</p>
+            </div>
+          </div>
+        {% endif %}
+        {% endfor %}
+      </div>
+      
+    </div> 
+    <div class="swiper-scrollbar"></div>
+  </div>
+</div>
+
+<hr class='custom-hr'>
+
+<style>
+  #shopify-section-{{ section.id }} .ccts-title, #shopify-section-{{ section.id }} .ccts-product-even, #shopify-section-{{ section.id }} .ccts-navigation-mobile{
+    background-color: {{ section.settings.bg_color }};
+  }
+  #shopify-section-{{ section.id }} .ccts-text-wrapper{
+    background-color: {{ section.settings.bg_color }};
+    border-right: 1px solid {{ section.settings.border_color }};
+  }
+  #shopify-section-{{ section.id }} .ccts-container{
+    border: 1px solid {{ section.settings.border_color }};
+    border-top: 0;
+  }
+  #shopify-section-{{ section.id }} .ccts-compare{
+    border-top: 1px solid {{ section.settings.border_color }};
+  }
+  #shopify-section-{{ section.id }} .ccts-block{
+    border-right: 1px solid {{ section.settings.border_color }};
+  }
+  #shopify-section-{{ section.id }} .ccts-odd{
+    background-color: {{ section.settings.odd_color }};
+  }
+  #shopify-section-{{ section.id }} .ccts-even{
+    background-color: {{ section.settings.even_color }};
+  }
+  #shopify-section-{{ section.id }} .ccts-product-odd, #shopify-section-{{ section.id }} .ccts-product-even, #shopify-section-{{ section.id }} .ccts-odd, #shopify-section-{{ section.id }} .ccts-even{
+    border-bottom: 1px solid {{ section.settings.border_color }};
+  }
+  #shopify-section-{{ section.id }} .ccts-product-price{
+    color: {{ section.settings.accent_color }};
+  }
+</style>
+
+{% schema %}
+  {
+    "name": "Compare To Similar",
+    "settings": [
+        {
+            "type": "text",
+            "id": "section_title",
+            "label": "Title",
+            "default": "Compare to Similar Items"
+        },
+        {
+            "type": "color",
+            "id": "bg_color",
+            "label": "Background Color",
+            "default": "#fafafa"
+        },
+        {
+            "type": "color",
+            "id": "border_color",
+            "label": "Border Color",
+            "default": "#ebebeb"
+        },
+        {
+            "type": "color",
+            "id": "odd_color",
+            "label": "Table Title Odd Color",
+            "default": "#f5fffa"
+        },
+        {
+            "type": "color",
+            "id": "even_color",
+            "label": "Table Title Even Color",
+            "default": "#e3f7ed"
+        },
+        {
+            "type": "color",
+            "id": "accent_color",
+            "label": "Accent Color",
+            "default": "#f7921e"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "product",
+            "name": "Product",
+            "settings": [
+                {
+                  "type": "product",
+                  "id": "product",
+                  "label": "Product"
+                },
+                {
+                    "type": "text",
+                    "id": "shipping",
+                    "label": "Shipping",
+                    "default": "£3.50 / Free if total is over £80"
+                },
+                {
+                    "type": "text",
+                    "id": "size",
+                    "label": "Size",
+                    "default": "100ml"
+                },
+                {
+                    "type": "text",
+                    "id": "servings",
+                    "label": "# of Servings",
+                    "default": "30"
+                },
+                {
+                    "type": "text",
+                    "id": "cbd",
+                    "label": "CBD per Serving",
+                    "default": "8mg"
+                }
+            ]
+        }
+        
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+var compareSwiper = new Swiper('.ccts-products-container', {
+    scrollbar: {
+      el: '.swiper-scrollbar',
+      draggable: true,
+    },
+    touchReleaseOnEdges: true,
+    slidesPerView: 3,
+    grabCursor: true,
+    watchOverflow: true,
+	navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+    breakpoints: {
+        1023: {
+            slidesPerView: 2
+        },
+        767: {
+            slidesPerView: 1
+        }
+    }
+});
+{% endjavascript %}

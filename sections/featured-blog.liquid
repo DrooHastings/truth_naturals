@@ -1,0 +1,232 @@
+<div class="ftrd-blg">
+  <h2 class="ftrd-blg--ttl">{{ section.settings.ttl }}</h2>
+
+  <div class="ftrd-blg--cntnr">
+    {% for article in blogs[section.settings.blog].articles  limit: section.settings.limit %}
+      <div class="ftrd-blg--itm">
+        <a href="{{ article.url }}" class="ftrd-blg--img-wrap">
+          {% if article.image %}
+            <img src="{{ article.image.src | img_url: 'master' }}" alt="{{ article.image.alt }}" class="ftrd-blg--img">
+          {% endif %}
+        </a>
+        <a href="{{ article.url }}">
+          <h4 class="ftrd-blg--artcl-ttl">{{ article.title }}</h4>
+        </a>
+        {% if article.excerpt != empty %}
+          <div class="ftrd-blg--artcl-descr">{{ article.excerpt }}</div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+
+
+  <style>
+    #shopify-section-{{ section.id }} .ftrd-blg--ttl {
+      font-size: {{ section.settings.ttl_size_mob }}px;
+      color: {{ section.settings.ttl_color }};
+      font-weight: {{ section.settings.ttl_weight }};
+      text-align: center;
+    }
+
+    #shopify-section-{{ section.id }} .ftrd-blg--artcl-ttl {
+      font-size: {{ section.settings.artcl_ttl_size_mob }}px;
+      color: {{ section.settings.artcl_ttl_color }};
+      font-weight: {{ section.settings.artcl_ttl_weight }};
+    }
+
+    #shopify-section-{{ section.id }} .ftrd-blg--artcl-descr {
+      font-size: {{ section.settings.artcl_descr_size_mob }}px;
+      color: {{ section.settings.artcl_descr_color }};
+      font-weight: {{ section.settings.artcl_descr_weight }};
+    }
+
+    @media screen and (min-width: 768px) {
+      #shopify-section-{{ section.id }} .ftrd-blg--ttl {
+        font-size: {{ section.settings.ttl_size_desk }}px;
+      }
+
+      #shopify-section-{{ section.id }} .ftrd-blg--artcl-ttl {
+        font-size: {{ section.settings.artcl_ttl_size_desk }}px;
+      }
+
+      #shopify-section-{{ section.id }} .ftrd-blg--artcl-descr {
+        font-size: {{ section.settings.artcl_descr_size_desk }}px;
+      }
+    }
+  </style>
+</div>
+
+
+{% schema %}
+{
+  "name": "Featured Blog",
+  "settings": [
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog"
+    },
+    {
+      "type":     "range",
+      "id":       "limit",
+      "min":       1,
+      "max":       10,
+      "step":      1,
+      "label":    "Count articles",
+      "default":   4
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "color",
+      "id": "ttl_color",
+      "label": "Text",
+      "default": "#231F20"
+    },
+    {
+      "type": "text",
+      "id": "ttl",
+      "label": "Text"
+    },
+    {
+      "type":     "range",
+      "id":       "ttl_size_desk",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on desktop",
+      "default":   49
+    },
+    {
+      "type":     "range",
+      "id":       "ttl_size_mob",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on mobile",
+      "default":   30
+    },
+    {
+      "type": "select",
+      "id": "ttl_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "100", "label": "Thin" },
+        { "value": "200", "label": "Extra Light" },
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black " }
+      ],
+      "default": "900"
+    },
+    {
+      "type": "header",
+      "content": "Article heading"
+    },
+    {
+      "type": "color",
+      "id": "artcl_ttl_color",
+      "label": "Text",
+      "default": "#231F20"
+    },
+    {
+      "type":     "range",
+      "id":       "artcl_ttl_size_desk",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on desktop",
+      "default":   20
+    },
+    {
+      "type":     "range",
+      "id":       "artcl_ttl_size_mob",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on mobile",
+      "default":   18
+    },
+    {
+      "type": "select",
+      "id": "artcl_ttl_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "100", "label": "Thin" },
+        { "value": "200", "label": "Extra Light" },
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black " }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "header",
+      "content": "Article excerpt"
+    },
+    {
+      "type": "color",
+      "id": "artcl_descr_color",
+      "label": "Text",
+      "default": "#231F20"
+    },
+    {
+      "type":     "range",
+      "id":       "artcl_descr_size_desk",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on desktop",
+      "default":   18
+    },
+    {
+      "type":     "range",
+      "id":       "artcl_descr_size_mob",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on mobile",
+      "default":   16
+    },
+    {
+      "type": "select",
+      "id": "artcl_descr_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "100", "label": "Thin" },
+        { "value": "200", "label": "Extra Light" },
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black " }
+      ],
+      "default": "400"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog posts",
+      "category": "Blog"
+    }
+  ]
+}
+{% endschema %}

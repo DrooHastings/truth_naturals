@@ -1,0 +1,28 @@
+<div class="quantity">
+  <label for="quantity">{{ 'products.quantity' | t }}</label>
+  <div class='cq-container'>
+    <span class='cq-minus'>-</span>
+    <span class='cq'>1</span>
+    <span class='cq-plus'>+</span>
+  </div>
+  <input id="quantity" type="hidden" name="quantity" min="1" value="1" />
+</div>
+
+<script>
+  $('.cq-minus').on('click', function(){
+    value = parseInt($('.cq').html());
+    if (value > 1){
+      value = value - 1;
+    } 
+    $('.cq').html(value);
+    $('#quantity').val(value);
+    
+  });
+  $('.cq-plus').on('click', function(){
+    value = parseInt($('.cq').html());
+    value = value + 1;
+    $('.cq').html(value);
+    $('#quantity').val(value);
+    
+  });
+</script>

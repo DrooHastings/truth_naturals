@@ -1,0 +1,56 @@
+<div class="cnsr-container custom-page-width">
+	{%for block in section.blocks%}
+    <div class="cnsr-item">
+      {% if block.settings.show_stars %}
+      	<div class='stars-wrapper'><img class='stars-image' src='{{ 'stars.png' | asset_url }}'></div>
+      {% endif %}
+      <p class="textarea">{{block.settings.text}}</p>
+    </div>
+  	{%endfor%}
+</div>
+<style>
+  .custom-non-slider-reviews{
+    background: {{section.settings.background}};
+  }
+</style>
+{% schema %}
+  {
+    "name": "Custom reviews w/o video",
+	"class": "custom-non-slider-reviews",
+    "settings": [
+	  {
+		"type":"color",
+		"id":"background",
+		"label":"Section background color",
+		"default": "#f5f5f5"
+	  }
+	],
+	"blocks": [
+      {
+        "type": "review",
+        "name": "Review",
+        "settings": [
+          {
+            "type": "textarea",
+            "id": "text",
+            "label": "Text",
+            "default": "Default text"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_stars",
+            "label": "Show Stars?"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+
+
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

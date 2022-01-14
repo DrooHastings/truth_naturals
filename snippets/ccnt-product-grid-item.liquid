@@ -1,0 +1,107 @@
+{% assign product_metafield_empty = false %}
+{% assign product_has_hover_image = false %}
+
+{% if featured %}
+  {% if product.metafields.for_collection.image != blank %}
+    {% assign product_image_url = product.metafields.for_collection.image %}
+
+    {% if product.metafields.for_collection.hover_image != blank %}
+      {% assign product_has_hover_image = true %}
+      {% assign product_hover_image = product.metafields.for_collection.hover_image %}
+    {% elsif product.images[1] != blank %}
+      {% assign product_has_hover_image = true %}
+      {% assign product_hover_image = product.images[1] | img_url: 'master' %}
+    {% endif %}
+  {% else %}
+    {% assign product_image_url = product.featured_image | img_url:'master' %}
+    {% assign product_metafield_empty = true %}
+
+    {% if product.images[1] != blank %}
+      {% assign product_has_hover_image = true %}
+      {% assign product_hover_image = product.images[1] | img_url: 'master' %}
+    {% endif %}
+  {% endif %}
+{% else %}
+  {% assign product_image_url = product.featured_image | img_url:'master' %}
+
+  {% if product.images[1] != blank %}
+    {% assign product_has_hover_image = true %}
+    {% assign product_hover_image = product.images[1] | img_url: 'master' %}
+  {% endif %}
+{% endif %}
+
+{% unless featured %}
+<div data-test="" class="ccnt-grid-item {{ animation_class }} {% if product_metafield_empty %}ccnt-empty-metafield{% endif %}" {% if product_metafield_empty %} style="display: none;"{% endif %} data-product-tags='{{ product.tags | json }}'>
+  <div class="ccnt-product-image-container {% if product_has_hover_image %}ccnt-has-hover-image{% endif %}">
+    <div class="ccnt-labels-container"></div>
+    <img class="ccnt-product-image" src="{{ product_image_url }}">
+    {% if product_has_hover_image %}
+      <img class="ccnt-product-hover-image" src="{{ product_hover_image }}">
+    {% endif %}
+    <a class="ccn-product-image-link" href="{{ product.url | within: collection }}"></a>
+    <form class="cart-form ccnt-form" action="/cart/add" method="post" enctype="multipart/form-data">
+      <div class="ccnt-form-hidden">
+        {% if product.variants.size > 1 %}
+          <select name="id" class="ccnt-select">
+            {% for variant in product.variants %}
+              <option data-sku="{{ variant.sku }}" data-price="{{ variant.price | money }}" data-compare-price="{% if variant.price < variant.compare_at_price %}{{ variant.compare_at_price | money }}{% endif %}" {% if variant.inventory_quantity <= 0 and variant.available == false %}DISABLED {% endif %}{% if variant == product.selected_or_first_available_variant %}selected="selected" {% endif %} value="{{ variant.id }}">{{ variant.title }}</option>
+            {% endfor %}
+          </select>
+        {% else %}
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        {% endif %}
+        <div class="ccnt-form-actions">
+          <a href="{{ product.url | within: collection }}" class="ccnt-view-details">Details</a>
+          <a href="{{ product.url | within: collection }}" class="ccnt-view-details">{{ 'collections.view_details' | t }}</a>
+        </div>
+      </div>
+      <div style="display: none;" class="my-test">{{ variant.available }}</div>
+      {%if product.available == false %}
+        <input type="submit" name="add" value="{{'products.custom_sold_out' | t}}" disabled="disabled" class="soldout purchase button ccnt-add-to-cart">
+      {% endif %}
+    </form>
+  </div>
+  <div class="ccnt-product-description">
+    <h4 class='ccnt-product-title'>
+      <a class="ccnt-product-title-link title" href="{{ product.url | within: collection }}">
+     	 {{ product.title }}
+      </a>
+      <a class="ccnt-product-title-link" href="{{ product.url | within: collection }}">
+        <div class="ccnt-form-price-container">
+            {% assign variant = product.selected_or_first_available_variant %}
+            <span class="actual-price">{{ variant.price | money }}</span>
+            <span class="compare-price">{% if variant.price < variant.compare_at_price %}{{ variant.compare_at_price | money }}{% endif %}</span>
+        </div>
+      </a>
+    </h4>
+    {% comment %}
+      {% if product.metafields.for_collection.serving != blank %}
+      <p class="ccnt-product-serving">{{ product.metafields.for_collection.serving }}</p>
+      {% endif %}
+      {% if product.metafields.for_collection.flavour != blank %}
+      <p class="ccnt-product-flavour">{{ product.metafields.for_collection.flavour }}</p>
+      {% endif %}
+    {% endcomment %}
+  </div>
+  {% comment %}
+  <div class="ccnt-form-container">
+
+    <form class="cart-form ccnt-form" action="/cart/add" method="post" enctype="multipart/form-data">
+     {% if product.variants.size > 1 %}
+        <select name="id" class="ccnt-select">
+          {% for variant in product.variants %}
+          	<option data-sku="{{ variant.sku }}" data-price="{{ variant.price | money }}" data-compare-price="{% if variant.price < variant.compare_at_price %}{{ variant.compare_at_price | money }}{% endif %}" {% if variant.inventory_quantity <= 0 and variant.available == false %}DISABLED {% endif %}{% if variant == product.selected_or_first_available_variant %}selected="selected" {% endif %} value="{{ variant.id }}">{{ variant.title }}</option>
+          {% endfor %}
+        </select>
+      {% else %}
+      	<input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+      {% endif %}
+      <div class="ccnt-form-actions">
+        <a href="{{ product.url | within: collection }}" class="ccnt-view-details">Details</a>
+	    <a href="{{ product.url | within: collection }}" class="ccnt-view-details">{{ 'collections.view_details' | t }}</a>
+      </div>
+    </form>
+  </div>
+  {% endcomment %}
+</div>
+{% endunless %}

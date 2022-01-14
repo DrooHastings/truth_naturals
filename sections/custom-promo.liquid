@@ -1,0 +1,105 @@
+<div class = "press-slider-wrapper container-wrapper">
+  <h2 class = "press-slider-headline">{{section.settings.footer_slider_headline}}</h2>
+  <div id = "press-slider" class='swiper-container'>
+    <div class="footer-slider-wrapper swiper-wrapper" {% if section.blocks.size >= 8 %} id="press-slider-inner" {% endif %}>
+		{% for block in section.blocks %}
+      		<div class = "press-slider-img swiper-slide">
+              {%if block.settings.image != blank%}
+              	{{ block.settings.image | img_url: '172x225' | img_tag: block.settings.image.alt, 'Slider_image' }}
+              {%else%}
+              	<img src = "{{ 'footer_image_slider_image.jpg' | asset_url}}" />
+              {%endif%}
+      		</div>
+      	{%endfor%}
+    </div>
+  </div>
+</div>
+
+<script>
+  var slides_size = {{ section.settings.slides }};
+  var slides_size_mobile = {{ section.settings.slides_mobile }};
+  var slides_speed = {{ section.settings.speed }};
+  var slides_speed_mobile = slides_speed + 1000;
+</script>
+    
+
+{% schema %}
+  {
+    "name": "Press Section",
+	"class": "custom-press-section",
+    "settings": [
+      {
+        "type": "text",
+        "id": "footer_slider_headline",
+        "label": "Image Gallery Headline"
+      },
+	  {
+        "type":   "range",
+        "id":     "slides",
+        "min":       1,
+        "max":       12,
+        "step":      1,
+        "unit":      "itm",
+        "label":     "Slides to Show on Desktop",
+        "default":   8
+      },
+	  {
+        "type":   "range",
+        "id":     "speed",
+        "min":       100,
+        "max":       5000,
+        "step":      100,
+        "unit":      "ms",
+        "label":     "Slide Rotation Speed",
+        "default":   1500
+      },
+	  {
+        "type":   "range",
+        "id":     "slides_mobile",
+        "min":       1,
+        "max":       6,
+        "step":      1,
+        "unit":      "itm",
+        "label":     "Slides to Show on Mobile",
+        "default":   2
+      }
+	],
+	"blocks":[
+      {
+        "type": "image",
+        "name": "Press Image",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          }
+      	]
+      }
+	]
+
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+	var mySwiper = new Swiper('#press-slider', {
+		slidesPerView: slides_size,
+		loop: true,
+		allowTouchMove: false,
+		autoplay: {
+          delay: 1
+        }, 
+        speed: slides_speed,
+        spaceBetween: 10,
+		breakpoints: {
+			767: {
+				slidesPerView: 2,
+				speed: slides_speed_mobile
+			}
+		}
+		
+    });
+{% endjavascript %}

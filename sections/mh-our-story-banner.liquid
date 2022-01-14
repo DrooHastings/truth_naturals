@@ -1,0 +1,218 @@
+<div class="mh-our-story-banner-container">
+   
+  <div class="mh-our-story-banner">
+    <div class="mh-our-story__img-wrap">
+      {% if section.settings.desktop_image != blank %}
+          {% assign desktop_image = section.settings.desktop_image %}
+      {% else %}
+          {% assign desktop_image = section.settings.mobile_image %}
+      {% endif %}
+
+      {% if section.settings.mobile_image != blank %}
+          {% assign mobile_image = section.settings.mobile_image %}
+      {% else %}
+          {% assign mobile_image = section.settings.desktop_image %}
+      {% endif %}
+
+      <img class="mh-our-story__img desktop" src="{{ desktop_image | img_url: 'master' }}" alt="">
+      <img class="mh-our-story__img mobile" src="{{ mobile_image | img_url: 'master' }}" alt="">
+    </div>
+    
+    <div class="text custom-width">
+      {% if section.settings.title != blank %}
+      <h2 class="h2-mobile">{{ section.settings.title }}</h2>
+      {% endif %}
+
+      {% if section.settings.description != blank %}
+      <div class="description">
+        {{ section.settings.description }}
+      </div>
+      {% endif %}
+	  <br>
+      {% if section.settings.closing_phrase != blank %}
+      <div class="closing-phrase">
+        {{ section.closing_phrase}}
+      </div>
+      {% endif %}
+
+      {% if section.settings.signature_image != blank %}
+      <img src="{{ section.settings.signature_image | img_url: 'master' }}" alt="" class="">
+      {% endif %}
+    </div>    
+    
+  </div>
+</div>
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --section_background: {{ section.settings.section_background }};
+    --title_color: {{ section.settings.title_color }};
+    --description_color: {{ section.settings.description_color }};
+    background-color: var(--section_background);
+    padding: 85px 15px;
+  }
+      
+  .h2-mobile {
+  	font-size: {{ section.settings.title_size_desk }}px;
+    font-weight: {{ section.settings.title_weight }};
+  }
+      
+  .description {
+  	font-size: {{ section.settings.description_size_desk }}px;
+    font-weight: {{ section.settings.description_weight }};
+  }
+      
+  @media only screen and (max-width: 991px) {
+  	#shopify-section-{{ section.id }} {      
+      padding: 0;
+    }
+    
+    .h2-mobile {
+      font-size: {{ section.settings.title_size_mob }}px;
+    }
+    
+    .description {
+      font-size: {{ section.settings.description_size_mob }}px;
+    }
+  }
+  
+</style>
+
+{% schema %}
+  {
+    "name":"Banner",
+    "class":"our-story-banner",
+    "settings":[
+      {
+        "type":"textarea",
+        "id":"title",
+        "label":"Title",
+        "default":"Our Story"
+      },
+	  {
+        "type":     "range",
+        "id":       "title_size_desk",
+        "min":       6,
+        "max":       106,
+        "step":      1,
+        "unit":     "px",
+        "label":    "Font size on desktop",
+        "default":   30
+      },
+      {
+        "type":     "range",
+        "id":       "title_size_mob",
+        "min":       6,
+        "max":       106,
+        "step":      1,
+        "unit":     "px",
+        "label":    "Font size on mobile",
+        "default":   24
+      },
+      {
+        "type": "select",
+        "id": "title_weight",
+        "label": "Font weight",
+        "options": [
+          { "value": "100", "label": "Thin" },
+          { "value": "200", "label": "Extra Light" },
+          { "value": "300", "label": "Light" },
+          { "value": "400", "label": "Normal" },
+          { "value": "500", "label": "Medium" },
+          { "value": "600", "label": "Semi Bold" },
+          { "value": "700", "label": "Bold" },
+          { "value": "800", "label": "Extra Bold" },
+          { "value": "900", "label": "Black " }
+        ],
+        "default": "700"
+      },
+      {
+        "type":"textarea",
+        "id":"description",
+        "label":"Description",
+        "default":"<p><b>Truth Origins</b> is the product of two lifelong friends (Trent & Harry) that supported each other through overcoming cancer and who then made a commitment to extreme healthy living, longevity and helping others achieve the same.</p>"
+      },
+	  {
+        "type":     "range",
+        "id":       "description_size_desk",
+        "min":       6,
+        "max":       106,
+        "step":      1,
+        "unit":     "px",
+        "label":    "Font size on desktop",
+        "default":   20
+      },
+      {
+        "type":     "range",
+        "id":       "description_size_mob",
+        "min":       6,
+        "max":       106,
+        "step":      1,
+        "unit":     "px",
+        "label":    "Font size on mobile",
+        "default":   16
+      },
+      {
+        "type": "select",
+        "id": "description_weight",
+        "label": "Font weight",
+        "options": [
+          { "value": "100", "label": "Thin" },
+          { "value": "200", "label": "Extra Light" },
+          { "value": "300", "label": "Light" },
+          { "value": "400", "label": "Normal" },
+          { "value": "500", "label": "Medium" },
+          { "value": "600", "label": "Semi Bold" },
+          { "value": "700", "label": "Bold" },
+          { "value": "800", "label": "Extra Bold" },
+          { "value": "900", "label": "Black " }
+        ],
+        "default": "400"
+      },
+      {
+        "type":"image_picker",
+        "id":"desktop_image",
+        "label":"Desktop image"
+      },
+      {
+        "type":"richtext",
+        "id":"closing_phrase",
+        "label":"Closing Phrase"
+      },
+
+      {
+        "type":"image_picker",
+        "id":"mobile_image",
+        "label":"Mobile image",
+        "info":"If left blank, desktop image will be used instead"
+      },
+      {
+        "type":"image_picker",
+        "id":"signature_image",
+        "label":"Signature image"
+      },
+      {
+        "type":"header",
+        "content":"Colors"
+      },
+      {
+        "type":"color",
+        "id":"section_background",
+        "label":"Section background color",
+        "default":"#D5DAE1"
+      },
+      {
+        "type":"color",
+        "id":"title_color",
+        "label":"Title color",
+        "default":"#231F20"
+      },
+      {
+        "type":"color",
+        "id":"description_color",
+        "label":"Description color",
+        "default":"#231F20"
+      }
+    ]
+  }
+{% endschema %}

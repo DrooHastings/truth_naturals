@@ -1,0 +1,48 @@
+<div class='custom-contact-us'>
+  <h1>{{ page.title }}</h1>
+  <div class='ccu-content'>
+    <div class='ccu-image'>
+      <img class='desktop-image' src='{{ section.settings.image | img_url: 'master' }}'>
+      <img class='mobile-image' src='{{ section.settings.image_mobile | img_url: 'master' }}'>
+    </div>
+    <div class='ccu-text'>
+      {{ page.content }}
+    </div>
+  </div>
+</div>
+
+<style>
+  #shopify-section-{{ section.id }} .cq-email, #shopify-section-{{ section.id }} .cq-facebook{
+    color: {{ section.settings.color }};
+  }
+</style>
+
+{% schema %}
+  {
+    "name": "Contact Us",
+    "settings": [
+		{
+			"type": "image_picker",
+			"id": "image",
+			"label": "Desktop Image"
+		},
+		{
+			"type": "image_picker",
+			"id": "image_mobile",
+			"label": "Image Mobile"
+		},
+		{
+			"type": "color",
+			"id": "color",
+			"label": "Link Color",
+			"default": "#32b274"
+		}
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

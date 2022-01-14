@@ -1,0 +1,71 @@
+{% assign aspect_ratio = medium_width | times: 100 | divided_by: 1024 %}
+{% assign small_width  = aspect_ratio | times: 768 | divided_by: 100 %}
+{% assign large_width  = aspect_ratio | times: 1800 | divided_by: 100 %}
+{% assign small_width_doubled = small_width | times: 2 %}
+{% assign medium_width_doubled = medium_width | times: 2 %}
+{% assign large_width_doubled = large_width | times: 2 %}
+{% assign sizes_value = '' %}
+{% assign srcset = '' %}
+{% assign sizes = 'small, medium, large, original' %}
+{% assign sizes = sizes | split: ', ' %}
+{% assign src_x = '' %}
+
+{% for size in sizes %}
+  {% comment %} Standardise width {% endcomment %}
+  {% case size %}
+    {% when 'small' %}
+      {% assign width = small_width %}
+    {% when 'medium' %}
+      {% assign width = medium_width %}
+    {% when 'large' %}
+      {% assign width = large_width %}
+    {% when 'original' %}
+      {% assign width = img.width %}
+  {% endcase %}
+
+  {% assign width_2x = width | times: 2 %}
+  {% assign width_px = width | append: 'px' %}
+  {% assign width_x = width | append: 'x' %}
+  {% assign width_w = width | append: 'w' %}
+  {% assign width_2x_px = width_2x | append: 'px' %}
+  {% assign width_2x_x = width_2x | append: 'x' %}
+  {% assign width_2x_w = width_2x | append: 'w' %}
+
+  {% comment %} Sizes {% endcomment %}
+  {% case size %}
+    {% when 'small' %}
+      {% capture sizes_value %}(max-width:768px) {{ width_px }},{% endcapture %}
+
+    {% when 'medium' %}
+      {% capture sizes_value %}{{ sizes_value }} (max-width:1024px) {{ width_px }},{% endcapture %}
+
+    {% when 'large' %}
+      {% assign src_x = width_x %}
+      {% capture sizes_value %} {{ sizes_value }} {{ width_px }}{% endcapture %}
+  {% endcase %}
+
+  {% comment %} Srcset 1x {% endcomment %}
+  {% if img.width >= width %}
+    {% capture srcset %}{{ srcset }} {{ img.src | img_url: width_x }} {{ width_w }},{% endcapture %}
+  {% endif %}
+
+  {% comment %} Srcset 2x {% endcomment %}
+  {% if img.width >= width_2x %}
+    {% capture srcset %}
+      {{ srcset }} {{ img.src | img_url: width_2x_x }} {{ width_2x_w }},
+    {% endcapture %}
+  {% endif %}
+{% endfor %}
+
+{% comment %} Remove last comma {% endcomment %}
+{% assign srcset = srcset | strip %}
+{% assign srcset_size = srcset.size | minus: 1 %}
+{% assign srcset = srcset | slice: 0, srcset_size %}
+
+<img
+  src="{{ img.src | img_url: src_x }}"
+  alt="{{ img.alt | escape }}"
+  srcset="{{ srcset}}"
+  sizes="{{ sizes_value }}"
+  {{ custom_attributes }}
+>

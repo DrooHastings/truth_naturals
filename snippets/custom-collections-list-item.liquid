@@ -1,0 +1,15 @@
+{% for product in collection.products %}
+<div class="ccli-product">
+  <a href="{{product.url}}"><img class="ccli-product-image" src="{{product.featured_image | img_url: 'master'}}">
+  {%assign product_title = product.title | split:'-' | first%}
+  {%assign product_variants = product.title | split:'-' | last%}
+    <p class="ccli-product-title">{{product.vendor}} |<br>{{product_title}}</p></a>
+  <span class="ccli-product-variants">{{product_variants}}</span>
+  <p class='cp-price'>
+    {% assign variant = product.selected_or_first_available_variant %}
+    {% if variant.price < variant.compare_at_price %}<span class="compare-price">{{ variant.compare_at_price | money }}</span>&nbsp;{% endif %}
+    <span class="actual-price">{{ variant.price | money }}</span>
+  </p>
+  <a class="ccli-product-link" href="{{product.url}}">view product details</a>
+</div>
+{% endfor %}

@@ -1,0 +1,64 @@
+{%if footer %}
+  {%if settings.mail_footer != blank%}
+    <a class="social-link mail" href="mailto:{{settings.mail_footer}}">
+      {% include 'icon-mail'%}
+      <span>{{settings.mail_footer}}</span>
+    </a>
+  {%endif%}
+{%else%}
+  {% if settings.phone != blank %}
+    <a class="social-link phone" href="tel:{{settings.phone}}">
+      {% include 'icon-phone'%}
+      {% comment %}<span>{{settings.phone}}</span>{% endcomment %}
+    </a>
+  {% endif %}
+  {%if settings.mail_other!= blank%}
+    <a class="social-link mail" href="mailto:{{settings.mail_other}}">
+      {% include 'icon-mail'%}
+      <span>{{settings.mail_other}}</span>
+    </a>
+  {%endif%}
+
+{%endif%}
+
+{% if settings.twitter-follow-url != blank or settings.facebook-follow-url != blank or settings.instagram-follow-url != blank or settings.pinterest-follow-url != blank or settings.tumblr-follow-url != blank or settings.google-plus-follow-url != blank %}
+	<div class='social-links-container'>
+
+      {%if settings.instagram-follow-url != blank %}
+      <a class="social-link instagram" href="{{settings.instagram-follow-url}}">
+        {% include 'icon-instagram'%}
+      </a>
+      {%endif%}
+
+      {% if settings.facebook-follow-url != blank %}
+        <a class="social-link facebook" href="{{settings.facebook-follow-url}}">
+          {% include 'icon-facebook'%}
+        </a>
+      {% endif %}
+
+      {% if settings.twitter-follow-url != blank %}
+        <a class="social-link twitter" href="{{settings.twitter-follow-url}}">
+          {% include 'snippet-symbol' with 'twitter' %}
+        </a>
+      {% endif %}
+
+      {% if settings.pinterest-follow-url != blank %}
+        <a class="social-link pinterest" href="{{settings.pinterest-follow-url}}" count-layout="none">
+          {% include 'snippet-symbol' with 'pinterest' %}
+        </a>
+      {% endif %}
+
+      {% if settings.tumblr-follow-url != blank %}
+        <a class="social-link tumblr" href="{{settings.tumblr-follow-url}}">
+          {% include 'snippet-symbol' with 'tumblr' %}
+        </a>
+      {% endif %}
+
+      {% if settings.google-plus-follow-url != blank %}
+        <a class="social-link googleplus" href="{{settings.google-plus-follow-url}}">
+        {% include 'snippet-symbol' with 'google-plus' %}
+        </a>
+      {% endif %}
+
+</div>
+{% endif %}

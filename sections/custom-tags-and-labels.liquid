@@ -1,0 +1,57 @@
+<script>
+  tag_labels_array = {
+    {% for block in section.blocks %}
+      {% if block.settings.tag != blank %}
+        {{ block.settings.tag | json }}:{
+          "text": {{ block.settings.text | json }},
+          "color": {{ block.settings.color | json }},
+          "background": {{ block.settings.background | json }},
+          "darker_background": {{ block.settings.background | color_darken: 16 | json }}
+        },
+      {% endif %}
+    {% endfor %}
+  }
+</script>
+{% schema %}
+  {
+    "name":"LABELS",
+    "class":"custom-tag-labels",
+    "settings":[],
+    "blocks":[
+      {
+        "type":"block",
+        "name":"Tag with label",
+        "settings":[
+		  {
+			"type":"text",
+			"id":"title",
+			"label":"Block title",
+			"info":"This used purely for convinience to distinguish one block from another"
+		  },
+          {
+            "type":"text",
+            "id":"tag",
+            "label":"Tag name"
+          },
+          {
+            "type":"text",
+            "id":"text",
+            "label":"Label text"
+          },
+		  {
+			"type":"color",
+			"id":"color",
+			"label":"Text color",
+			"default":"#fff"
+		  },
+		  {
+			"type":"color",
+			"id":"background",
+			"label":"Label background color",
+			"default":"#00f"
+		  }
+        ]
+      }
+    ]
+  }
+{% endschema %}

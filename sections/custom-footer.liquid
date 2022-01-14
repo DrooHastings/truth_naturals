@@ -1,0 +1,241 @@
+	
+  <div class="cf-blocks-wrapper">
+	{% for block in section.blocks %}
+    	<div class="cf-block" id="cf-{{block.id}}">
+    	{% case block.type %}
+    		{%when 'logo_with_social'%}
+    			<img class="cf-logo" src="{{block.settings.logo | img_url:'master'}}">
+          		{% if block.settings.enable_social_links%}
+          			<div class='cf-custom-link'>{% include 'ch-social', footer: true%}</div>
+          		{%endif%}
+          	{%when 'menu'%}
+          		<div class='cf-menu-block'>
+          		{% if linklists[block.settings.first_menu].links.size > 0 %}
+                  <ul class="cf-list">
+					{% for link in linklists[block.settings.first_menu].links %}
+                    <li class="cf-list-item">
+                      <a class="cf-list-link" href="{{link.url}}">{{link.title}}</a>
+                    </li>
+                    {% endfor %}
+                  </ul>
+          		{% endif%}
+          		{% if linklists[block.settings.second_menu].links.size > 0 %}
+          			<ul class="cf-list">
+					{% for link in linklists[block.settings.second_menu].links %}
+                    <li class="cf-list-item">
+                      <a class="cf-list-link" href="{{link.url}}">{{link.title}}</a>
+                    </li>
+                    {% endfor %}
+                  </ul>
+          		{% endif%}
+          		</div>
+          	{%when 'subscribe_and_search'%}
+          		<div class='cf-search-block'>
+          		{% if block.settings.show_search%}
+                  <form class='cf-search' action="/search" method="get" role="search">
+                    {% if settings.search-products-only %}<input type="hidden" name="type" value="product" />{% endif %}
+                    <input name="q" class="cf-search-input" type="text" placeholder="{{ 'layout.header.search_placeholder' | t }}"/>
+                    <button class="cf-search-button">{% include 'snippet-symbol' with 'search' %}</button>
+                  </form>
+          		{%endif%}
+          		{% if block.settings.call_to_action != blank%}
+          		<p class="cf-call-to-action">{{block.settings.call_to_action}}</p>
+          		{% endif %}
+          		<a class="cf-subscribe show-subscription-popup manual-optin-trigger" href="#" data-optin-slug="{{ settings.theme_optin }}">
+                    {{block.settings.subscription_text}}
+                </a>
+          		<style>
+                  #cf-{{block.id}} a.cf-subscribe{
+                    color: {{block.settings.subscription_color}};
+                    background: {{block.settings.subscription_background}};
+                  }
+          		</style>
+          		</div>
+    	{% endcase %}
+    	</div>
+    {% endfor %}
+  </div>
+  {% if section.blocks.size == 0 and
+        section.settings.show_payments == false %}
+    {% include 'snippet-no-blocks' %}
+  {% endif %}
+
+  {% unless shop.enabled_payment_types == empty %}
+    {% if section.settings.show_payments %}
+	<div class="cf-payment-wrapper">
+      <div class="cf-payment-container">
+        <ul class="payment-options">
+          {% for type in shop.enabled_payment_types %}
+          <li>
+            {% capture icon_name %}payment-{{type}}{% endcapture %}
+            {% include 'snippet-symbol' with icon_name %}
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+	</div>
+    {% endif %}
+  {% endunless %}
+
+<style>
+  .custom-footer{
+    background-color: {{ section.settings.background }};
+    color: {{ section.settings.color }};
+  }
+  .payment-options{
+    background-color: {{ section.settings.payments_background }};
+    color: {{ section.settings.payments_color }};
+  }
+  a.cf-list-link, .cf-block a.social-link{
+    color: {{ section.settings.color }};
+  }
+  
+</style>
+
+{% schema %}
+  {
+    "name": "Custom Footer",
+	"max_blocks": 3,
+	"class": "custom-footer",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_payments",
+        "label": "Enable payment logos",
+        "default": true
+      },
+      {
+        "type":"color",
+        "id":"color",
+        "label":"Footer text color",
+        "default":"#fff"
+      },
+      {
+        "type":"color",
+        "id":"background",
+        "label":"Footer background color",
+        "default":"#000"
+      },
+      {
+        "type":"color",
+        "id":"payments_color",
+        "label":"Payment logos color",
+        "default":"#000"
+      },
+      {
+        "type":"color",
+        "id":"payments_background",
+        "label":"Payments section background color",
+        "default":"#fff"
+      }
+    ],
+	"blocks": [
+      {
+        "type": "logo_with_social",
+        "name": "Logo with social",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "logo",
+            "label": "Logo"
+          },
+          {
+            "type": "checkbox",
+            "id": "enable_social_links",
+            "label": "Enable social links",
+            "default": true
+          }
+        ]
+      },
+      {
+        "type": "menu",
+        "name": "Two menus in columns",
+        "settings": [
+          {
+            "type": "link_list",
+            "id": "first_menu",
+            "label": "First menu",
+            "default": "footer"
+          },
+		  {
+            "type": "link_list",
+            "id": "second_menu",
+            "label": "Second menu",
+            "default": "footer"
+          }
+        ]
+      },
+      {
+        "type": "subscribe_and_search",
+        "name": "Subscribe and search",
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "show_search",
+            "label": "Show search",
+            "default": true
+          },
+          {
+              "type":"text",
+              "id": "call_to_action",
+              "label": "Call to action",
+              "default":"Default call to action"
+          },
+          {
+              "type":"text",
+              "id": "subscription_text",
+              "label": "Subscription text",
+              "default":"Default subscription text"
+          },
+          {
+              "type":"color",
+              "id":"subscription_color",
+              "label":"Subscription text color",
+              "default":"#fff"
+          },
+          {
+              "type":"color",
+              "id":"subscription_background",
+              "label":"Subscription background color",
+              "default":"#f0f"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+$(window).resize(function(){
+  if ($(window).width() < 1023){
+      if ($('.cf-custom-link').length > 0 && $('.cf-search').length > 0 ){
+          $('.cf-search').insertAfter($('.cf-custom-link'));
+      }
+      if ($('.cf-logo').length > 0 && $('.cf-search-block').length > 0 ){
+          $('.cf-search-block').parent().insertAfter($('.cf-logo'));
+      }
+  } else {
+      if ($('.cf-custom-link').length > 0 && $('.cf-search').length > 0 ){
+		if ($('.cf-call-to-action').length > 0){
+      		$('.cf-search').insertBefore($('.cf-call-to-action'));
+		} else {
+			$('.cf-search').insertBefore($('.cf-subscribe'));
+		}
+      }
+	  if ($('.cf-logo').length > 0 && $('.cf-search-block').length > 0 ){
+          $('.cf-search-block').parent().insertAfter($('.cf-block').last());
+      }
+  }
+});
+if ($(window).width() < 1023){
+	if ($('.cf-custom-link').length > 0 && $('.cf-search').length > 0 ){
+		$('.cf-search').insertAfter($('.cf-custom-link'));
+	}
+	if ($('.cf-logo').length > 0 && $('.cf-search-block').length > 0 ){
+		$('.cf-search-block').parent().insertAfter($('.cf-logo'));
+	}
+}
+{% endjavascript %}

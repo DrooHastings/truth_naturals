@@ -1,0 +1,30 @@
+{% case function %}
+
+  {% when 'hasChildren' %}
+    {% assign has_children = false %}
+    {% assign specific_list = list | append: '-submenu-' | append: menu_item.handle %}
+
+    {% if linklists[specific_list].links.size > 0 %}
+      {% assign has_children = true %}
+    {% elsif linklists[menu_item.handle].links.size > 0 %}
+      {% assign has_children = true %}
+    {% endif %}
+
+
+  {% when 'getDepth' %}
+    {% assign depth = 1 %}
+
+    {% include 'framework--menu-functions', function: 'hasChildren', menu_item: menu_item %}
+    {% if has_children %}
+      {% assign depth = 2 %}
+
+      {% assign list = menu_item.handle %}
+      {% for menu_item in linklists[list].links %}
+        {% include 'framework--menu-functions', function: 'hasChildren', menu_item: menu_item %}
+        {% if has_children %}
+          {% assign depth = 3 %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+
+{% endcase %}

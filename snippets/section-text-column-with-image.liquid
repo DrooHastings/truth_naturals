@@ -1,0 +1,120 @@
+{% if section.settings.show %}
+  {% if section.settings.ttl != empty %}
+    <h3 class="txt_clmn_wth_img--ttl">{{ section.settings.ttl }}</h3>
+  {% endif %}
+
+  {% if section.settings.title != empty %}
+    <h4 class="txt_clmn_wth_img--blck-ttl mob">{{ section.settings.title }}</h4>
+  {% endif %}
+
+  <div class="txt_clmn_wth_img--row {%- if section.settings.img_align == 'right' %} reverse {%- endif %}">
+    {% if section.settings.img_mob %}
+		<div class="txt_clmn_wth_img--wrapper">
+        	<picture class="txt_clmn_wth_img--pctr">
+              {% if section.settings.img_desk %}
+                <source media="(min-width: 768px)" srcset="{{ section.settings.img_desk | img_url: 'master' }}">
+              {% endif %}
+              <img src="{{ section.settings.img_mob | img_url: 'master' }}" alt="{{ section.settings.img_mob.alt }}" class="txt_clmn_wth_img--img">
+            </picture>      
+		</div>
+    {% endif %}
+
+    <div class="txt_clmn_wth_img--blck-wrp">
+      <div class="txt_clmn_wth_img--blck">
+        {% if section.settings.title != empty %}
+          <h4 class="txt_clmn_wth_img--blck-ttl">{{ section.settings.title }}</h4>
+        {% endif %}
+
+        {% if section.settings.col_sbttl != empty %}
+          <div class="txt_clmn_wth_img--blck-sbttl">{{ section.settings.col_sbttl }}</div>
+        {% endif %}
+
+        {% if section.settings.col_descr != empty %}
+          <div class="txt_clmn_wth_img--blck-descr">{{ section.settings.col_descr }}</div>
+        {% endif %}
+
+        {% if section.settings.col_btn != empty %}
+          <a href="{{ section.settings.col_btn_url }}" class="txt_clmn_wth_img--blck-btn {% if section.settings.buy_button %}custom-product-buy-button{% endif %}">{{ section.settings.col_btn }}</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+
+<style>
+  #shopify-section-{{ section.id }} .txt_clmn_wth_img--ttl {
+    font-size: {{ section.settings.ttl_size_mob }}px;
+    color: {{ section.settings.ttl_color }};
+    font-weight: {{ section.settings.ttl_weight }};
+  }
+
+  #shopify-section-{{ section.id }} .txt_clmn_wth_img--ttl::after {
+    background-color: {{ section.settings.ttl_brdr_color }};
+  }
+
+  #shopify-section-{{ section.id }} .txt_clmn_wth_img--pctr {
+    background-color: {{ section.settings.blck_img_color_bg }};
+  }
+
+  #shopify-section-{{ section.id }} .txt_clmn_wth_img--blck-wrp {
+    background-color: {{ section.settings.blck_txt_color_bg }};
+  }
+
+  #shopify-section-{{ section.id }} .txt_clmn_wth_img--blck-ttl {
+    font-size: {{ section.settings.col_ttl_size_mob }}px;
+    color: {{ section.settings.col_ttl_color }};
+    font-weight: {{ section.settings.col_ttl_weight }};
+    text-align: {{ section.settings.col_ttl_align }};
+  }
+
+  #shopify-section-{{ section.id }} .txt_clmn_wth_img--blck-sbttl {
+    font-size: {{ section.settings.col_sbttl_size_mob }}px;
+    color: {{ section.settings.col_sbttl_color }};
+    font-weight: {{ section.settings.col_sbttl_weight }};
+    text-align: {{ section.settings.col_sbttl_align }};
+  }
+
+  #shopify-section-{{ section.id }} .txt_clmn_wth_img--blck-descr {
+    font-size: {{ section.settings.col_descr_size_mob }}px;
+    color: {{ section.settings.col_descr_color }};
+    font-weight: {{ section.settings.col_descr_weight }};
+    text-align: {{ section.settings.col_descr_align }};
+  }
+
+  #shopify-section-{{ section.id }} .txt_clmn_wth_img--blck-btn {
+    font-size: {{ section.settings.col_btn_size_mob }}px;
+    color: {{ section.settings.col_btn_color }};
+    font-weight: {{ section.settings.col_btn_weight }};
+    background-color: {{ section.settings.col_btn_color_bg }};
+    border-color: {{ section.settings.col_btn_brdr_color }};
+  }
+
+  @media screen and (min-width: 768px) {
+    #shopify-section-{{ section.id }} .txt_clmn_wth_img--ttl {
+      font-size: {{ section.settings.ttl_size_desk }}px;
+    }
+
+    #shopify-section-{{ section.id }} .txt_clmn_wth_img--blck-ttl {
+      font-size: {{ section.settings.col_ttl_size_desk }}px;
+    }
+
+    #shopify-section-{{ section.id }} .txt_clmn_wth_img--blck-sbttl {
+      font-size: {{ section.settings.col_sbttl_size_desk }}px;
+    }
+
+    #shopify-section-{{ section.id }} .txt_clmn_wth_img--blck-descr {
+      font-size: {{ section.settings.col_descr_size_desk }}px;
+    }
+
+    #shopify-section-{{ section.id }} .txt_clmn_wth_img--blck-btn {
+      font-size: {{ section.settings.col_btn_size_desk }}px;
+    }
+
+    #shopify-section-{{ section.id }} .txt_clmn_wth_img--blck-btn:hover {
+      color: {{ section.settings.col_btn_color_hover }};
+      background-color: {{ section.settings.col_btn_color_bg_hover }};
+      border-color: {{ section.settings.col_btn_brdr_color_hover }};
+    }
+  }
+</style>

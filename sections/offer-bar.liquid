@@ -1,0 +1,132 @@
+{% if section.settings.offer_enable %}
+  <a id="offer-bar--wrap" href="{{ section.settings.offer_link_url }}">
+    {% if section.settings.ttl_1 != empty %}
+      <span class="offer-bar--ttl offer-bar--ttl-1">{{ section.settings.offer_ttl_1 }}</span>
+    {% endif %}
+    {% if section.settings.btn != empty %}
+      <span id="offer-bar--btn">{{ section.settings.offer_btn }}</span>
+    {% endif %}
+    {% if section.settings.ttl_2 != empty %}
+      <span class="offer-bar--ttl offer-bar--ttl-2">{{ section.settings.offer_ttl_2 }}</span>
+    {% endif %}
+  </a>
+{% endif %}
+
+
+<style>
+  #shopify-section-{{ section.id }} #offer-bar--wrap {
+    background-color: {{ section.settings.offer_color_bg }};
+  }
+
+  #shopify-section-{{ section.id }} #offer-bar--wrap * {
+    font-size: {{ section.settings.offer_txt_size_mob }}px;
+    font-weight: {{ section.settings.offer_txt_weight }};
+    color: {{ section.settings.offer_txt_color }};
+  }
+
+  #shopify-section-{{ section.id }} #offer-bar--btn {
+    border-color: {{ section.settings.offer_border_color }};
+  }
+
+  @media screen and (min-width: 992px){
+    #shopify-section-{{ section.id }} #offer-bar--wrap * {
+      font-size: {{ section.settings.offer_txt_size_desk }}px;
+    }
+  }
+</style>
+
+
+{% schema %}
+{
+  "name": "Offer bar",
+  "class":"offer-bar gd-stl",
+  "settings": [
+    {
+      "type":"header",
+      "content": "Offer bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "offer_enable",
+      "label": "Enable"
+    },
+    {
+      "type": "color",
+      "id": "offer_color_bg",
+      "label": "Background",
+      "default": "#78BFB5"
+    },
+    {
+      "type": "color",
+      "id": "offer_txt_color",
+      "label": "Text",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "offer_border_color",
+      "label": "Border",
+      "default": "#fff"
+    },
+    {
+      "type": "url",
+      "id": "offer_link_url",
+      "label": "Url"
+    },
+    {
+      "type": "text",
+      "id": "offer_ttl_1",
+      "label": "Text 1",
+      "default":"ALT HOLIDAY SALE BANNER - TURN ON / OFF IN SETTINGS"
+    },
+    {
+      "type": "text",
+      "id": "offer_btn",
+      "label": "Button",
+      "default":"SHOP SALE"
+    },
+    {
+      "type": "text",
+      "id": "offer_ttl_2",
+      "label": "Text 2"
+    },
+    {
+      "type": "range",
+      "id": "offer_txt_size_desk",
+      "min": 6,
+      "max": 106,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size on desktop",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "offer_txt_size_mob",
+      "min": 6,
+      "max": 106,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size on mobile",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "offer_txt_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "100", "label": "Thin" },
+        { "value": "200", "label": "Extra Light" },
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black " }
+      ],
+      "default": "700"
+    }
+  ]
+}
+{% endschema %}

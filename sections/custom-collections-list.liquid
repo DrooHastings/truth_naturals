@@ -1,0 +1,134 @@
+<div class="ccl-header-container">
+  <div class="ccl-header-texts-container">
+    <h2 class="ccl-header-title textarea">{{section.settings.title}}</h2>
+    <h3 class="ccl-header-after-title textarea">{{section.settings.after_title}}</h3>
+    <p class="ccl-header-description textarea">{{section.settings.description}}</p>
+  </div>
+  <div class="ccl-header-image-container">
+  	<img class="ccl-header-image" src="{{section.settings.image | img_url: 'master'}}">
+    <img class="ccl-header-image-mobile" src="{{section.settings.image_mobile | img_url: 'master'}}">
+  </div>
+</div>
+<hr class='custom-hr'>
+<div class="custom-collections-list custom-page-width">
+  {% for block in section.blocks %}
+  	{%assign collection = collections[block.settings.collection]%}
+    <div class="ccl-collection-header">
+      {%assign highlighted_word = block.settings.highlight | prepend:"<span class='highlight'>" | append:"</span>"%}
+      <h2 class="ccl-collection-title">{{collection.title}}</h2>
+      <h3 class="ccl-collection-after-title textarea">{{ block.settings.after_title | replace: block.settings.highlight, highlighted_word }}</h3>
+      <p class="ccl-collection-description textarea">{{block.settings.description}}</p>
+    </div>
+    <div class="ccl-collection">
+      {% include 'custom-collections-list-item' %}
+    </div>
+    <hr class='custom-hr'>
+  {% endfor %}
+</div>
+<style>
+  a.ccli-product-link{
+    color: {{section.settings.button_color}};
+    background: {{section.settings.button_background}};
+  }
+  .ccl-collection-title, .ccli-product-title, .highlight{
+    color: {{section.settings.titles_color}};
+  }
+</style>
+{% schema %}
+  {
+    "name": "Collections list",
+	"class":"custom-page-width",
+    "settings": [
+		{
+			"type": "color",
+			"id": "titles_color",
+			"label": "Color of titles",
+			"default": "#32b274"
+		},
+		{
+			"type":"color",
+			"id":"button_color",
+			"label":"Text color of buttons",
+			"default":"#fff"
+		},
+		{
+			"type":"color",
+			"id":"button_background",
+			"label":"Background color of buttons",
+			"default":"#32b274"
+		},
+		{
+			"type":"textarea",
+			"id": "title",
+			"label":"Title",
+			"default": "Default title"
+		},
+		{
+			"type":"textarea",
+			"id": "after_title",
+			"label":"After title",
+			"default":"Default after title"
+		},
+		{
+			"type":"textarea",
+			"id": "description",
+			"label":"Description",
+			"default": "Default description"
+		},
+		{
+			"type":"image_picker",
+			"id": "image",
+			"label":"Image"
+		},
+		{
+			"type":"image_picker",
+			"id": "image_mobile",
+			"label":"Mobile Image"
+		}
+	],
+    "blocks":[
+      {
+        "type": "collection",
+        "name": "Collection",
+        "settings": [
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "Collection"
+          },
+          {
+            "type": "textarea",
+            "id": "after_title",
+            "label": "After title",
+			"default": "After title"
+          },
+          {
+            "type": "textarea",
+            "id": "description",
+            "label": "Description",
+			"default": "Description"
+          },
+          {
+            "type": "text",
+            "id": "highlight",
+            "label": "Highlighted word",
+			"default": "title"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+
+{% endstylesheet %}
+
+{% javascript %}
+$('title').html('Truth Naturals | Buy CBD Oil Products from our UK Online Store');
+$("meta[name='description']").attr('content','Truth Naturals offers the highest quality CBD in the UK. Our entire range contains organically farmed, independently lab tested CBD oil from the best suppliers on the planet.');
+$("meta[property='og:title']").attr('content','Truth Naturals | Buy CBD Oil Products from our UK Online Store');
+$("meta[property='og:description']").attr('content','Truth Naturals offers the highest quality CBD in the UK. Our entire range contains organically farmed, independently lab tested CBD oil from the best suppliers on the planet.');
+$("meta[name='twitter:title']").attr('content','Truth Naturals | Buy CBD Oil Products from our UK Online Store');
+$("meta[name='twitter:description']").attr('content','Truth Naturals offers the highest quality CBD in the UK. Our entire range contains organically farmed, independently lab tested CBD oil from the best suppliers on the planet.');
+{% endjavascript %}

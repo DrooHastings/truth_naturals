@@ -1,0 +1,27 @@
+{% if collection.metafields.featured_product.handle != blank %}
+  {% assign featured_product = all_products[collection.metafields.featured_product.handle] %}
+  {% include 'ccnt-product-grid-item' product: featured_product, featured: true %}
+{% elsif settings.featured_product_handle != blank %}
+  {% assign featured_product = all_products[settings.featured_product_handle] %}
+  {% include 'ccnt-product-grid-item' product: featured_product, featured: true %}
+{% endif %}
+
+{% for product in search.results %}
+  {% assign inside_featured_collection = false %}
+  {% if product.handle != featured_product.handle %}
+	{% if settings.search_collection != blank %}
+      {% for product_collection in product.collections %}
+          {% if collection.handle == product_collection.handle %}
+              {% assign inside_featured_collection = true %}
+			  {% break %}
+          {% endif %}
+      {% endfor %}
+      {% if inside_featured_collection %}
+          {% include 'ccnt-product-grid-item' %}
+      {% endif %}
+	{% else %}
+		{% include 'ccnt-product-grid-item' %}
+	{% endif %}
+  {% endif %}
+{% endfor %}
+

@@ -1,0 +1,63 @@
+<div class='custom-page-width' id='other-collections'>
+  <h2 class='custom-section-title'>{{ section.settings.section_title }}</h2>
+  <div class='cc-flex-container'>
+    {% assign collection_1 = collections[section.settings.colection_1] %}
+    {% assign collection_2 = collections[section.settings.colection_2] %}
+    {% assign collection_3 = collections[section.settings.colection_3] %}
+    <a href='{{ collection_1.url }}' class='cc-image-block'>
+      <img class='cc-image' src='{{ collection_1.image | img_url: 'master'}}'>
+      <div class='cc-image-wrapper'>
+        <h2 class='cc-image-text'>{{ collection_1.title }}</h2>
+      </div>
+    </a>
+    <a href='{{ collection_2.url }}' class='cc-image-block'>
+      <img class='cc-image' src='{{ collection_2.image | img_url: 'master'}}'>
+      <div class='cc-image-wrapper'>
+        <h2 class='cc-image-text'>{{ collection_2.title }}</h2>
+      </div>
+    </a>
+    <a href='{{ collection_3.url }}' class='cc-image-block'>
+      <img class='cc-image' src='{{ collection_3.image | img_url: 'master'}}'>
+      <div class='cc-image-wrapper'>
+        <h2 class='cc-image-text'>{{ collection_3.title }}</h2>
+      </div>
+    </a>
+  </div>
+</div>
+
+<hr class='custom-hr'>
+
+{% schema %}
+  {
+    "name": "Section name",
+    "settings": [
+      {
+        "type": "text",
+        "id": "section_title",
+        "label": "Title",
+        "default": "MORE WAYS TO TAKE CBD"
+      },
+      {
+        "type": "collection",
+        "id": "colection_1",
+        "label": "First Collection"
+      },
+      {
+        "type": "collection",
+        "id": "colection_2",
+        "label": "Second Collection"
+      },
+      {
+        "type": "collection",
+        "id": "colection_3",
+        "label": "Third Collection"
+      }
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

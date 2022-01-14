@@ -1,0 +1,187 @@
+<style>
+  .our-values__container {
+    padding-top: 70px;
+    min-height: 700px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .our-values__title {
+    font-family: Lato;
+    font-size: 40px;
+    font-weight: 700;
+    color: #37404c;
+  }
+  
+  .our-values__subtitle {
+    font-family: Lato;
+    font-size: 30px;
+    font-weight: 500;
+    color: #c6b476;
+    text-transform: uppercase;
+    margin-bottom: 48px;
+  }
+  .our-values-content__title {
+    font-family: Lato;
+    font-size: 30px;
+    font-weight: 700;
+    color: #37404c;
+    margin-bottom: 20px;
+    text-transform: uppercase; 
+  } 
+  
+  .our-values-content__description {
+    font-family: Lato;
+    font-size: 18px;
+    line-height: 1.33;
+    color: #37404c;
+  }
+
+  .our-values {
+    list-style: none;
+    position: relative;
+    padding-left: 0;
+  }
+  /* tabs   */
+  .our-values__field { display: none; }
+  /*  Swiper  */
+  .our-values__swiper { 
+    width: 100%;
+    max-width: 100%;
+  } 
+  .our-values__content {
+    padding: 10px 20px;
+    width: 100%;
+    margin-top: 25px;
+  }
+  /* Swiper   */
+  .our-values-swiper__button {
+    top: 20%;
+    background: transparent url({{ 'Arrow.svg' | asset_url }}) no-repeat center!important;
+  }
+  .our-values-swiper__button:hover,
+  .our-values-swiper__button:focus {background-color: transparent; outline: none;}
+  .our-values-swiper__button--next {
+    transform: rotate(180deg);
+  }
+  .our-values__figure {
+    display: inline-block;
+    border: 3px solid #fff;
+    max-width: 155px;
+    max-height: 155px;
+    margin-bottom: 0;
+  }
+  /* ---------------------    */
+  @media (min-width: 768px) {
+    /* Pagination */
+    .our-values-swiper__pagination {
+      display: none;
+    }
+    /* Content        */
+    .our-values__figure:not(:first-child) {
+      margin-left: -3px;
+    }
+    .our-values__content {
+      position: absolute;
+      left: 0;
+      display: none;
+      text-align: left;
+      max-width: 630px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    /* Tabs */
+    .our-values__box :checked + .our-values__figure {
+      position: relative; 
+      background: #37404c; 
+      fill: #c6b476;
+      color: #c6b476;
+      z-index: 1;
+    }
+    .our-values__figure:hover,
+    .our-values__figure:focus {
+      background: #d1c392;
+      cursor: pointer;
+      outline: none;
+    }
+    .our-values__box :checked ~ .our-values__content {
+      display: block; 
+    }
+
+    /* Swiper */
+    .our-values__swiper {
+      overflow: initial;
+    }
+    .our-values-swiper__list { 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+    }
+    .our-values-swiper__button {
+      display: none;
+    }
+    .our-values-swiper__item {
+      flex-shrink: 1;
+      position: initial;
+      max-width: 152px;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+     /* Content images | Tabs   */
+    .our-values__figure {
+      max-width: 150px;
+      max-height: 150px;
+    }
+  }
+  @media (max-width: 767.98px) {
+    .our-values__container {
+      padding-top: 25px; 
+    }
+    /* Slider Pagination  */
+    .our-values-swiper__pagination .swiper-pagination-bullet {
+      margin-left: 14px;
+      margin-right: 14px;
+      background-color: #d1c392;
+      width: 15px;
+      height: 15px;
+      opacity: 1;
+    }
+    .our-values-swiper__pagination .swiper-pagination-bullet-active {
+      background-color: #37404c;
+    }
+    /* Content         */
+    .our-values__content {
+      text-align: left;
+    }
+    .our-values-content__title {
+      font-size: 18px;     
+    }
+    .our-values__title {
+      font-size: 24px;
+    }
+    .our-values-content__description {
+      font-size: 16px;
+      line-height: 1.25;
+    }
+    .our-values__subtitle {
+      margin-bottom: 20px;
+      font-size: 18px;
+      font-weight: 500;
+    } 
+    /* Swiper */
+    .our-values__swiper {
+      max-width: 375px;
+    }
+    .swiper-slide-active .our-values__figure {
+      position: relative; 
+      background: #37404c; 
+      fill: #c6b476;
+      color: #c6b476;
+      z-index: 1;
+      display: inline-block;
+    } 
+  }
+</style>

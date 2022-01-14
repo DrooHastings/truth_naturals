@@ -1,0 +1,211 @@
+{%comment%}
+{% unless template.suffix contains 'without_header'%}
+<div class="ccnt-header-wrapper">
+  <div class="ccnt-header-container">
+  	<div class="ccnt-bnd-container">
+      <div class="ccnt-breadcrumbs">
+        <a href="/" class="ccnt-breadcrumb">{{ 'general.breadcrumbs.home' | t }}</a>
+        /
+        <a href="/collections" class="ccnt-breadcrumb">{{ 'general.breadcrumbs.collections' | t }}</a>
+        /
+        <span class="ccnt-breadcrumb">{{ collection.title | downcase }} </span>
+      </div>
+
+      {% if collection.description != blank %}
+        <div class="ccnt-collection-description">
+          {{ collection.description }}
+        </div>
+      {% endif %}
+    </div>
+    <div class="ccnt-vni-container">
+    	{% if collection.metafields.description.video != blank %}
+      		<div class="youtube-player" data-id="{{ collection.metafields.description.video }}"></div>
+        {% elsif collection.metafields.description.video_wistia != blank %}
+            <script src="https://fast.wistia.com/embed/medias/{{ collection.metafields.description.video_wistia }}.jsonp" async=""></script>
+            <script src="https://fast.wistia.com/assets/external/E-v1.js" async=""></script>
+            <div class="video-wistia wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;">
+              <div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
+                <div class="wistia_embed wistia_async_{{ collection.metafields.description.video_wistia }} seo=false videoFoam=true" style="height:100%;width:100%">
+                </div>
+              </div>
+            </div>
+      	{% elsif collection.image != blank %}
+      		<img class="ccnt-collection-image" src="{{ collection.image | img_url:'master'}}">
+        {% endif %}
+    </div>
+  </div>
+</div>
+<hr class='ccnt-hr'>
+{% endunless %}
+{%endcomment%}
+
+<div class="ccnt-content-wrapper">
+  {% if section.settings.sidebar_menu != blank %}
+    {% assign sidebar_menu = linklists[section.settings.sidebar_menu] %}
+    <div class="ccnt-sidebar-menu">
+      <div class="ccnt-sm-header">{{ sidebar_menu.title }}</div>
+      <div class="ccnt-sm-links-container">
+        {% for link in sidebar_menu.links %}
+          <a href="{{ link.url }}" class="ccnt-sm-link {% if link.active %}active{% endif %}"><span>{{ link.title }}</span></a>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="ccnt-main-container">
+  	<div class="ccnt-snm-container">
+
+      {% if section.settings.sidebar_menu != blank %}
+        <div class="ccnt-mobile-menu">
+          <label class="ccnt-mobile-menu-label" for="ccnt-mobile-menu-select">{{ sidebar_menu.title }}</label>
+          <select class="ccnt-mobile-menu-select" name="ccnt-mobile-menu-select">
+            {% for link in sidebar_menu.links %}
+            	<option value="{{ link.url }}" {% if link.active %}selected{% endif %}>{{ link.title }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      {% endif %}
+
+      {% if section.settings.show_sorting %}
+      <div class="ccnt-sort-container">
+        <label class="ccnt-sort-label" for="sort_by">{{ 'collections.sort_by' | t }}</label>
+        <select class="ccnt-sort" name="sort_by">
+          {% for option in collection.sort_options %}
+          	{% unless option.value == 'created-ascending' or option.value == 'created-descending' %}
+          		<option {% if collection.default_sort_by == option.value or collection.sort_by == option.value %}selected{% endif %} value="{{ option.value }}">{{ option.name }}</option>
+          	{% endunless %}
+          {% endfor %}
+        </select>
+      </div>
+      {% endif %}
+    </div>
+
+    {% if collection.metafields.featured_product.handle != blank or settings.featured_product_handle != blank %}
+    	<h2 class="ccnt-featured-products-header">{{ 'collections.featured_products_header' | t }}</h2>
+    {% endif %}
+
+    <div class="ccnt-product-grid">
+    	{% include 'ccnt-product-grid' %}
+    </div>
+  </div>
+</div>
+<style>
+  #shopify-section-{{ section.id }}{
+    --accents_color: {{ section.settings.accents_color }};
+    --additional_color: {{ section.settings.additional_color }};
+    --product_flavour_color: {{ section.settings.product_flavour_color }};
+    --product_button_background: {{ section.settings.product_button_background }};
+    --product_button_color: {{ section.settings.product_button_color }};
+  }
+</style>
+{% schema %}
+  {
+    "name": "New collection template",
+	"class":"custom-collection-new-template",
+    "settings": [
+		{
+          "type":"link_list",
+          "id":"sidebar_menu",
+          "label":"Sidebar menu"
+		},
+		{
+			"type": "checkbox",
+			"label": "Show sorting?",
+			"id": "show_sorting",
+			"default": false
+		},
+		{
+          "type":"header",
+          "content":"Colors"
+		},
+		{
+          "type":"color",
+          "id":"accents_color",
+          "label":"Accents color",
+          "default":"#02B875",
+          "info":"Used for price, add to cart button, variants selector and sidebar menu highlights"
+		},
+		{
+          "type":"color",
+          "id":"additional_color",
+          "label":"Additional color",
+          "default":"#B3B3B3",
+          "info":"Used for breadcrumbs, sort by and sidebar menu title"
+		},
+		{
+          "type":"color",
+          "id":"product_flavour_color",
+          "label":"Product flavour color",
+          "default":"#75757E"
+		},
+		{
+          "type":"color",
+          "id":"product_button_background",
+          "label":"Product details button background color",
+          "default":"#4D4D4D"
+		},
+		{
+          "type":"color",
+          "id":"product_button_color",
+          "label":"Product details button text color",
+          "default":"#fff"
+		}
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+$('.ccnt-mobile-menu-select').change(function(){
+	new_link = $(this).val();
+	window.location.href = new_link;
+});
+$(document).on('change', '.ccnt-select', function(){
+	parent_form = $(this).parents('form');
+	selected_option = $(this).find(':selected');
+	new_price = selected_option.data('price');
+	new_compare_price = selected_option.data('compare-price');
+	parent_form.find('.actual-price').html(new_price);
+	parent_form.find('.compare-price').html(new_compare_price);
+});
+
+
+$(document).on('change', '.ccnt-sort', function(){
+	$('.ccnt-product-grid').html('<div class="loader ccnt-loader"></div>')
+	sort_by = $(this).val();
+	link = window.location.pathname;
+	$.ajax({
+  		type: 'GET',
+  		url: `${link}?view=ajax&sort_by=${sort_by}`,
+  		success: function(data){
+          $('.ccnt-product-grid').html(data);
+          grid_position = $('.ccnt-content-wrapper').offset().top;
+          history.replaceState("","",`${link}?sort_by=${sort_by}`);
+
+          //check_tags()
+          $('body, html').animate({scrollTop: grid_position}, 500);
+  		}
+  	});
+})
+
+function check_tags(){
+  $('.ccnt-grid-item').each(function(){
+	labels_container = $(this).find('.ccnt-labels-container');
+    labels_container.html('');
+    product_tags = $(this).data('product-tags');
+	$.each(product_tags, function(index, tag){
+      if(tag_labels_array[tag]){
+		color = tag_labels_array[tag].color;
+		text = tag_labels_array[tag].text;
+		background = tag_labels_array[tag].background;
+		darker_background = tag_labels_array[tag].darker_background;
+		labels_container.append(`<span class="ccnt-label" style="--color:${color};--background:${background};--darker_background:${darker_background}">${text}</span>`);
+      }
+    });
+  });
+}
+check_tags();
+
+{% endjavascript %}

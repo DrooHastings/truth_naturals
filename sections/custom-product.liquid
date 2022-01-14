@@ -1,0 +1,492 @@
+<!-- Custom template xyz -->
+<article class="product-page" itemscope itemtype="http://schema.org/Product" data-product-zoom-enabled="false" data-js-class="ProductPage">
+  <meta itemprop="url" content="{{ shop.url }}{{ product.url }}" />
+  <meta itemprop="image" content="{{ product.featured_image.src | product_img_url: 'grande' }}" />
+  <div class='custom-page-width'>
+    <div class='cp-flex-container'>
+      <div class='cp-flex-wrapper'>
+          <div data-position="photos" class='cp-main-images'>
+            <div class="photos">
+              <div class="swiper-button-prev-products desktop-button-prev"></div>
+              <div class="container clearfix">
+                {% for image in product.images %}
+                <a class="photo" href="{{ image.src | product_img_url: '1500x1500' }}" rel="gallery" data-image-id="{{ image.id }}">
+                  <img src="{{ image.src | product_img_url: '750x750' }}" data-alt="{{ image.alt | escape }}" alt="{{ image.alt | escape }}" />
+                </a>
+                {% endfor %}
+                {% if product.metafields.c_f.video != blank %}
+                  <a class="photo" data-zoom=".">
+                    {% comment %}<div class="youtube-player" data-id="{{ product.metafields.c_f.video }}"></div>{% endcomment %}
+                    <img class="hide">
+                    <div class="youtube-iframe-container">
+                    	<iframe src="https://www.youtube.com/embed/{{ product.metafields.c_f.video }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                  </a>
+                {% elsif product.metafields.c_f.video_wistia != blank %}
+                <a class="photo" data-zoom=".">
+                  	<img>
+                	<script src="https://fast.wistia.com/embed/medias/{{ product.metafields.c_f.video_wistia }}.jsonp" async=""></script>
+                    <script src="https://fast.wistia.com/assets/external/E-v1.js" async=""></script>
+                    <div class="video-wistia wistia_responsive_padding" style="padding:56.0% 0 0 0;position:relative;">
+                      <div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
+                        <div class="wistia_embed wistia_async_{{ product.metafields.c_f.video_wistia }} seo=false videoFoam=true" style="height:100%;width:100%">
+                        </div>
+                      </div>
+                    </div>
+                </a>
+                {% endif %}
+              </div>
+              <div class="swiper-button-next-products desktop-button-next"></div>
+            </div>
+          </div>
+          <div data-position="thumbs" class='cp-thumb-images'>
+            <div class="thumbs">
+              {% if product.images.size > 0 %}
+                {% for image in product.images %}
+                <div class="thumb {% if image.alt contains product.selected_or_first_available_variant.title or product.has_only_default_variant%}visible{% endif %}">
+                  <img src="{{ image.src | product_img_url: '188x' }}" data-alt="{{ image.alt | escape }}" alt="{{ image.alt | escape }}" />
+                </div>
+                {% endfor %}
+              	{% if product.metafields.c_f.video or product.metafields.c_f.video_wistia %}
+                  <div class="thumb video visible">
+                    <img src="{{ 'video.png' | asset_url }}" alt="Product Video">
+                  </div>
+              	{% endif %}
+
+              {% endif %}
+            </div>
+          </div>
+          <div class='mobile-product-slider'>
+            <div class="swiper-button-prev-products"></div>
+            <div class='cp-mobile-slider swiper-container'>
+              <div class='cp-mobile-wrapper swiper-wrapper'>
+                {% for image in product.images %}
+                <div class='swiper-slide {% if image.alt contains product.selected_or_first_available_variant.title or product.has_only_default_variant%}visible{% endif %}'>
+                  <img src="{{ image.src | product_img_url: '500x' }}" data-alt="{{ image.alt | escape }}" alt="{{ image.alt | escape }}" />
+                </div>
+                {% endfor %}
+                {% if product.metafields.c_f.video != blank %}
+                <div class='swiper-slide visible video'>
+                  {% comment %}<div class="youtube-player" data-id="{{ product.metafields.c_f.video }}"></div>{% endcomment %}
+                  <img class="hide">
+                  <div class="youtube-iframe-container">
+                  	<iframe src="https://www.youtube.com/embed/{{ product.metafields.c_f.video }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                  </div>
+                </div>
+                {% elsif product.metafields.c_f.video_wistia != blank %}
+                <div class='swiper-slide visible video'>
+                  <script src="https://fast.wistia.com/embed/medias/{{ product.metafields.c_f.video_wistia }}.jsonp" async=""></script>
+                  <script src="https://fast.wistia.com/assets/external/E-v1.js" async=""></script>
+                  <div class="video-wistia wistia_responsive_padding" style="padding:56.0% 0 0 0;position:relative;">
+                    <div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
+                      <div class="wistia_embed wistia_async_{{ product.metafields.c_f.video_wistia }} seo=false videoFoam=true" style="height:100%;width:100%">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endif %}
+              </div>
+              {% comment %}
+              <div class='swiper-pagination'></div>
+              {% endcomment %}
+            </div>
+            <div class="swiper-button-next-products"></div>
+          </div>
+        <div class="mobile-thumbs">
+          <div class="cp-mobile-thumbs">
+            <div class="cp-mobile-thumbs-wrapper">
+              {% for image in product.images %}
+                <div class='cp-mobile-thumb {% if image.alt contains product.selected_or_first_available_variant.title or product.has_only_default_variant%}visible{% endif %}'>
+                  <img src="{{ image.src | product_img_url: '300x' }}" data-alt="{{ image.alt | escape }}" alt="{{ image.alt | escape }}" />
+                </div>
+              {% endfor %}
+              {% if product.metafields.c_f.video or product.metafields.c_f.video_wistia %}
+                <div class="cp-mobile-thumb video visible">
+                  <img src="{{ 'video.png' | asset_url }}" alt="Product Video">
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='cp-flex-wrapper cp-mobile-flex'>
+        <h1 class='cp-title'>{{ product.title }}</h1>
+        <div class='cp-description {% if section.settings.display_description_bottom_on_tablets %}cp-hidden-on-tablets{% endif %}'>
+          {% if product.description contains '[Description]' %}
+          	  <p class='cp-description-title'><b>PRODUCT DESCRIPTION</b></p>
+              {% if product.description contains '[Collection]' %}
+                  <p>{{ product.description | split: '[Description]' | first | split: '[Collection]' | last}}</p>
+              {% else %}
+                  <p>{{ product.description | split: '[Description]' | first }}</p>
+              {% endif %}
+          {% endif %}
+        </div>
+        <div data-position="cart-form">
+          <form class="cart-form" action="/cart/add" data-productid="{{ product.id }}" method="post" enctype="multipart/form-data">
+            <div class="sealsubs-target-element" data-product="{{ product | json | escape }}" data-handle="{{ product.handle }}"></div>
+            {% comment %}
+            <!-- Begin ReCharge code -->
+            {% if product.available %}{% include 'subscription-product' %}{% endif %}
+            <!-- End ReCharge code -->
+			{% endcomment %}
+
+            {% comment %}
+            <!-- Adding line items - https://docs.shopify.com/manual/configuration/store-customization/page-specific/product-page/get-customization-information-for-products -->
+            <div>
+              <label for="line-item-1">Line Item 1</label>
+              <input type="text" id="line-item-1" name="properties[line-item-1]">
+            </div>
+
+            <div>
+              <label for="line-item-2">Line Item 2</label>
+              <input type="text" id="line-item-2" name="properties[line-item-2]">
+            </div>
+            {% endcomment %}
+			{% assign available_variants = ''%}
+            <div class="variants {% unless product.variants.size > 1 %}hidden{% endunless %}">
+              <select id="variant-listbox" name="id" data-productid="{{ product.id }}" class="medium">
+                {% for variant in product.variants %}
+                <option data-sku="{{ variant.sku }}" {% if variant.inventory_quantity <= 0 and variant.available == false %}DISABLED {% endif %}{% if variant == product.selected_or_first_available_variant %}selected="selected" {% endif %} value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }}</option>
+                	{% if variant.available %}
+                		{% capture available_variants %}{{available_variants}}{{ variant.title }},{%endcapture%}
+                	{% endif %}
+                {% endfor %}
+              </select>
+            </div>
+            {% unless product.has_only_default_variant%}
+              <div class="new-custom-selectors">
+                {% for product_option in product.options_with_values %}
+                  <div class="new-custom-selector">
+                    {% assign option_index = forloop.index0 %}
+                    <label>{{ 'products.select'| t}} {{ product_option.name | downcase }}:<span class="ncs-selected-option-value">{{product_option.selected_value}}</span></label>
+                    <div class="ncs-buttons">
+                      {% for value in product_option.values %}
+                      <input
+                             class="ncs-input"
+                             type="radio" {% if product_option.selected_value == value %}checked{% endif %}
+                             id="ncs-option-{{ option_index }}-{{ forloop.index0}}"
+                             value="{{ value }}"
+                             name="ncs-option-{{ option_index }}"
+                             data-price="{{ product.variants[forloop.index0].price | money }}"
+                             data-bound-to="variant-listbox-option-{{option_index}}"
+                       >
+                      <label
+                             for="ncs-option-{{ option_index }}-{{ forloop.index0}}"
+                             class="ncs-button {% unless available_variants contains value %}disabled{%endunless%}">
+                        <span class="ncs-option-value desktop">{{ value }}</span>
+                        <span class="ncs-option-value mobile">{{ value | truncatewords: 1,''}}</span>
+                      </label>
+                      {% endfor %}
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            {% endunless %}
+
+
+            <div class="addtocart"></div>
+
+            {% include 'snippet-quantity' %}
+            <p class='cp-price'>
+              {% assign variant = product.selected_or_first_available_variant %}
+              {% if variant.price < variant.compare_at_price %}<span class="compare-price">{{ variant.compare_at_price | money }}</span>&nbsp;{% endif %}
+              <span class="actual-price">{{ variant.price | money }}</span>
+            </p>
+
+
+            {% include 'snippet-product-low-in-stock' %}
+            <div class="quanity-cart-row clearfix cp-quantity-cart">
+              <div class="add-to-cart">
+                <input type="submit" name="add" id="add" {%if variant.available%}value="{{ 'products.add_to_cart' | t }}"{%else%}value="{{ 'products.custom_sold_out' | t }}" disabled="disabled"{%endif%} class="purchase button">
+                <div class="quanity-wrapper">
+                  <span>Quantity</span>
+                  <select class="ncs-quantity" id="magic-select">
+                    {% for i in (1..10) %}
+                    <option value="{{i}}" {% if forloop.first %}selected{% endif %}>{{i}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </div>
+          </form>
+
+
+
+          <div class='cp-social-proof'>
+            <span>{{ 'products.social_proof' | t }}</span><br/>
+            <a class='certificate-of-analysis' href='{{ settings.certificate_of_analysis_link }}' target="_blank">{{ settings.certificate_of_analysis_text }}</a>
+            <div class="cp-badges-desktop"><img src='{{ settings.product_image_1 | img_url: '750x' }}'></div>
+            <div class="cp-badges-mobile"><img src='{{ settings.product_image_1_mobile | img_url: '750x' }}'></div>
+            <div class="cp-payment-icons-desktop"><img src='{{ settings.product_image_2 | img_url: '750x'  }}'></div>
+            <div class="cp-payment-icons-mobile"><img src="{{ settings.product_image_2_mobile | img_url: '750x' }}"></div>
+          </div>
+
+		  {%comment%}
+          {% include 'snippet-product-unavailable' %}
+	 	  {%endcomment%}
+        </div>
+
+      </div>
+    </div>
+	{%comment%}
+    {% if section.settings.display_description_bottom_on_tablets %}
+      <div class="cp-description cp-description-for-tablets">
+        {% if product.description contains '[Description]' %}
+            <p class='cp-description-title'><b>PRODUCT DESCRIPTION</b></p>
+            {% if product.description contains '[Collection]' %}
+            {% if product.description contains '</h2>' %}
+                <p>{{ product.description | split: '[Description]' | first | split: '[Collection]' | last | split: '</h2>' | last }}</p>
+            {% else %}
+              <p>{{ product.description | split: '[Description]' | first | split: '[Collection]' | last}}</p>
+            {% endif %}
+            {% else %}
+                <p>{{ product.description | split: '[Description]' | first }}</p>
+            {% endif %}
+        {% endif %}
+      </div>
+    {% endif %}
+    {%endcomment%}
+  </div>
+</article>
+
+<style>
+  .cp-social-proof a{
+    color: {{ section.settings.accent_color }};
+    text-decoration: underline;
+  }
+  .cp-description-container .accordion{
+    background-color: {{ section.settings.bg_color }};
+    color: {{ section.settings.accent_color }};
+    font-weight: bold;
+  }
+  .cp-description-container .chevron{
+    color: {{ section.settings.arrow_color }};
+  }
+  .accordion-panel.active{
+    border: 1px solid {{ section.settings.bg_color }};
+  }
+</style>
+
+<script>
+  // variables to pass to shop.js
+  var product_title = '{{ product.title | escape }}';
+  var product_variant_size = {{ product.variants.size }};
+  var product_options_size = {{ product.options.size }};
+  var product_options_first = '{{ product.options.first | escape }}';
+  var product_json = {{ product | json }};
+  var product_language_was = '{{ 'products.was' | t | escape }}';
+
+  var selectCallback = function(variant, selector) {
+    // OLD CODE
+//     theme.variantSelected(variant, selector);
+//     // add your selectCallback code here...
+//     if (BOLD && BOLD.recurring_orders && BOLD.recurring_orders.app && BOLD.recurring_orders.app.ee &&
+//         typeof BOLD.recurring_orders.app.ee.emit === 'function'){
+//       BOLD.recurring_orders.app.ee.emit('variant_changed');
+
+    // HOTFIX: On select variant add click to checkbox
+    var checked_radio = document.querySelectorAll('.ncs-input[type="radio"]');
+
+    for (var item = 0; item < checked_radio.length; item++) {
+    	if (checked_radio[item].defaultValue === variant.title) {
+          checked_radio[item].click();
+        }
+    }
+  };
+
+  theme.products = {
+    size_chart: {
+      label: '{{ "products.size_chart" | t }}'
+    },
+    low_in_stock: {
+      one: '{{ "products.low_in_stock" | t: count: 1 }}',
+      other: '{{ "products.low_in_stock" | t: count: 2 }}'
+    }
+  };
+
+  jQuery(function($) {
+    function setOptionSelectors() {
+      new Shopify.OptionSelectors("variant-listbox", {
+        product: {{ product |json }},
+        onVariantSelected: selectCallback,
+        enableHistoryState: true
+      });
+    }
+
+    $(document).on("set-option-selectors", setOptionSelectors);
+    setOptionSelectors();
+  });
+</script>
+<script type="text/javascript">
+  var _learnq = _learnq || [];
+
+  var item = {
+    Name: {{ product.title|json }},
+    ProductID: {{ product.id|json }},
+    Categories: {{ product.collections|map:'title'|json }},
+    ImageURL: "https:{{ product.featured_image.src|img_url:'grande' }}",
+    URL: "{{ shop.secure_url }}{{ product.url }}",
+    Brand: {{ product.vendor|json }},
+    Price: {{ product.price|money|json }},
+    CompareAtPrice: {{ product.compare_at_price_max|money|json }}
+  };
+
+  _learnq.push(['track', 'Viewed Product', item]);
+  _learnq.push(['trackViewedItem', {
+    Title: item.Name,
+    ItemId: item.ProductID,
+    Categories: item.Categories,
+    ImageUrl: item.ImageURL,
+    Url: item.URL,
+    Metadata: {
+      Brand: item.Brand,
+      Price: item.Price,
+      CompareAtPrice: item.CompareAtPrice
+    }
+  }]);
+</script>
+{% schema %}
+  {
+    "name": "Custom Product",
+    "settings": [
+		{
+			"type": "color",
+			"label": "Accent Color",
+			"id": "accent_color",
+			"default": "#32b275"
+		},
+		{
+			"type": "color",
+			"label": "Tab Background Color",
+			"id": "bg_color",
+			"default": "#ebebeb"
+		},
+		{
+			"type": "color",
+			"label": "Arrow Color",
+			"id": "arrow_color",
+			"default": "#b3b3b4"
+		},
+		{
+			"type":"checkbox",
+			"label":"Enable zoom",
+			"id":"enable_zoom",
+			"default":true
+		},
+        {
+          "type":"checkbox",
+          "id":"display_description_bottom_on_tablets",
+          "label":"Display description bottom on tablets",
+          "default":true
+        }
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+{% comment %}
+PRODUCT SWIPER PAGINATION
+
+pagination: {
+  el: '.swiper-pagination',
+  type: 'bullets',
+  clickable: true
+}
+{%endcomment %}
+{% javascript %}
+productSwiper = new Swiper('.cp-mobile-slider', {
+	slideClass:'visible',
+    loop: false,
+    spaceBetween: 10,
+    slidesPerView: 1,
+	autoHeight: true,
+    navigation: {
+      nextEl: '.mobile-product-slider .swiper-button-next-products',
+      prevEl: '.mobile-product-slider .swiper-button-prev-products'
+  	}
+});
+productSwiper.on('slideChange', function(){
+	activeIndex = productSwiper.activeIndex;
+	$('.cp-mobile-thumb.visible').removeClass('active');
+	$('.cp-mobile-thumb.visible')[activeIndex].classList.add('active');
+});
+$('.cp-mobile-thumb.visible').first().addClass('active');
+$('.ncs-input').change(function(){
+	bound_to = $(this).data('bound-to');
+	new_price = $(this).data('price');
+	value = $(this).val();
+	$('.cp-price .actual-price').html(new_price);
+
+	$(this).parents('.new-custom-selector').find('.ncs-selected-option-value').html(value);
+	$('#'+bound_to).val(value).trigger('change');
+	alt = '';
+	$('.ncs-input:checked').each(function(index){
+      if(index == ($('.ncs-input:checked').length - 1)){
+     	 alt += $(this).val();
+      } else{
+     	 alt += $(this).val() + ' / ';
+      }
+	});
+    console.log(alt);
+
+	$('.thumb:not(.video)').removeClass('visible');
+	$('.thumb:not(.video)').each(function(){
+      image = $(this).find('img');
+      if(image[0].alt.includes(alt)){
+      	$(this).addClass('visible');
+      }
+	});
+	$('.thumb.visible').first().click();
+
+	$('.mobile-product-slider .swiper-slide:not(.video)').removeClass('visible');
+	$('.mobile-product-slider .swiper-slide:not(.video)').each(function(){
+      image = $(this).find('img');
+      if(image[0].alt.includes(alt)){
+      	$(this).addClass('visible');
+      }
+	});
+	productSwiper.update();
+
+	$('.cp-mobile-thumb:not(.video)').removeClass('visible active');
+	$('.cp-mobile-thumb:not(.video)').each(function(){
+      image = $(this).find('img');
+      if(image[0].alt.includes(alt)){
+      	$(this).addClass('visible');
+      }
+	});
+	$('.cp-mobile-thumb.visible').first().addClass('active').click();
+});
+$('.cp-mobile-thumb').on('click',function(){
+	$('.cp-mobile-thumb').removeClass('active');
+	$(this).addClass('active');
+	index = $('.cp-mobile-thumb.visible').index($(this));
+	productSwiper.slideTo(index);
+});
+$('.desktop-button-prev').click(function(){
+    current = $('.thumb.visible.active'); //the element you have
+    elems = $('.thumb.visible'); //the collection of elements
+
+    previous = elems.eq(elems.index(current) - 1);
+	if(previous.length){
+		previous.click();
+	}
+});
+$('.desktop-button-next').click(function(){
+	current = $('.thumb.visible.active'); //the element you have
+    elems = $('.thumb.visible'); //the collection of elements
+
+    next = elems.eq(elems.index(current) + 1);
+	if(next.length){
+		next.click();
+	}
+});
+
+setTimeout(function() { $('.thumb.visible').first().click(); }, 100);
+
+$('.custom-product-buy-button').on('click', function(e){
+  e.preventDefault();
+  $('.addtocart').click();
+});
+
+{% endjavascript %}

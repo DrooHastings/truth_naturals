@@ -1,0 +1,1920 @@
+{{ 'rebrand-header.scss.css' | asset_url | stylesheet_tag }}
+{% if section.settings.offer_enable %}
+  <div id="hdr--offer-bar-wrap">
+    {% if section.settings.offer_txt != blank %}
+      <span id="hdr--offer-bar-txt">{{ section.settings.offer_txt }}</span>
+    {% endif %}
+    {% if section.settings.offer_btn != blank %}
+      <a class="show-subscription-popup manual-optin-trigger hdr--offer-bar-btn" href="https://app.monstercampaigns.com/c/{{ settings.theme_optin }}/" data-optin-slug="{{ settings.theme_optin }}">{{ section.settings.offer_btn }}</a>
+    {% endif %}
+  </div>
+{% endif %}
+
+<div id='header-overlay'></div>
+
+{% comment %}
+  <div class="ch-top">
+    <div class="ch-top-row">
+      <div class="ch-social">
+      	{% if settings.phone != blank %}
+          <a class="social-link phone" href="tel:{{settings.phone}}">
+            {% include 'icon-phone'%}
+            <span>{{ settings.phone }}</span>
+          </a>
+        {% endif %}
+      </div>
+      <div class="ch-flag-and-promo">
+        <a class="ch-flag" href="{{section.settings.flag_url}}">
+          <img class="ch-flag-image" alt="{{section.settings.flag.alt}}" src="{{ section.settings.flag | img_url:"100x100" }}">
+        </a>
+        <a class="ch-promo" href="{{section.settings.promo_url}}">
+          <span class="ch-promo-text">{{ section.settings.promo_text }}</span>
+        </a>
+      </div>
+      <div class="ch-account-and-cart">
+        <div class="ch-search">
+          <form  action="/search" method="get" role="search">
+            {% if settings.search-products-only %}
+              <input type="hidden" name="type" value="product" />
+            {% endif %}
+            <input name="q" class="ch-search-input" type="text" placeholder="{{ 'layout.header.search_placeholder' | t }}"/>
+            <button class="ch-search-button"><i class="fas fa-search"></i></button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endcomment %}
+
+<div class="ch-bot" onmouseleave="closeNav()">
+  <div class="ch-bot-row">
+
+    <div class="ch-menu">
+      {% assign menu = linklists[section.settings.menu] %}
+  	  {% for link in linklists[section.settings.menu].links limit:4 %}
+        <div class="ch-menu-item" data-title="{{ link.title }}" data-value="0" onclick="openNavClick(event, '{{ link.title }}')" onmouseover="openNav(event, '{{ link.title }}')">
+          <a href="{{ link.url }}" class="ch-menu-item-text {% if link.active %}active{% endif %}">
+            <span>{{ link.title }}</span>
+            {% if linklists[link.handle].links.size > 0%}
+            	<span class="ch-menu-item-symbol fa-angle-down"></span>
+            {% endif %}
+          </a>
+          {% if linklists[link.handle].links.size > 0%}
+            <div class="ch-menu-item-wrapper" onmouseleave="closeNav()">
+              <ul class="ch-menu-item-list {% if menu.levels <= 2 %}ch-menu-item-list-flex-column{% endif %} ch-menu-item-list-{{ link.title | downcase }}">
+                  {% for child_link in linklists[link.handle].links %}
+                    <li class="ch-menu-item-list-item">
+                      {% if child_link.links != blank %}
+                        <span class="ch-menu-child-link-text">{{child_link.title}}</span>
+                        <ul class="grandchild {% if link.title != 'Learn' and forloop.last %}menu-item-flex-column{% endif %}">
+                        {% for grandchild_link in child_link.links %}  
+                          <li><a href= "{{ grandchild_link.url }}">{{ grandchild_link.title }}</a></li>
+                        {% endfor %}
+                        {% if link.title != 'Learn' and forloop.last %}
+                          <li class="desktop-only">
+                          	<a class="view-all-link" href= "{{ section.settings.all_products_link }}">{{ section.settings.all_products_link_title }}</a>
+                          </li>
+                         {% endif %}
+                        </ul>
+                      {% else %}
+                        <a class="ch-menu-child-link" href="{{child_link.url}}">
+                          <span class="ch-menu-child-link-text">{{child_link.title}}</span>
+                        </a>
+                      {% endif %}   
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% if link.title == 'Shop' or link.title == 'Store' %}
+                <!-- Products -->
+                {% if section.settings.enable_products_section %}
+                  {% assign product_one = all_products[section.settings.product_one] %}
+                  {% assign product_two = all_products[section.settings.product_two] %}
+                  <div class="header-products-wrapper link-content" id="shop">
+                    <div class="header-product-item header-product-item-one">
+                      <h2 class="header-product-section-item-title">{{ section.settings.product_one_section_text }}</h2>
+                      <div class="header-product-item-image-wrapper">
+                        <a href="{{ product_one.url | within: collection }}">
+                          <img src='{{ product_one.featured_image | img_url: 'master' }}'>
+                        </a>
+                      </div>
+                      {% if section.settings.enable_product_one_item_text %}
+                        <h4 class="header-product-item-title">
+                          <a href="{{ product_one.url | within: collection }}">{{ section.settings.product_one_item_text }}</a>
+                        </h4>
+                      {% else %}
+                        <h4 class="header-product-item-title">
+                          <a href="{{ product_one.url | within: collection }}">{{ product_one.title }}</a>
+                        </h4>
+                      {% endif %}
+                    </div>
+                    <div class="header-product-item  header-product-item-two">
+                      <h2 class="header-product-section-item-title">{{ section.settings.product_two_section_text }}</h2>
+                      <div class="header-product-item-image-wrapper">
+                        <a href="{{ product_two.url | within: collection }}">
+                          <img src='{{ product_two.featured_image | img_url: 'master' }}'>
+                        </a>
+                      </div>
+                      {% if section.settings.enable_product_two_item_text %}
+                        <h4 class="header-product-item-title">
+                          <a href="{{ product_two.url | within: collection }}">{{ section.settings.product_two_item_text }}</a>
+                        </h4>
+                      {% else %}
+                        <h4 class="header-product-item-title">
+                          <a href="{{ product_two.url | within: collection }}">{{ product_two.title }}</a>
+                        </h4>
+                      {% endif %}
+                    </div>
+                  </div>
+                {% endif %}
+                <!-- End Products -->
+              {% endif %}
+
+              {% if link.title == 'Learn' %}
+                <!-- Featured Blog Posts -->
+                {% if section.settings.enable_featured_blog_posts %}
+                  <div class="header-blog-post-wrapper link-content" id="learn">
+                    <h2 class="header-blog-post-wrapper--title">{{ section.settings.ttl }}</h2>
+
+                    <div class="header-blog-post-items-content">
+                      {% for article in blogs[section.settings.blog].articles  limit: 4 %}
+                      <div class="header-blog-post-item">
+                        <a href="{{ article.url }}" style="background-image: url('{% if article.image %}{{ article.image.src | img_url: 'master' }}{% endif %}')" class="header-blog-post-item-img-wrap"></a>
+                        <h4 class="header-blog-post-item-article-title">
+                          <a href="{{ article.url }}">{{ article.title }}</a>
+                        </h4>
+                        {% if article.excerpt != empty %}
+                        <div class="header-blog-post-item-article-description">{{ article.excerpt }}</div>
+                        {% endif %}
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                {% endif %}
+                <!-- End Featured Blog Posts -->
+              {% endif %}
+            </div>
+          {% endif %}
+      	</div>
+      {% endfor %}
+      
+    </div>
+    
+    <a class="ch-logo" href="/">
+<!--       {% if section.settings.mobile_logo != blank %}
+      	<img class="ch-logo-image" src="{{section.settings.mobile_logo | img_url:'master'}}">
+      {% else %}
+      	<span>{{ shop.name }}</span>
+      {% endif %} -->
+      <img class="ch-logo-image" src="{{ 'TN-2020Logo.svg' | asset_url }}">
+    </a>
+
+    <a class="ch-return-to-shopping" href="/collections/{{ coll_handle | default:'all-products' }}">
+      {% include 'snippet-symbol' with 'arrow-left' %}
+      {{ 'layout.header.continue_shopping' | t }}
+    </a>
+    
+    <div class="ch-action-wrapper">
+      {% for item in cart.items %}
+        {% if forloop.first %}
+          {% assign coll_handle = item.product.collections.first.handle %}
+          {% if coll_handle == 'frontpage' or coll_handle == '' %}{% assign coll_handle = 'all' %}{% endif %}
+        {% endif %}
+      {% endfor %}
+      
+      {% if section.settings.subscribe_btn_enable and section.settings.sbscrptn_txt != empty %}
+        <div class="ch-subscription-button">
+          <a
+             class="show-subscription-popup manual-optin-trigger ch-subscription-button-link"
+          	 href="https://app.monstercampaigns.com/c/{{ settings.theme_optin }}/"
+             target="_blank"
+             data-optin-slug="{{ settings.theme_optin }}"
+          >
+            {{ section.settings.sbscrptn_txt }}
+          </a>
+        </div>
+      {% endif %}
+      <div class="ch-account-and-cart after-subscription">
+        <div class="hdr--srch-wrp">
+          <form  action="/search" method="get" role="search" class="hdr--srch-frm">
+            {% if settings.search-products-only %}
+            <input type="hidden" name="type" value="product" />
+            {% endif %}
+            <input name="q" class="hdr--srch-fld" type="text" placeholder="{{ 'layout.header.search_placeholder' | t }}"/>
+            <button class="hdr--srch-btn ch-account"><i class="fas fa-search"></i></button>
+          </form>
+        </div>
+        <a class="ch-account" href="/account">
+          {% if customer %}
+          <i class="fas fa-user"></i>
+          {% else %}
+          <i class="fas fa-user"></i>
+          {% endif %}
+        </a>
+        <a class="ch-cart cart-link" href="/cart">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="ch-cart-count number" {%if cart.item_count == 0%}hidden{%endif%}>{{ cart.item_count }}</span>
+        </a>
+        <div class="recently-added">
+          <table width="100%">
+            <thead>
+              <tr>
+                <td colspan="3">Recently Added</td>
+              </tr>
+            </thead>
+
+            <tbody>
+
+
+            </tbody>
+
+            <tfoot>
+              <tr>
+                <td class="items-count"><a href="/cart"><span class="number">0</span> Items</a></td>
+                <td colspan="2" class="text-right all-caps"><strong>Total <span class="total-price money" style="margin-left:5px;">£0.00</span></strong></td>
+              </tr>
+            </tfoot>
+
+          </table>
+
+          <div class="row">
+            <div class="checkout columns">
+              <a class="button" href="/cart">View Cart</a>
+            </div><!-- #cart-meta -->
+          </div>
+
+          <div class="error">
+            <p>The item you just added is unavailable. Please select another product or variant.</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class='ch-mobile'>
+  <div class="ch-mobile-flex-wrapper">
+    <div class='ch-mobile-item'>
+      <a href='#' class='ch-mobile-menu-open visible'>
+        <i class="fas fa-bars"></i>
+        <span class="icon-title">Menu</span>
+      </a>
+      <a href='#' class='ch-mobile-menu-close'>
+<!--         <svg>
+          <use href="#close-icon" />
+        </svg> -->
+        <img src="{{'close.png' | asset_url }}" alt="close-icon" />
+        <span class="icon-title">Menu</span>
+      </a>
+    </div>
+    <div class='ch-mobile-item'>
+      <a class="ch-mobile-search" href='/search'>
+        <i class="fas fa-search"></i>
+        <span class="icon-title">Search</span>
+      </a>
+    </div>
+  </div>
+  <div class='ch-mobile-logo'>
+    <a class="ch-logo" href="/">
+<!--       {% if section.settings.mobile_logo != blank %}
+      	<img class="ch-logo-image" src="{{section.settings.mobile_logo | img_url:'master'}}">
+      {% else %}
+      	<span>{{ shop.name }}</span>
+      {% endif %} -->
+      <img class="ch-logo-image" src="{{ 'TN-2020Logo.svg' | asset_url }}">
+    </a>
+  </div>
+  <div class="ch-mobile-flex-wrapper">
+	<div class='ch-mobile-item'>
+      <a class="ch-mobile-store" href='/collections/all-products'>
+        <i class="fas fa-store"></i>
+        <span class="icon-title">Shop</span>
+      </a>
+    </div>
+    <div class='ch-mobile-item ch-account-and-cart'>
+      <a class="ch-mobile-cart cart-link" href="/cart">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="ch-cart-count number" {%if cart.item_count == 0%}hidden{%endif%}>{{ cart.item_count }}</span>
+        <span class="icon-title">Cart</span>
+      </a>
+      <div class="recently-added-mask hide"></div>
+      <div class="recently-added mobile">
+        <a class="close cross" tabindex="0">
+          <svg class="fw--icon fw--icon--cross">
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#fw--icon--cross"></use>
+          </svg>
+        </a>
+
+
+        <div class="row">
+          <div class="columns">
+            <p><strong class="all-caps">Recently Added</strong></p>
+            <p class="mobile-item"></p>
+            <p class="items-count"><a href="/cart"><span class="number">0</span> Items</a></p>
+            <p><strong class="all-caps">Total <span class="total-price money" style="margin-left:5px;">£0.00</span></strong></p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="checkout columns">
+            <a class="button" href="/cart">View Cart</a>
+          </div><!-- #cart-meta -->
+        </div>
+
+        <div class="error">
+          <p>The item you just added is unavailable. Please select another product or variant.</p>
+        </div>
+
+      </div>
+    </div>
+    <div class="ch-search">
+      <form  action="/search" method="get" role="search">
+        {% if settings.search-products-only %}<input type="hidden" name="type" value="product" />{% endif %}
+        <input name="q" class="ch-search-input visible" type="text" placeholder="{{ 'layout.header.search_placeholder' | t }}"/>
+        <button class="ch-search-button"><i class="fas fa-search"></i></button>
+      </form>
+    </div>
+  </div>
+  <div class='ch-mobile-wrapper'>
+    <div class='ch-mobile-wrapper-overlay'></div>
+    <div class='ch-mobile-menu-item'>
+      {% for link in linklists[section.settings.menu].links %}
+        <div class="ch-menu-item" data-title="{{ link.title }}" id="{{ link.title | downcase }}">
+          {% if linklists[link.handle].links.size > 0%}
+          <a href="{{link.url}}" class="ch-menu-item-text item-border ch-menu-has-child" data-mobile-title="{{ link.title }}">
+              {{link.title}}
+              <span class="mobile-menu-chevron fa-angle-down" data-mobile-title="{{ link.title }}"></span>
+          </a>
+          {% else %}
+          	<a href="{{link.url}}" class="ch-menu-item-text {%if link.active %}active{% endif %}">
+              {{link.title}}
+          	</a>
+          {% endif %}
+          {% if linklists[link.handle].links.size > 0%}
+            <div class="ch-menu-item-inner-content-wrapper">
+              <ul class="ch-menu-item-list">
+                {% for child_link in linklists[link.handle].links %}
+                <li class="ch-menu-item-list-item">
+                  <div class="menu-flex-container" {%if link.title == 'Learn' and forloop.first%}style="display: none"{%endif%}>
+                    {% if child_link.links != blank %}
+                      <span class="ch-menu-child-link">
+                        <span class="ch-menu-child-link-text {{ child_link.title | downcase }}">{{child_link.title}}</span>
+                      </span>
+                    {% else %}
+                      <a class="ch-menu-child-link {{ child_link.title | downcase }}" href="{{child_link.url}}">
+                        <span class="ch-menu-child-link-text">{{ child_link.title }}</span>
+                      </a>
+                    {% endif %}
+                    {% if link.title != 'Learn' and forloop.first %}
+                    	<a class="mobile-only view-all-link" href= "{{ section.settings.all_products_link }}">{{ section.settings.all_products_link_title }}</a>
+                    {% endif %}
+                  </div>
+                  <ul class="grandchild {{ child_link.title | downcase }}">
+                    {% for grandchild_link in child_link.links %}  
+                    <li>
+                      <a href= "{{ grandchild_link.url }}">
+                      	<span>{{ grandchild_link.title }}</span>
+                      </a>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </li>
+                {% endfor %}
+              </ul>
+            
+              <!-- Products -->
+              {% if section.settings.enable_products_section %}
+                {% assign product_one = all_products[section.settings.product_one] %}
+                {% assign product_two = all_products[section.settings.product_two] %}
+                <div class="header-products-wrapper link-content" id="shop">
+                  <div class="header-product-item header-product-item-one">
+                    <span class="header-product-section-item-title">{{ section.settings.product_one_section_text }}</span>
+                    <div class="header-product-item-wrapper">
+                      <div class="header-product-item-image-wrapper">
+                        <a href="{{ product_one.url | within: collection }}">
+                          <img src='{{ product_one.featured_image | img_url: 'master' }}'>
+                        </a>
+                      </div>
+                      {% if section.settings.enable_product_one_item_text %}
+                      <h4 class="header-product-item-title">
+                        <a href="{{ product_one.url | within: collection }}">{{ section.settings.product_one_item_text }}</a>
+                      </h4>
+                      {% else %}
+                      <h4 class="header-product-item-title">
+                        <a href="{{ product_one.url | within: collection }}">{{ product_one.title }}</a>
+                      </h4>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="header-product-item  header-product-item-two">
+                    <span class="header-product-section-item-title">{{ section.settings.product_two_section_text }}</span>
+                    <div class="header-product-item-wrapper">
+                      <div class="header-product-item-image-wrapper">
+                        <a href="{{ product_two.url | within: collection }}">
+                          <img src='{{ product_two.featured_image | img_url: 'master' }}'>
+                        </a>
+                      </div>
+                      {% if section.settings.enable_product_two_item_text %}
+                      <h4 class="header-product-item-title">
+                        <a href="{{ product_two.url | within: collection }}">{{ section.settings.product_two_item_text }}</a>
+                      </h4>
+                      {% else %}
+                      <h4 class="header-product-item-title">
+                        <a href="{{ product_two.url | within: collection }}">{{ product_two.title }}</a>
+                      </h4>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+              <!-- End Products -->
+
+              <!-- Featured Blog Posts -->
+              {% if section.settings.enable_featured_blog_posts %}
+                <div class="header-blog-post-wrapper link-content" id="learn">
+                  <h2 class="header-blog-post-wrapper--title">{{ section.settings.ttl }}</h2>
+
+                  <div class="header-blog-post-items-content">
+                    {% for article in blogs[section.settings.blog].articles  limit: 4 %}
+                    <div class="header-blog-post-item">
+                      <a href="{{ article.url }}" style="background-image: url('{% if article.image %}{{ article.image.src | img_url: 'master' }}{% endif %}')" class="header-blog-post-item-img-wrap"></a>
+                      <h4 class="header-blog-post-item-article-title">
+                        <a href="{{ article.url }}">{{ article.title }}</a>
+                      </h4>
+                      {% if article.excerpt != empty %}
+                      <div class="header-blog-post-item-article-description">{{ article.excerpt }}</div>
+                      {% endif %}
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              {% endif %}
+              <!-- End Featured Blog Posts -->
+          	</div>
+          
+          {% endif %}
+        </div>
+      {% endfor %}
+      {% comment %}<a class="show-subscription-popup manual-optin-trigger hdr--offer-bar-btn" href="https://app.monstercampaigns.com/c/{{ settings.theme_optin }}/" target="_blank" data-optin-slug="{{ settings.theme_optin }}">
+        {{ section.settings.subscription_text }}
+      </a>{% endcomment %}
+      {% if section.settings.subscribe_btn_enable and section.settings.sbscrptn_txt != empty %}
+        <div class="ch-subscription-button">
+          <a
+             class="show-subscription-popup manual-optin-trigger ch-subscription-button-link hdr--offer-bar-btn"
+          	 href="https://app.monstercampaigns.com/c/{{ settings.theme_optin }}/"
+             target="_blank"
+             data-optin-slug="{{ settings.theme_optin }}"
+          >
+            {{ section.settings.sbscrptn_txt }}
+          </a>
+        </div>
+      {% endif %}
+  	</div>
+    
+    {% comment %}
+    <div class='ch-mobile-menu-footer'>
+      <div class="ch-social">
+        {% include 'ch-social'%}
+      </div>
+    </div>
+    {% endcomment %}
+  </div>
+</div>
+
+
+<style>
+  /*  Header Products section  */
+  .header-product-item {
+  	width: 200px;
+    margin: 0 30px 0 0;
+    padding: 20px 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .header-product-item:last-of-type {
+  	margin-right: 0;
+  }
+  
+  .header-product-section-item-title {
+    margin: 0 0 15px;
+  	line-height: normal;
+  }
+  
+  .header-product-item-title {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .header-product-item-one .header-product-section-item-title {
+    font-size: {{ section.settings.product_one_section_text_font_size_desktop }}px;
+    color: {{ section.settings.product_one_section_text_font_color_desktop }};
+    font-weight: {{ section.settings.product_one_section_text_font_weight }};
+  }
+  
+  .header-product-item-two .header-product-section-item-title {
+    font-size: {{ section.settings.product_two_section_text_font_size_desktop }}px;
+    color: {{ section.settings.product_two_section_text_font_color_desktop }};
+    font-weight: {{ section.settings.product_two_section_text_font_weight }};
+  }
+  
+  .header-product-item-image-wrapper {
+  	width: 175px;
+    height: 175px;
+    background: transparent;
+    box-sizing: border-box;
+  }
+  
+  .header-product-item-one .header-product-item-title a {
+  	font-size: {{ section.settings.product_one_item_text_font_size_desktop }}px;
+    color: {{ section.settings.product_one_item_text_font_color_desktop }};
+    font-weight: {{ section.settings.product_one_item_text_font_weight }};
+  }
+  
+  .header-product-item-two .header-product-item-title a {
+  	font-size: {{ section.settings.product_two_item_text_font_size_desktop }}px;
+    color: {{ section.settings.product_two_item_text_font_color_desktop }};
+    font-weight: {{ section.settings.product_two_item_text_font_weight }};
+  }
+  
+  @media screen and (max-width: 1023px) {
+  	.header-product-item-one .header-product-section-item-title {
+      font-size: {{ section.settings.product_one_section_text_font_size_mobile }}px;
+      color: {{ section.settings.product_one_section_text_font_color_mobile }};
+    }
+    
+    .header-product-item-two .header-product-section-item-title {
+      font-size: {{ section.settings.product_two_section_text_font_size_mobile }}px;
+      color: {{ section.settings.product_two_section_text_font_color_mobile }};
+    }
+
+    .header-product-item-image-wrapper {
+
+    }
+
+    .header-product-item-one .header-product-item-title a {
+      font-size: {{ section.settings.product_one_item_text_font_size_mobile }}px;
+      color: {{ section.settings.product_one_item_text_font_color_mobile }};
+    }
+    
+    .header-product-item-two .header-product-item-title a {
+      font-size: {{ section.settings.product_two_item_text_font_size_mobile }}px;
+      color: {{ section.settings.product_two_item_text_font_color_mobile }};
+    }
+
+    a.ch-menu-item-text,
+    a.ch-menu-item-text .item-border,
+    .grandchild li a,
+    .grandchild li a > span {
+    	font-size: {{ section.settings.menu_size_mob }}px;
+      	color: {{ section.settings.bot_color }};
+      	letter-spacing: 0.56px;
+    }
+    .ch-menu-item-text,
+    a.ch-menu-item-text .item-border,
+    a.item-border:link, a.ch-menu-item-text {
+    	font-size: 17px !important;
+    }
+    
+    .ch-menu-item-list desktop-only {
+    	font-weight: 400;
+    }
+    
+    .ch-menu-item-list a.mobile-only { 
+      font-size: 14px !important;
+      font-weight: 400;
+      line-height: normal;
+      letter-spacing: 0.44px;
+    }
+  
+}
+  
+  /*  Header Blog section  */
+  .header-blog-post-wrapper--title {
+    font-size: {{ section.settings.ttl_size_mob }}px;
+    color: {{ section.settings.ttl_color }};
+    font-weight: {{ section.settings.ttl_weight }};
+    text-align: center;
+    line-height: normal;
+  	margin: 18px 0 20px;
+  }
+
+  h4.header-blog-post-item-article-title a {
+    font-size: {{ section.settings.artcl_ttl_size_mob }}px;
+    color: {{ section.settings.artcl_ttl_color }};
+    font-weight: {{ section.settings.artcl_ttl_weight }};
+    line-height: normal;
+    letter-spacing: 0.44px;
+  }
+
+  .header-blog-post-item-article-description {
+    font-size: {{ section.settings.artcl_descr_size_mob }}px;
+    color: {{ section.settings.artcl_descr_color }};
+    font-weight: {{ section.settings.artcl_descr_weight }};
+  }
+
+  @media screen and (min-width: 1024px) {
+    .header-blog-post-wrapper--title {
+      font-size: {{ section.settings.ttl_size_desk }}px;
+    }
+    
+    .header-blog-post-items-content {
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+    }    
+    
+    .header-blog-post-item {
+    	max-width: 200px;
+      	margin: 0 15px 0 0;
+    }
+    
+    .header-blog-post-item:last-of-type {
+    	margin-right: 0;
+    }
+    
+    .header-blog-post-item-img-wrap {
+      	display: block;
+      	box-sizing: border-box;
+      	width: 200px;
+      	height: 105px;
+        background-size: cover;
+    	background-repeat: no-repeat
+    }
+    
+    .header-blog-post-item-img-wrap img {
+    	max-width: initial;
+        width: auto;
+        height: 100%;
+    }
+    
+    .header-blog-post-item-article-title {
+      margin: 20px 0 0;
+    }
+
+    h4.header-blog-post-item-article-title a {
+      font-size: {{ section.settings.artcl_ttl_size_desk }}px;
+      letter-spacing: 0.44px;
+    }
+
+    .header-blog-post-item-article-description {
+      font-size: {{ section.settings.artcl_descr_size_desk }}px;
+    }
+    
+    a.ch-menu-item-text,
+    a.ch-menu-child-link,
+    .grandchild li a {
+    	font-size: {{ section.settings.menu_size_desk }}px;
+      	color: {{ section.settings.bot_color }};
+      letter-spacing: .5px;
+    }
+  }
+  
+  @media screen and (min-width: 1280px) {
+  	.header-blog-post-item {
+      	margin: 0 25px 0 0;
+    }
+    
+    .header-blog-post-wrapper {
+    	left: -5%;
+    }
+  }
+  
+  /*  Header  */
+  
+  a.hdr--offer-bar-btn {
+    font-size: {{ section.settings.offer_btn_size_mob }}px;
+    font-weight: {{ section.settings.offer_btn_weight }};
+    color: {{ section.settings.offer_btn_color_mob }} !important;
+    background-color: {{ section.settings.offer_btn_color_bg_mob }};
+  }
+  
+  a.hdr--offer-bar-btn:hover {
+  	color: {{ section.settings.offer_btn_color_mob_hover }} !important;
+    background-color: {{ section.settings.offer_btn_color_bg_mob_hover }};
+  }
+
+  .ch-top{
+    background: {{section.settings.top_background}};
+  }
+  .ch-top a{
+  	color: {{section.settings.top_color}};
+  }
+  {% comment %}
+  .ch-cart{
+    background: {{section.settings.cart_background}};
+  }
+  {% endcomment %}
+  .ch-bot, .ch-menu-item-list{
+    color: {{section.settings.bot_color}};
+    {% comment %}background: {{section.settings.bot_background}};{% endcomment %}
+  }
+  .ch-menu-item-list a{
+  	color: {{section.settings.bot_color}};
+  }
+
+  .ch-account-and-cart.after-subscription a {
+    color: #37404C;
+    border-color: #afb3b7 !important;
+  }
+  .hdr--srch-btn {
+    color: #37404C;
+  }
+  
+  .hdr--srch-btn:hover {
+  	color: {{section.settings.active_item_color_hover}};
+  }
+  
+  a.ch-subscription-button-link {
+    width: 100%;
+    padding: 13px 27px;
+    font-size: {{ section.settings.sbscrptn_btn_size_mob }}px;
+    color: {{ section.settings.sbscrptn_btn_color }};
+    background-color: {{ section.settings.sbscrptn_btn_color_bg }};
+    border-color: {{ section.settings.sbscrptn_btn_brdr_color }};
+    font-weight: {{ section.settings.sbscrptn_btn_weight }};
+    transition: none;
+    max-height: 50px;
+  }
+
+  a.ch-subscribe{
+    color: {{section.settings.subscription_color}};
+    background: {{section.settings.subscription_background}};
+  }
+  .ch-cart-count{
+    {% comment %}background: {{section.settings.subscription_background}};{% endcomment %}
+    background: {{section.settings.cart_background}};
+  }
+  
+  {% comment %}
+  .ch-menu-item-text.active{
+    color: {{section.settings.active_item_color}};
+    border-bottom: 2px solid {{section.settings.active_item_border_color}};
+  }
+  
+  .ch-menu-item-text:hover {
+    color: {{section.settings.active_item_color_hover}};
+  }
+  {% endcomment %}
+  .ch-menu-item-list-item:hover{
+/*     background: {{section.settings.child_link_bg_hover}}; */
+    background: transparent;
+  }
+  .ch-menu-item-list-item:hover .ch-menu-child-link{
+{% comment %}color: {{section.settings.child_link_color_hover}}; {% endcomment %}
+    background: transparent;
+  }
+  .ch-mobile-item a{
+    color: {{section.settings.mobile_menu_color}};
+  }
+  .icon-title {
+    color: {{section.settings.mobile_menu_color}};
+  }
+  .ch-mobile-item a:hover,
+  .ch-mobile-item a:hover .icon-title,
+  .ch-mobile-menu-close.visible .fa-times,
+  .ch-mobile-menu-close.visible .icon-title {
+  	color: {{section.settings.active_item_border_color}};
+  }
+
+  @media screen and (min-width: 1024px) {
+    #hdr--offer-bar-wrap {
+      background-color: {{ section.settings.offer_color_bg }};
+    }
+
+    #hdr--offer-bar-txt {
+      font-size: {{ section.settings.offer_txt_size_desk }}px;
+      font-weight: {{ section.settings.offer_txt_weight }};
+      color: {{ section.settings.offer_txt_color }};
+    }
+
+    a.hdr--offer-bar-btn {
+      font-size: {{ section.settings.offer_btn_size_desk }}px;
+      color: {{ section.settings.offer_btn_color_desk }} !important;
+      border-color: {{ section.settings.offer_btn_brdr_color_desk }};
+    }
+    
+    a.hdr--offer-bar-btn:hover {
+      color: {{ section.settings.offer_btn_color_desk_hover }} !important;
+      border-color: {{ section.settings.offer_btn_brdr_color_desk_hover }};
+    }
+
+    #shopify-section-{{ section.id }} .hdr--srch-btn:hover g#Group-2 > g > g > g {
+      fill: {{section.settings.active_item_color_hover}};
+    }
+
+    #shopify-section-{{ section.id }} .hdr--srch-btn:hover g#Group-6-Copy-2 {
+      stroke: {{section.settings.active_item_color_hover}};
+    }
+
+    #shopify-section-{{ section.id }} .ch-account:hover,
+    #shopify-section-{{ section.id }} .ch-cart.cart-link:hover {
+      color: {{section.settings.active_item_color_hover}};
+      border-color: {{section.settings.active_item_color_hover}} !important;
+
+    }
+  }
+
+  @media only screen and (max-width:1023px){
+    .ch-flag-and-promo.mobile{
+      background-color: {{section.settings.top_background}};;
+
+    }
+    .ch-flag-and-promo.mobile a{
+      color: {{section.settings.top_color}};
+    }
+    .ch-social .social-link{
+      border-color: {{ section.settings.mobile_menu_border_color }};
+    }
+    .ch-mobile-account{
+      background-color: {{ section.settings.mobile_menu_bg_color}};
+	}
+    .ch-mobile{
+      background: {{section.settings.mobile_menu_bg_color}};
+      color: {{ section.settings.mobile_menu_color }};
+    }
+    .ch-mobile-wrapper{
+      background: {{ section.settings.mobile_menu_bg_color }};
+      color: {{section.settings.mobile_menu_color}};
+    }
+    .ch-menu-has-child .mobile-menu-chevron{
+      color: {{section.settings.bot_color}};
+    }
+    .ch-menu-has-child.active .mobile-menu-chevron{
+      color: inherit;
+    }
+    .ch-menu-item-list-item:hover .ch-menu-child-link{
+      {% comment %}color: {{section.settings.active_item_border_color}};{% endcomment %}
+    }
+    .ch-menu-child-link-text{
+      font-size: 16px;
+      background-color: transparent;
+      {% comment %}border-bottom: 1px solid {{ section.settings.mobile_menu_border_color }};{% endcomment %}
+	}
+    .ch-menu-child-link-text.learn {
+    	display: none;
+    }
+    .grandchild.learn {
+    	border-top: none;
+    }
+    .ch-mobile-menu-item .ch-menu-item-text{
+      border-bottom: 1px solid {{ section.settings.mobile_menu_border_color }};
+    }
+    .ch-menu-item-inner-content-wrapper {
+    	display: none;
+    }
+    .ch-menu-item-inner-content-wrapper.active {
+    	display: block;
+    }
+    {% comment %}
+    .ch-menu-has-child.active{
+		border-bottom: 1px solid {{section.settings.active_item_border_color}};
+	}
+    {% endcomment %}
+    .ch-mobile-search.active, .ch-mobile-store.active{
+      color: {{section.settings.cart_background}};
+    }
+  }
+  
+  @media only screen and (max-width: 1023px) and (orientation: landscape) {
+  	.ch-menu-child-link-text{
+      font-size: 18px;
+	}
+  }
+  
+  @media screen and (min-width: 768px) {
+    a.ch-subscription-button-link {
+      font-size: {{ section.settings.sbscrptn_btn_size_desk }}px;
+    }
+
+    a.ch-subscription-button-link:hover {
+      color: {{ section.settings.sbscrptn_btn_color_hover }};
+      background-color: {{ section.settings.sbscrptn_btn_color_bg_hover }};
+      border-color: {{ section.settings.sbscrptn_btn_brdr_color_hover }};
+    }
+  }
+</style>
+
+<script type="text/javascript">
+  // Close menu on iPad (1024px) click, not mousout
+  function openNavClick(evt, linkTitle) {
+    var tablinks, clickCounter, value, linkTitleRefactored;
+    
+    clickCounter = parseInt(evt.target.closest('.ch-menu-item').dataset.value, 10);
+    clickCounter = isNaN(clickCounter) ? 0 : clickCounter;
+    clickCounter++;
+    evt.target.closest('.ch-menu-item').dataset.value = clickCounter;
+    
+  	tablinks = document.getElementsByClassName("ch-menu-item");
+    linkTitleRefactored = linkTitle.toLowerCase();
+    
+    openNav(evt, linkTitle);
+    
+    for (i = 0; i < tablinks.length; i++) {
+      
+      if (
+        evt.target.closest('.ch-menu-item').dataset.value >= 2
+        || evt.target.closest('.ch-menu-item').dataset && evt.target.closest('.ch-menu-item').dataset.value >= 2
+      ) {
+
+        tablinks[i].dataset.value = 0;
+        evt.target.closest('.ch-menu-item').dataset.value = 0;
+        console.log('dataset', evt.target.closest('.ch-menu-item').dataset.value);
+        closeNav();
+      } 
+    }
+  }
+  
+  function openNav(evt, linkTitle) {
+    // Declare all variables
+    var i, tabcontent, tablinks, linkTitleRefactored;
+    linkTitleRefactored = linkTitle.toLowerCase();
+    
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("link-content");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("ch-menu-item");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+      if (tablinks[i].querySelector('.ch-menu-item-wrapper') && tablinks[i].querySelector('.ch-menu-item-wrapper').className !== null) {
+      	tablinks[i].querySelector('.ch-menu-item-wrapper').className = tablinks[i].querySelector('.ch-menu-item-wrapper').className.replace(" active", "");
+      }
+    }
+
+    // Show the current tab, and add an "active" class to the link that opened the tab
+    if (linkTitleRefactored === 'shop' || linkTitleRefactored === 'learn') {
+      document.getElementById(linkTitleRefactored).style.display = "flex";
+      evt.currentTarget.className += " active";
+      evt.currentTarget.querySelector('.ch-menu-item-wrapper').className += " active";
+      // add border to .ch-bot
+      document.getElementsByClassName("ch-bot")[0].style.borderColor = "#d7d9db";
+    } else if (linkTitleRefactored === 'store') {
+    	document.getElementById('shop').style.display = "flex";
+        evt.currentTarget.className += " active";
+        evt.currentTarget.querySelector('.ch-menu-item-wrapper').className += " active";
+        // add border to .ch-bot
+        document.getElementsByClassName("ch-bot")[0].style.borderColor = "#d7d9db";
+    }
+  }
+  
+  function closeNav() {
+  	// Declare all variables
+    var i, tabcontent, tablinks;
+
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("link-content");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("ch-menu-item");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+      if (tablinks[i].querySelector('.ch-menu-item-wrapper') && tablinks[i].querySelector('.ch-menu-item-wrapper').className !== null) {
+      	tablinks[i].querySelector('.ch-menu-item-wrapper').className = tablinks[i].querySelector('.ch-menu-item-wrapper').className.replace(" active", "");
+      }
+    }
+    // remove border from .ch-bot
+    document.getElementsByClassName("ch-bot")[0].style.borderColor = "transparent";
+  }
+  
+  // Hide some items on desctop in navigation by data title
+  {% comment %}
+  (function hiddenItemsOnDesktopByTItle() {
+  	var dataTitle = document.querySelectorAll('[data-title]');
+  
+    for (const section of dataTitle) {
+      linkedVal = section.dataset.title;
+
+      if (linkedVal === "Contact Us") {
+        section.classList.add('hidden-desktop');
+      }
+
+      if (linkedVal === "Login / Register") {
+        section.classList.add('hidden-desktop');
+      }
+    }
+  }());
+  {% endcomment %}
+  
+</script>
+
+{% schema %}
+{
+  "name": "Custom Header",
+  "class":"custom-header",
+  "settings": [
+    {
+      "type":"header",
+      "content": "Offer bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "offer_enable",
+      "label": "Enable"
+    },
+    {
+      "type": "color",
+      "id": "offer_color_bg",
+      "label": "Background",
+      "default": "#37404C"
+    },
+    {
+      "type": "paragraph",
+      "content": "== Text"
+    },
+    {
+      "type": "color",
+      "id": "offer_txt_color",
+      "label": "Text",
+      "default": "#fff"
+    },
+    {
+      "type": "text",
+      "id": "offer_txt",
+      "label": "Text"
+    },
+    {
+      "type": "range",
+      "id": "offer_txt_size_desk",
+      "min": 6,
+      "max": 106,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size on desktop",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "offer_txt_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "100", "label": "Thin" },
+        { "value": "200", "label": "Extra Light" },
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black " }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "paragraph",
+      "content": "== Button"
+    },
+    {
+      "type": "color",
+      "id": "offer_btn_color_desk",
+      "label": "Button text on desktop",
+      "default": "#78BFB5"
+    },
+	{
+      "type": "color",
+      "id": "offer_btn_color_desk_hover",
+      "label": "Button text on desktop on hover",
+      "default": "#5f6670"
+    },
+    {
+      "type": "color",
+      "id": "offer_btn_color_mob",
+      "label": "Button text on mobile",
+      "default": "#fff"
+    },
+	{
+      "type": "color",
+      "id": "offer_btn_color_mob_hover",
+      "label": "Button text on mobile on hover",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "offer_btn_color_bg_mob",
+      "label": "Button background on mobile",
+      "default": "#78BFB5"
+    },
+	{
+      "type": "color",
+      "id": "offer_btn_color_bg_mob_hover",
+      "label": "Button background on mobile on hover",
+      "default": "#5f6670"
+    },
+    {
+      "type": "color",
+      "id": "offer_btn_brdr_color_desk",
+      "label": "Border on desktop",
+      "default": "#78BFB5"
+    },
+	{
+      "type": "color",
+      "id": "offer_btn_brdr_color_desk_hover",
+      "label": "Border on desktop on hover",
+      "default": "#5f6670"
+    },
+    {
+      "type": "text",
+      "id": "offer_btn",
+      "label": "Button"
+    },
+    {
+      "type": "range",
+      "id": "offer_btn_size_desk",
+      "min": 6,
+      "max": 106,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size on desktop",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "offer_btn_size_mob",
+      "min": 6,
+      "max": 106,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size on mobile",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "offer_btn_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "100", "label": "Thin" },
+        { "value": "200", "label": "Extra Light" },
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black " }
+      ],
+      "default": "700"
+    },
+		{
+			"type":"header",
+			"content": "Top row colors"
+		},
+		{
+			"type":"color",
+			"id":"top_color",
+			"label":"Text color",
+			"default":"#fff"
+		},
+		{
+			"type":"color",
+			"id":"top_background",
+			"label":"Background color",
+			"default":"#000"
+		},
+		{
+			"type":"color",
+			"id":"cart_background",
+			"label":"Cart background color",
+			"default":"#0ff"
+		},
+		{
+			"type":"header",
+			"content": "Bottom row"
+		},
+		{
+			"type":"image_picker",
+			"id":"logo",
+			"label":"Logo"
+		},
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+	{
+      "type": "range",
+      "id": "menu_size_desk",
+      "min": 6,
+      "max": 106,
+      "step": 1,
+      "unit": "px",
+      "label": "Menu Font size on desktop",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "menu_size_mob",
+      "min": 6,
+      "max": 106,
+      "step": 1,
+      "unit": "px",
+      "label": "Menu Font size on mobile",
+      "default": 18
+    },
+    {
+      "type":"header",
+      "content": "Bottom row colors"
+    },
+    {
+      "type":"color",
+      "id":"bot_color",
+      "label":"Text color",
+      "default":"#000"
+    },
+    {
+      "type":"color",
+      "id":"bot_background",
+      "label":"Background color",
+      "default":"#fff"
+    },
+    {
+      "type":"color",
+      "id":"subscription_color",
+      "label":"Subscription text color",
+      "default":"#fff"
+    },
+    {
+      "type":"color",
+      "id":"subscription_background",
+      "label":"Subscription background color",
+      "default":"#f0f"
+    },
+    {
+      "type":"color",
+      "id":"active_item_color",
+      "label": "Active menu item text color",
+      "default":"#00f"
+    },
+    {
+      "type":"color",
+      "id":"active_item_color_hover",
+      "label": "Menu item text color on hover",
+      "default":"#78BFB5"
+    },
+		{
+			"type":"color",
+			"id":"active_item_border_color",
+			"label": "Active menu item border color",
+			"default":"#0f0"
+		},
+		{
+			"type":"color",
+			"id":"child_link_bg_hover",
+			"label": "Child link background color on hover",
+			"default":"#f00"
+		},
+		{
+			"type":"color",
+			"id":"child_link_color_hover",
+			"label": "Child link text color on hover",
+			"default":"#fff"
+		},
+		{
+          "type": "header",
+          "content": "Subscribe button"
+        },
+    	{
+          "type": "checkbox",
+          "id": "subscribe_btn_enable",
+          "label": "Enable Subscribe button"
+        },
+        {
+          "type": "color",
+          "id": "sbscrptn_btn_brdr_color",
+          "label": "Border",
+          "default": "#78BFB5"
+        },
+        {
+          "type": "color",
+          "id": "sbscrptn_btn_brdr_color_hover",
+          "label": "Border on hover",
+          "default": "#78BFB5"
+        },
+        {
+          "type": "color",
+          "id": "sbscrptn_btn_color_bg",
+          "label": "Background"
+        },
+        {
+          "type": "color",
+          "id": "sbscrptn_btn_color_bg_hover",
+          "label": "Background on hover",
+          "default": "#78BFB5"
+        },
+        {
+          "type": "color",
+          "id": "sbscrptn_btn_color",
+          "label": "Text",
+          "default": "#78BFB5"
+        },
+        {
+          "type": "color",
+          "id": "sbscrptn_btn_color_hover",
+          "label": "Text on hover",
+          "default": "#fff"
+        },
+        {
+          "type":"text",
+          "id": "sbscrptn_txt",
+          "label": "Button text",
+          "default":"Save 10% Now!"
+        },
+        {
+          "type":     "range",
+          "id":       "sbscrptn_btn_size_desk",
+          "min":       6,
+          "max":       106,
+          "step":      1,
+          "unit":     "px",
+          "label":    "Font size on desktop",
+          "default":   16
+        },
+        {
+          "type":     "range",
+          "id":       "sbscrptn_btn_size_mob",
+          "min":       6,
+          "max":       106,
+          "step":      1,
+          "unit":     "px",
+          "label":    "Font size on mobile",
+          "default":   16
+        },
+        {
+          "type": "select",
+          "id": "sbscrptn_btn_weight",
+          "label": "Font weight",
+          "options": [
+            { "value": "100", "label": "Thin" },
+            { "value": "200", "label": "Extra Light" },
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" },
+            { "value": "800", "label": "Extra Bold" },
+            { "value": "900", "label": "Black " }
+          ],
+          "default": "700"
+        },
+		{
+			"type": "header",
+			"content": "Mobile"
+		},
+		{
+			"type": "image_picker",
+			"id": "mobile_logo",
+			"label": "Mobile Logo"
+		},
+		{
+			"type": "color",
+			"id": "mobile_menu_color",
+			"label": "Mobile Menu Color",
+			"default": "#b2b2b2"
+		},
+		{
+			"type": "color",
+			"id": "mobile_menu_bg_color",
+			"label": "Mobile Menu Background Color",
+			"default": "#f4f4f4"
+		},
+		{
+			"type": "color",
+			"id": "mobile_menu_border_color",
+			"label": "Mobile Menu Border Color",
+			"default": "#e6e6e6"
+		},
+		{
+			"type":"color",
+			"id":"mobile_menu_child_link_bg",
+			"label":"Mobile Sub Menu background color",
+			"default":"#fafafa"
+		},
+		{
+			"type": "header",
+			"content": "Products Section"
+		},
+		{
+          "type": "checkbox",
+          "id": "enable_products_section",
+          "label": "Enable Products Section"
+        },
+		{
+			"type":"text",
+			"id": "all_products_link_title",
+			"label": "View all products link title",
+			"default":"View all products"
+		},
+		{
+			"type":"text",
+			"id": "all_products_link",
+			"label": "View all products link url",
+			"default":"/collections/all-products"
+		},
+		{
+			"type":"text",
+			"id": "product_one_section_text",
+			"label": "Product Section Title",
+			"default":"Default Section Product Title"
+		},
+    	{
+          "type": "range",
+          "id": "product_one_section_text_font_size_desktop",
+          "min": 6,
+          "max": 106,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size Section Product Title On Desktop",
+          "default": 14
+        },
+        {
+          "type": "range",
+          "id": "product_one_section_text_font_size_mobile",
+          "min": 6,
+          "max": 106,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size Section Product Title On Mobile",
+          "default": 16
+        },
+        {
+          "type": "select",
+          "id": "product_one_section_text_font_weight",
+          "label": "Font Weight Section Product Title",
+          "options": [
+            { "value": "100", "label": "Thin" },
+            { "value": "200", "label": "Extra Light" },
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" },
+            { "value": "800", "label": "Extra Bold" },
+            { "value": "900", "label": "Black " }
+          ],
+          "default": "600"
+        },
+		{
+			"type": "color",
+			"id": "product_one_section_text_font_color_desktop",
+			"label": "Product Section Title Color Decktop",
+			"default": "#37404c"
+		},
+		{
+			"type": "color",
+			"id": "product_one_section_text_font_color_mobile",
+			"label": "Product Section Title Color Mobile",
+			"default": "#37404c"
+		},
+		{
+          "type": "product",
+          "id": "product_one",
+          "label": "Product"
+        },
+		{
+          "type": "checkbox",
+          "id": "enable_product_one_item_text",
+          "label": "Use Custom Product Item Title",
+	      "info": "A custom title will be used when enabled"
+        },
+		{
+			"type":"text",
+			"id": "product_one_item_text",
+			"label": "Product Item Title",
+			"default":"Default Product Item Title",
+			"info": "Tipe Custom Product Title if enabled"
+		},
+		{
+          "type": "range",
+          "id": "product_one_item_text_font_size_desktop",
+          "min": 6,
+          "max": 106,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size Product Item On Desktop",
+          "default": 14
+        },
+        {
+          "type": "range",
+          "id": "product_one_item_text_font_size_mobile",
+          "min": 6,
+          "max": 106,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size Product Item On Mobile",
+          "default": 16
+        },
+        {
+          "type": "select",
+          "id": "product_one_item_text_font_weight",
+          "label": "Font Weight Product Item",
+          "options": [
+            { "value": "100", "label": "Thin" },
+            { "value": "200", "label": "Extra Light" },
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" },
+            { "value": "800", "label": "Extra Bold" },
+            { "value": "900", "label": "Black " }
+          ],
+          "default": "600"
+        },
+		{
+			"type": "color",
+			"id": "product_one_item_text_font_color_desktop",
+			"label": "Product Item Title Color Decktop",
+			"default": "#37404c"
+		},
+		{
+			"type": "color",
+			"id": "product_one_item_text_font_color_mobile",
+			"label": "Product Item Title Color Mobile",
+			"default": "#37404c"
+		},
+		{
+			"type":"text",
+			"id": "product_two_section_text",
+			"label": "Product Section Title",
+			"default":"Default Section Product Title"
+		},
+    	{
+          "type": "range",
+          "id": "product_two_section_text_font_size_desktop",
+          "min": 6,
+          "max": 106,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size Section Product Title On Desktop",
+          "default": 14
+        },
+        {
+          "type": "range",
+          "id": "product_two_section_text_font_size_mobile",
+          "min": 6,
+          "max": 106,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size Section Product Title On Mobile",
+          "default": 16
+        },
+        {
+          "type": "select",
+          "id": "product_two_section_text_font_weight",
+          "label": "Font Weight Section Product Title",
+          "options": [
+            { "value": "100", "label": "Thin" },
+            { "value": "200", "label": "Extra Light" },
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" },
+            { "value": "800", "label": "Extra Bold" },
+            { "value": "900", "label": "Black " }
+          ],
+          "default": "600"
+        },
+		{
+			"type": "color",
+			"id": "product_two_section_text_font_color_desktop",
+			"label": "Product Section Title Color Decktop",
+			"default": "#37404c"
+		},
+		{
+			"type": "color",
+			"id": "product_two_section_text_font_color_mobile",
+			"label": "Product Section Title Color Mobile",
+			"default": "#37404c"
+		},
+		{
+          "type": "product",
+          "id": "product_two",
+          "label": "Product"
+        },
+		{
+          "type": "checkbox",
+          "id": "enable_product_two_item_text",
+          "label": "Use Custom Product Item Title",
+	      "info": "A custom title will be used when enabled"
+        },
+		{
+			"type":"text",
+			"id": "product_two_item_text",
+			"label": "Product Item Title",
+			"default":"Default Product Item Title",
+			"info": "Tipe Custom Product Title if enabled"
+		},
+		{
+          "type": "range",
+          "id": "product_two_item_text_font_size_desktop",
+          "min": 6,
+          "max": 106,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size Product Item On Desktop",
+          "default": 14
+        },
+        {
+          "type": "range",
+          "id": "product_two_item_text_font_size_mobile",
+          "min": 6,
+          "max": 106,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size Product Item On Mobile",
+          "default": 16
+        },
+        {
+          "type": "select",
+          "id": "product_two_item_text_font_weight",
+          "label": "Font Weight Product Item",
+          "options": [
+            { "value": "100", "label": "Thin" },
+            { "value": "200", "label": "Extra Light" },
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" },
+            { "value": "800", "label": "Extra Bold" },
+            { "value": "900", "label": "Black " }
+          ],
+          "default": "600"
+        },
+		{
+			"type": "color",
+			"id": "product_two_item_text_font_color_desktop",
+			"label": "Product Item Title Color Decktop",
+			"default": "#37404c"
+		},
+		{
+			"type": "color",
+			"id": "product_two_item_text_font_color_mobile",
+			"label": "Product Item Title Color Mobile",
+			"default": "#37404c"
+		},
+		{
+			"type": "header",
+			"content": "Featured Blog Posts"
+		},
+  		{
+          "type": "checkbox",
+          "id": "enable_featured_blog_posts",
+          "label": "Enable Featured Blog Posts Section"
+        },
+    	{
+          "type": "blog",
+          "id": "blog",
+          "label": "Blog"
+        },
+        {
+          "type": "header",
+          "content": "Heading"
+        },
+        {
+          "type": "color",
+          "id": "ttl_color",
+          "label": "Text",
+          "default": "#231F20"
+        },
+        {
+          "type": "text",
+          "id": "ttl",
+          "label": "Text",
+		  "default": "FEATURED BLOG POSTS"
+        },
+        {
+          "type":     "range",
+          "id":       "ttl_size_desk",
+          "min":       6,
+          "max":       106,
+          "step":      1,
+          "unit":     "px",
+          "label":    "Font size on desktop",
+          "default":   14
+        },
+        {
+          "type":     "range",
+          "id":       "ttl_size_mob",
+          "min":       6,
+          "max":       106,
+          "step":      1,
+          "unit":     "px",
+          "label":    "Font size on mobile",
+          "default":   16
+        },
+        {
+          "type": "select",
+          "id": "ttl_weight",
+          "label": "Font weight",
+          "options": [
+            { "value": "100", "label": "Thin" },
+            { "value": "200", "label": "Extra Light" },
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" },
+            { "value": "800", "label": "Extra Bold" },
+            { "value": "900", "label": "Black " }
+          ],
+          "default": "600"
+        },
+        {
+          "type": "header",
+          "content": "Article heading"
+        },
+        {
+          "type": "color",
+          "id": "artcl_ttl_color",
+          "label": "Text",
+          "default": "#231F20"
+        },
+        {
+          "type":     "range",
+          "id":       "artcl_ttl_size_desk",
+          "min":       6,
+          "max":       106,
+          "step":      1,
+          "unit":     "px",
+          "label":    "Font size on desktop",
+          "default":   14
+        },
+        {
+          "type":     "range",
+          "id":       "artcl_ttl_size_mob",
+          "min":       6,
+          "max":       106,
+          "step":      1,
+          "unit":     "px",
+          "label":    "Font size on mobile",
+          "default":   16
+        },
+        {
+          "type": "select",
+          "id": "artcl_ttl_weight",
+          "label": "Font weight",
+          "options": [
+            { "value": "100", "label": "Thin" },
+            { "value": "200", "label": "Extra Light" },
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" },
+            { "value": "800", "label": "Extra Bold" },
+            { "value": "900", "label": "Black " }
+          ],
+          "default": "600"
+        },
+        {
+          "type": "header",
+          "content": "Article excerpt"
+        },
+        {
+          "type": "color",
+          "id": "artcl_descr_color",
+          "label": "Text",
+          "default": "#231F20"
+        },
+        {
+          "type":     "range",
+          "id":       "artcl_descr_size_desk",
+          "min":       6,
+          "max":       106,
+          "step":      1,
+          "unit":     "px",
+          "label":    "Font size on desktop",
+          "default":   14
+        },
+        {
+          "type":     "range",
+          "id":       "artcl_descr_size_mob",
+          "min":       6,
+          "max":       106,
+          "step":      1,
+          "unit":     "px",
+          "label":    "Font size on mobile",
+          "default":   16
+        },
+        {
+          "type": "select",
+          "id": "artcl_descr_weight",
+          "label": "Font weight",
+          "options": [
+            { "value": "100", "label": "Thin" },
+            { "value": "200", "label": "Extra Light" },
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" },
+            { "value": "700", "label": "Bold" },
+            { "value": "800", "label": "Extra Bold" },
+            { "value": "900", "label": "Black " }
+          ],
+          "default": "400"
+        }
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+<script>
+  $('.ch-mobile-menu-open').on('click', function () {
+      $(this).removeClass('visible');
+      $('html, body').addClass('no-overflow');
+      $('#header-overlay').fadeIn();
+      $('.ch-mobile-menu-close').addClass('visible');
+      $('.ch-mobile-wrapper').addClass('visible');
+  });
+  $('.ch-mobile-menu-close').on('click', function () {
+      $(this).removeClass('visible');
+      $('html, body').removeClass('no-overflow');
+      $('#header-overlay').fadeOut();
+      $('.ch-mobile-menu-open').addClass('visible');
+      $('.ch-mobile-wrapper').removeClass('visible');
+      $('.ch-mobile-wrapper-overlay').fadeOut();
+      $('.ch-mobile-search').removeClass('active');
+      $('.ch-search').removeClass('visible');
+  });
+  $('.ch-menu-has-child').on('click', function (e) {
+    e.preventDefault();
+
+    var tabcontent = document.getElementsByClassName("link-content"),
+        linkTitleRefactored
+    	linkTitle = e.target.dataset.mobileTitle,
+      	linkTitleRefactored = linkTitle.toLowerCase();
+	var headerElement = this;
+
+	headerElement.getElementsByClassName("mobile-menu-chevron")[0].classList.toggle("fa-angle-up");
+	headerElement.getElementsByClassName("mobile-menu-chevron")[0].classList.toggle("fa-angle-down");
+    $(this).toggleClass("active");
+    $(this).next(".ch-menu-item-inner-content-wrapper").toggleClass("active");
+
+  });
+  $('.ch-search-button').on('click', function (e) {
+      if (!$(this).hasClass('active')) {
+          e.preventDefault();
+          $(this).addClass('active');
+          $(this).parent().find('.ch-search-input').addClass('visible')
+      }
+  });
+  $('.ch-mobile-search').on('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      $(this).toggleClass('active');
+      $('.ch-search').toggleClass('visible');
+      $('.ch-mobile-wrapper-overlay').fadeToggle();
+  });
+  $('.ch-mobile-wrapper-overlay').on('click', function () {
+      $(this).fadeOut();
+      $('.ch-mobile-search').removeClass('active');
+      $('.ch-search').removeClass('visible');
+  });
+  if (window.location.href.includes('/store')) {
+      $('.ch-mobile-store').addClass('active');
+  }
+
+  if ($(window).width() < 769) {
+      header_height = $('.custom-header').height();
+      $('body').css('padding-top', header_height);
+  }
+  $(window).resize(function () {
+      if ($(window).width() < 769) {
+          header_height = $('.custom-header').height();
+          $('body').css('padding-top', header_height);
+      } else {
+          $('body').css('padding-top', 0);
+      }
+  });
+
+  var lastScrollTop = 0;
+  $(window).scroll(function (event) {
+      var st = $(this).scrollTop();
+      if (st > lastScrollTop) {
+          $('.custom-header').removeClass('custom-header--down');
+          $('.custom-header').addClass('custom-header--up');
+          lastScrollTop = st;
+      } else if (st < lastScrollTop && st > 0) {
+          $('.custom-header').removeClass('custom-header--up');
+          $('.custom-header').addClass('custom-header--down');
+          lastScrollTop = st;
+      } else if (st <= 0) {
+          $('.custom-header').removeClass('custom-header--up');
+          $('.custom-header').addClass('custom-header--down');
+          lastScrollTop = 0;
+      }
+  });
+</script>

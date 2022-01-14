@@ -1,0 +1,125 @@
+snippet-product-item{% if snippet-product-item == '3' %}
+  {% assign column-classes = 'columns large-4' %}
+  {% cycle 'slider-open': '<div class="clearfix"></div>', '', '' %}
+
+{% elsif snippet-product-item == '' or snippet-product-item == '4' %}
+  {% assign snippet-product-item = '4' %}
+  {% assign column-classes = 'columns large-3' %}
+  {% cycle 'slider-open': '<div class="clearfix"></div>', '', '', '' %}
+
+{% elsif snippet-product-item == '6' %}
+  {% assign column-classes = 'columns large-2' %}
+  {% cycle 'slider-open': '<div class="clearfix"></div>', '', '', '', '', '' %}
+{% endif %}
+
+{% assign product_slider = false %}
+{% if snippet-product-item == 'product-slider' or type == 'product-placeholder' %}
+  {% assign product_slider = true %}
+{% endif %}
+
+{% comment %}{% unless product.available %} sold-out{% endunless %}{% endcomment %}
+
+{% assign has_hover = false %}
+{% if settings.hover-image-enabled and product.images.size > 1 and product_slider == false %}
+  {% assign has_hover = true %}
+{% endif %}
+
+  <div class="product-item {{ column-classes }} {% if has_hover %}has-hover{% endif %}">
+    <div class="image-wrapper">
+      {% if product.available == false %}
+        <div class="circle sold-out"><span>{{ 'collections.sold_out_html' | t }}</span></div>
+      {% elsif product.compare_at_price > product.price %}
+        <a class="circle sale" href="{{ product.url | within: collection }}"><span>{{ 'collections.sale' | t }}</span></a>
+      {% endif %}
+      <a class="image-link" href="{{ product.url | within: collection }}">
+        {% if has_hover %}
+          <img src="{{ product.images[1] | product_img_url: '300x300' }}" alt="{{ product.images[1].alt | escape }}" class="hover-image" />
+        {% endif %}
+
+        {% if type == 'product-placeholder' %}
+          {% include "framework--placeholder",
+            type: "product",
+            aspect_ratio: "600x800",
+            placeholder_index: index
+          %}
+        {% else %}
+          <img {% if product_slider %}class="lazyOwl" data-src="{{ product.featured_image.src | product_img_url: '300x300' }}"{% endif %} src="{{ product.featured_image.src | product_img_url: '300x300' }}" alt="{{ product.featured_image.alt | escape }}" />
+        {% endif %}
+      </a>
+    </div><!-- .coll-image-wrap -->
+
+    <div class="caption">
+      <p class="title">
+       {% if type == 'product-placeholder' %}
+          {{ 'homepage.onboarding.product_slider.placeholder.name' | t }}
+       {% else %}
+          <a href="{{ product.url | within: collection }}">
+            {{ product.title }}
+          </a>
+       {% endif %}
+      </p>
+
+
+      {% if settings.brand-show %}
+        {% if type == 'product-placeholder' %}
+          <p class="vendor">
+            {{ 'homepage.onboarding.product_slider.placeholder.vendor' | t }}
+          </p>
+        {% endif %}
+
+        {% assign product_vendor_handle = product.vendor | handle %}
+        {% if collections[product_vendor_handle].handle == product_vendor_handle %}
+          {% assign vendor_url = collections[product_vendor_handle].url %}
+        {% else %}
+          {% assign vendor_url = product.vendor | url_for_vendor %}
+        {% endif %}
+        <p class="vendor">
+          {{ product.vendor | link_to: vendor_url }}
+        </p>
+      {% endif %}
+
+      {% if type == 'product-placeholder' %}
+        <p class="price">
+          {{ 'homepage.onboarding.product_slider.placeholder.price' | t }}
+        </p>
+      {% comment %}
+      {% else %}
+        {% if product.compare_at_price > product.price %}
+          <p class="price">
+            <span class="money">{{ product.price | money }}</span>
+            <em class="marked-down-from">{{ 'collections.was' | t }} <span class="money">{{ product.compare_at_price | money }}</span></em>
+          </p>
+          {% else %}
+          <p class="price">
+            {% if product.price_varies %}{{ 'collections.from' | t }}{% endif %} <span class="money">{{ product.price | money }}</span>
+          </p>
+        {% endif %}
+      {% endcomment %}
+      {% endif %}
+
+      {% form 'product', product, class:'product-item-form cart-form no_ro_widget'%}
+        {% unless product.has_only_default_variant %}
+          <select name="id" class="ccnt-select">
+            {% for variant in product.variants %}
+              <option data-sku="{{ variant.sku }}" data-price="{{ variant.price | money }}" data-compare-price="{% if variant.price < variant.compare_at_price %}{{ variant.compare_at_price | money }}{% endif %}" {% if variant.inventory_quantity <= 0 and variant.available == false %}DISABLED {% endif %}{% if variant == product.selected_or_first_available_variant %}selected="selected" {% endif %} value="{{ variant.id }}">{{ variant.title }}</option>
+            {% endfor %}
+          </select>
+        {% else %}
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        {% endunless %}
+        <input type="hidden" name="quantity" value="1">
+        <div class="ccnt-form-price-container">
+          {% assign variant = product.selected_or_first_available_variant %}
+          <span class="compare-price">{% if variant.price < variant.compare_at_price %}{{ variant.compare_at_price | money }}{% endif %}</span>&nbsp;
+          <span class="actual-price">{{ variant.price | money }}</span>
+        </div>
+        <div class="ccnt-form-actions fc-product-item-form-actions">
+          <a href="{{ product.url | within: collection }}" class="ccnt-view-details">{{ 'collections.view_details' | t }}</a>
+
+<div class="ro_widget"></div>
+          <input type="submit" name="add" {% if product.available%}value="{{ 'products.add_to_cart' | t }}"{%else%}value="{{ 'products.custom_sold_out' | t }}" disabled="disabled"{%endif%} class="purchase button ccnt-add-to-cart">
+
+        </div>
+      {% endform %}
+    </div><!-- .coll-prod-caption -->
+  </div>

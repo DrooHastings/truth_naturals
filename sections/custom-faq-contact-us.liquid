@@ -1,0 +1,75 @@
+<hr class='custom-hr'>
+
+<div class='faq'>
+  <h2 class='custom-section-title'>{{ section.settings.section_title }}</h2>
+  <div class='faq-container'>
+    {% for block in section.blocks %}
+      <button class="accordion">{{ block.settings.title }}<span class='chevron'></span></button>
+      <div class="accordion-panel">
+        <div>{{ block.settings.text }}</div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  #shopify-section-{{ section.id}} .accordion{
+    color: {{ section.settings.text_color }};
+    background-color: {{ section.settings.bg_color }};
+  }
+  #shopify-section-{{ section.id}} .faq-container .accordion-panel{
+    border-color: {{ section.settings.bg_color }};
+  }
+</style>
+
+{% schema %}
+  {
+    "name": "FAQ section",
+    "settings": [
+		{
+          "type": "text",
+          "id": "section_title",
+          "label": "Title",
+          "default": "FAQ's"
+		},
+		{
+		  	"type": "color",
+			"id": "text_color",
+			"label": "Tab Title Color",
+			"default": "#7f7f7f"
+		},
+		{
+		  	"type": "color",
+			"id": "bg_color",
+			"label": "Tab Background Color",
+			"default": "#ebebeb"
+		}
+	],
+	"blocks": [
+		{
+			"type": "text",
+			"name": "FAQ block",
+			"settings": [
+				{
+					"type": "text",
+					"id": "title",
+					"label": "Block Title",
+					"default": "Title"
+				},
+				{
+					"type": "textarea",
+					"id": "text",
+					"label": "Block Text",
+					"default": "Text"
+				}
+			]
+		}
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

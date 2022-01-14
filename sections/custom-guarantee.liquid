@@ -1,0 +1,71 @@
+<h2 class='custom-section-title'>{{ section.settings.section_title }}</h2>
+<div class='cg-container'>
+  {% for block in section.blocks %}
+  	<div class='cg-item'>
+      <img class='cg-image' src='{{ block.settings.image | img_url: '200x200'}}'>
+      <h4>{{ block.settings.title }}</h4>
+      <p class="body-medium">{{ block.settings.text }}</p>
+  	</div>
+  {% endfor %}
+</div>
+
+<style>
+.custom-guarantee-section {
+  background: {{ section.settings.section_background }};
+}
+</style>
+
+{% javascript %}
+{% endjavascript %}
+
+{% schema %}
+  {
+    "name": "Guarantee",
+  	"class": "custom-guarantee-section",
+    "settings": [
+		{
+			"type": "text",
+			"id": "section_title",
+			"label": "Title",
+			"default": "Section Title"
+		},
+		{
+        "type": "color",
+        "id": "section_background",
+        "label": "Background",
+		"default": "#fafaf8"
+      }
+	],
+	"blocks":[
+		{
+			"type": "image",
+			"name": "Guarantee Block",
+			"settings": [
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Image"
+				},
+				{
+					"type": "text",
+					"id": "title",
+					"label": "Title",
+					"default": "Title"
+				},
+				{
+					"type": "textarea",
+					"id": "text",
+					"label": "Description",
+					"default": "Description"
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+          "name": "Guarantee",
+          "category": "Custom Sections"
+		}
+	]
+  }
+{% endschema %}

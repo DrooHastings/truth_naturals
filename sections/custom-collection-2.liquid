@@ -1,0 +1,112 @@
+<div class='custom-page-width'>
+  <h1 class='cc-title'>{{ collection.title }}</h1>
+  {% for product in collection.products %}
+  	<div class='cc-product-container'>
+      <div class='cc-product-wrapper'>
+        <img class='cc-product-image' src='{{ product.featured_image | img_url: 'master' }}'>
+      </div>
+      <div class='cc-product-wrapper'>
+        <h3 class='cc-product-title'><a class="cc-product-title-link" href="{{ product.url | within: collection }}">{{ product.title }}</a></h3>
+       	{% if product.description contains '[Description]' %}
+            {% if product.description contains '[Collection]' %}
+        		<p>{{ product.description | split: '[Collection]' | first }}</p>
+            {% else %}
+        		<p>{{ product.description | split: '[Description]' | first }}</p>
+            {% endif %}
+        {% else %}
+        	<p>{{ product.description | truncate: 500 }}</p>
+        {% endif %}
+      </div>
+      <div class='cc-product-wrapper'>
+        {% if product.metafields.c_f.video != blank %}<div class="youtube-player" data-id="{{ product.metafields.c_f.video }}"></div>
+        {% elsif product.metafields.c_f.video_wistia != blank %}
+            <script src="https://fast.wistia.com/embed/medias/{{ product.metafields.c_f.video_wistia }}.jsonp" async=""></script>
+            <script src="https://fast.wistia.com/assets/external/E-v1.js" async=""></script>
+            <div class="video-wistia wistia_responsive_padding" style="padding:56.0% 0 0 0;position:relative;">
+              <div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
+                <div class="wistia_embed wistia_async_{{ product.metafields.c_f.video_wistia }} seo=false videoFoam=true" style="height:100%;width:100%">
+                </div>
+              </div>
+            </div> 
+        {% endif %}
+        <a class='cc-product-url' href='{{ product.url }}'>VIEW PRODUCT DETAILS</a>
+        <p class='cp-price'>
+          {% assign variant = product.selected_or_first_available_variant %}
+          {% if variant.price < variant.compare_at_price %}<span class="compare-price">{{ variant.compare_at_price | money }}</span>&nbsp;{% endif %}
+          <span class="actual-price">{{ variant.price | money }}</span>
+        </p>
+      </div>
+  	</div>
+  	<hr class='custom-hr'>
+  {% endfor %}
+</div>
+
+<div id='custom-collection-description' class='custom-page-width'>
+  {% if collection.description contains '[' %}
+    {% assign cut_desc = collection.description | split: '[' %}
+      {% assign size = cut_desc.size | minus: 1 %}
+    {% for i in (1..size) %}
+      {% assign cut_name = cut_desc[i] | split: ']' | first %}
+      {% assign cut_description = cut_desc[i] | split: ']' | last %}
+      <button class="accordion">{{ cut_name }}<span class='chevron'></span></button>
+      <div class="accordion-panel">
+        <p>{{ cut_description }}</p>
+      </div>
+    {% endfor %}
+  {% else %}
+      {{ collection.description }}
+  {% endif %}
+</div>
+
+<hr class='custom-hr'>
+
+<style>
+  #shopify-section-{{ section.id }} .accordion{
+    color: {{ section.settings.accordion_text_color }};
+    background-color: {{ section.settings.accordion_bg_color }};
+  }
+  #shopify-section-{{ section.id }} .accordion-panel{
+    border: 1px solid {{ section.settings.accordion_bg_color }};  
+  }
+  #shopify-section-custom-collection .cc-product-title-link{
+    color: {{ section.settings.accordion_text_color }};
+  }
+  #shopify-section-{{ section.id }} .cc-product-url{
+    background-color: {{ section.settings.accordion_text_color }};
+  }
+  @media only screen and (max-width: 767px){
+    #shopify-section-{{ section.id }} .cc-title{
+      color: {{ section.settings.accordion_text_color }};
+    }
+  }
+</style>
+
+{% schema %}
+  {
+    "name": "Custom Collection",
+    "settings": [
+			{
+				"type": "header",
+				"content": "Section Settings"
+			},
+			{
+				"type": "color",
+				"id": "accordion_text_color",
+				"label": "Accordion Title Text Color",
+				"default": "#32b274"
+			},
+			{
+				"type": "color",
+				"id": "accordion_bg_color",
+				"label": "Accordion Title Background Color",
+				"default": "#ebebeb"
+			}
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

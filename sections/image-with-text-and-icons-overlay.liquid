@@ -1,0 +1,195 @@
+{% if section.settings.ttl != empty %}
+  <h3 class="img-wth-txt-and-icns--ttl">{{ section.settings.ttl }}</h3>
+{% endif %}
+
+{% if section.settings.sbttl != empty %}
+  <p class="img-wth-txt-and-icns--sbttl">{{ section.settings.sbttl }}</p>
+{% endif %}
+
+<div class="img-wth-txt-and-icns--cntnr">
+  {% for block in section.blocks %}
+    {% if block.settings.image %}
+      <img src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.image.alt }}" class="img-wth-txt-and-icns--img">
+    {% endif %}
+  {% endfor %}
+</div>
+
+
+<style>
+  #shopify-section-{{ section.id }} {
+    background-image: url("{{ section.settings.img_mob | img_url: 'master' }}");
+  }
+
+  #shopify-section-{{ section.id }} .img-wth-txt-and-icns--ttl {
+    font-size: {{ section.settings.ttl_size_mob }}px;
+    color: {{ section.settings.ttl_color }};
+    font-weight: {{ section.settings.ttl_weight }};
+  }
+
+  #shopify-section-{{ section.id }} .img-wth-txt-and-icns--sbttl {
+    font-size: {{ section.settings.sbttl_size_mob }}px;
+    color: {{ section.settings.sbttl_color }};
+    font-weight: {{ section.settings.sbttl_weight }};
+  }
+
+  @media screen and (min-width: 768px) {
+    #shopify-section-{{ section.id }} {
+      background-image: url("{{ section.settings.img_desk | img_url: 'master' }}");
+    }
+
+    #shopify-section-{{ section.id }} .img-wth-txt-and-icns--ttl {
+      font-size: {{ section.settings.ttl_size_desk }}px;
+    }
+
+    #shopify-section-{{ section.id }} .img-wth-txt-and-icns--sbttl {
+      font-size: {{ section.settings.sbttl_size_desk }}px;
+    }
+  }
+</style>
+
+
+{% schema %}
+{
+  "name": "Image with text and icons",
+  "class": "image-with-text-and-icons gd-stl",
+  "settings": [
+  	{
+  	  "type": "header",
+  	  "content": "Image"
+  	},
+  	{
+  	  "type": "image_picker",
+  	  "id": "img_desk",
+  	  "label": "Background on desktop"
+  	},
+  	{
+  	  "type": "image_picker",
+  	  "id": "img_mob",
+  	  "label": "Background on mobile"
+  	},
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "color",
+      "id": "ttl_color",
+      "label": "Text",
+      "default": "#fff"
+    },
+    {
+      "type": "text",
+      "id": "ttl",
+      "label": "Text"
+    },
+    {
+      "type":     "range",
+      "id":       "ttl_size_desk",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on desktop",
+      "default":   50
+    },
+    {
+      "type":     "range",
+      "id":       "ttl_size_mob",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on mobile",
+      "default":   30
+    },
+    {
+      "type": "select",
+      "id": "ttl_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "100", "label": "Thin" },
+        { "value": "200", "label": "Extra Light" },
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black " }
+      ],
+      "default": "900"
+    },
+    {
+      "type": "header",
+      "content": "Subheading"
+    },
+    {
+      "type": "color",
+      "id": "sbttl_color",
+      "label": "Text",
+      "default": "#fff"
+    },
+    {
+      "type": "textarea",
+      "id": "sbttl",
+      "label": "Text"
+    },
+    {
+      "type":     "range",
+      "id":       "sbttl_size_desk",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on desktop",
+      "default":   20
+    },
+    {
+      "type":     "range",
+      "id":       "sbttl_size_mob",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on mobile",
+      "default":   18
+    },
+    {
+      "type": "select",
+      "id": "sbttl_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "100", "label": "Thin" },
+        { "value": "200", "label": "Extra Light" },
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black " }
+      ],
+      "default": "400"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "icon",
+      "name": "Icon",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+  	{
+      "name": "Image with text and icons",
+      "category": "Image"
+  	}
+  ]
+}
+{% endschema %}

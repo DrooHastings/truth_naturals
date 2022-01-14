@@ -1,0 +1,584 @@
+<div id="cntnct-pg--cntct-wrp">
+  <div id="cntnct-pg--cntct">
+    {% if section.settings.title != blank %}
+      <h2 id="cntct-pg--ttl">{{ section.settings.title }}</h2>
+    {% endif %}
+
+    {% form 'contact', id: 'cntct-pg--frm' %}
+
+      {% if form.posted_successfully? %}
+        <p id="cntct-pg--frm-scs"><em>{{ 'contact.form.post_success' | t }}</em></p>
+      {% elsif form.errors %}
+        <p id="cntct-pg--frm-err">{{ 'contact.form.post_error' | t }}</p>
+
+      {% assign message = 'contact.form.message' | t %}
+        <ul id="cntct-pg--frm-errs">
+          {% for field in form.errors %}
+            {% if field == 'form' %}
+              <li class="cntct-pg--frm-errs-itm">
+                {{ form.errors.messages[field] }}
+              </li>
+            {% else %}
+              <li class="cntct-pg--frm-errs-itm">
+                {% assign field_name = field | replace: 'body', message %}
+                {{ 'contact.form.post_field_error_html' | t: field: field_name, error: form.errors.messages[field] }}
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      <div class="cntct-pg--frm-blck">
+        {% assign name_attr = 'contact.form.name' | t | handle %}
+        <label for="cntct-pg--frm-name" class="cntct-pg--frm-sbttl">{{ 'contact.form.name' | t }} *</label>
+        <input type="text" id="cntct-pg--frm-name" name="contact[{{ name_attr }}]" autocapitalize="words" value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.name }}{% endif %}"  class="cntct-pg--frm-fld required-field">
+        <span class="input-field-error empty">{{ 'contact.form.empty_field' | t }}</span>
+      </div>
+
+      <div class="cntct-pg--frm-blck">
+        <label for="cntct-pg--frm-email" class="cntct-pg--frm-sbttl">{{ 'contact.form.email' | t }} *</label>
+        <input type="text" id="cntct-pg--frm-email" name="contact[email]" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"  class="cntct-pg--frm-fld required-field email">
+        <span class="input-field-error empty">{{ 'contact.form.empty_field' | t }}</span>
+        <span class="input-field-error email">{{ 'contact.form.wrong_email' | t }}</span>
+      </div>
+
+      <div class="cntct-pg--frm-blck">
+        {% assign name_attr = 'contact.form.phone' | t | handle %}
+        <label for="cntct-pg--frm-phone" class="cntct-pg--frm-sbttl">{{ 'contact.form.phone' | t }}</label>
+        <input type="tel" id="cntct-pg--frm-phone" name="contact[{{ name_attr }}]" pattern="[0-9\-]*" value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.phone }}{% endif %}" class="cntct-pg--frm-fld">
+      </div>
+
+      <div class="cntct-pg--frm-blck">
+        <label for="cntct-pg--frm-subject" class="cntct-pg--frm-sbttl">{{ 'contact.form.subject' | t }} *</label>
+        <input type="text" id="cntct-pg--frm-subject" name="contact[subject]" class="cntct-pg--frm-fld required-field" >
+        <span class="input-field-error empty">{{ 'contact.form.empty_field' | t }}</span>
+      </div>
+
+      <div class="cntct-pg--frm-blck" id="cntct-pg--frm-blck-message">
+        <label for="cntct-pg--frm-message" class="cntct-pg--frm-sbttl">{{ 'contact.form.message' | t }} *</label>
+        <textarea rows="6" id="cntct-pg--frm-message" name="contact[body]" class="cntct-pg--frm-fld required-field">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+        <span class="input-field-error empty">{{ 'contact.form.empty_field' | t }}</span>
+      </div>
+    
+      {% if section.settings.description != blank %}
+        <p id="cntct-pg--tip" class="cntct-pg--tip">{{ section.settings.description }}</p>
+      {% endif %}
+
+<!--       <p id="cntct-pg--tip">{{ 'contact.form.tip' | t }}</p> -->
+
+      <div id="cntct-pg--frm-btn-wrap">
+        <button type="submit" id="cntct-pg--frm-btn" value="{{ section.settings.button }}">{{ section.settings.button }}</button>
+      </div>
+    {% endform %}
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    form = $('.contact-form');
+    form.on('submit', function(e){
+      $('.required-field').each(function(){
+        value = $(this).val();
+        if (!value.length){
+          $(this).next('.input-field-error.empty').addClass('visible');
+          $(this).addClass('error');
+          e.preventDefault();
+          e.stopPropagation();
+        } else {
+          $(this).removeClass('error');
+          $(this).next('.input-field-error.empty').removeClass('visible');
+        }
+        if($(this).hasClass('email') && value.length){
+          regValue = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
+          if (regValue.test(value)){
+            $(this).removeClass('error');
+            $(this).parent().find('.input-field-error.email').removeClass('visible');
+          } else {
+            $(this).addClass('error');
+            $(this).parent().find('.input-field-error.email').addClass('visible');
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }
+      });
+    });
+  });
+</script>
+<style>
+  #shopify-section-{{ section.id }} {
+    --section_background: {{ section.settings.section_background }};
+  
+    --title_color: {{ section.settings.title_color }};
+    --title_size_desk: {{ section.settings.title_size_desk }}px;
+    --title_size_mob: {{ section.settings.title_size_mob }}px;
+    --title_weight: {{ section.settings.title_weight }};
+    
+    --label_color: {{ section.settings.label_color }};
+    --label_size_desk: {{ section.settings.label_size_desk }}px;
+    --label_size_mob: {{ section.settings.label_size_mob }}px;
+    --label_weight: {{ section.settings.label_weight }};
+      
+    --field_background_color: {{ section.settings.field_background_color }};
+    --field_border_color: {{ section.settings.field_border_color }};
+    --field_color: {{ section.settings.field_color }};
+    --field_size_desk: {{ section.settings.field_size_desk }}px;
+    --field_size_mob: {{ section.settings.field_size_mob }}px;
+    
+    --description_color: {{ section.settings.description_color }};
+    --description_size_desk: {{ section.settings.description_size_desk }}px;
+    --description_size_mob: {{ section.settings.description_size_mob }}px;
+    --description_weight: {{ section.settings.description_weight }};
+    
+    --button_background_color: {{ section.settings.button_background_color }};
+    --button_border_color: {{ section.settings.button_border_color }};
+    --button_weight: {{ section.settings.button_weight }};
+    --button_color: {{ section.settings.button_color }};
+    --button_hover_color: {{ section.settings.button_hover_color }};
+    --button_border_hover_color: {{ section.settings.button_border_hover_color }};
+    --button_size_desk: {{ section.settings.button_size_desk }}px;
+    --button_size_mob: {{ section.settings.button_size_mob }}px;
+    }
+    
+    #shopify-section-{{ section.id }} {
+      background-color: var(--section_background);
+    }
+
+</style>
+{% schema %}
+  {
+    "name":"Contact Form",
+    "class":"contact-us-form",
+    "settings":[
+      {
+        "type":"header",
+        "content":"Section"
+      },
+      {
+        "type":"color",
+        "id":"section_background",
+        "label":"Section background color",
+        "default":"#f4f0e4"
+      },
+      {
+        "type":"header",
+        "content":"Title"
+      },
+      {
+        "type":"text",
+        "id":"title",
+        "label":"Title"
+      },
+      {
+        "type":"color",
+        "id":"title_color",
+        "label":"Title color",
+        "default":"#37404c"
+      },
+      {
+        "type":     "range",
+        "id":       "title_size_desk",
+        "min":       6,
+        "max":       106,
+        "step":      1,
+        "unit":     "px",
+        "label":    "Font size on desktop",
+        "default":   49
+      },
+      {
+        "type":     "range",
+        "id":       "title_size_mob",
+        "min":       6,
+        "max":       106,
+        "step":      1,
+        "unit":     "px",
+        "label":    "Font size on mobile",
+        "default":   30
+      },
+      {
+        "type": "select",
+        "id": "title_weight",
+        "label": "Font weight",
+        "options": [
+          { "value": "100", "label": "Thin" },
+          { "value": "200", "label": "Extra Light" },
+          { "value": "300", "label": "Light" },
+          { "value": "400", "label": "Normal" },
+          { "value": "500", "label": "Medium" },
+          { "value": "600", "label": "Semi Bold" },
+          { "value": "700", "label": "Bold" },
+          { "value": "800", "label": "Extra Bold" },
+          { "value": "900", "label": "Black " }
+        ],
+        "default": "700"
+      },
+      {
+        "type":"header",
+        "content":"Label"
+      },
+      {
+        "type":"color",
+        "id":"label_color",
+        "label":"Label Color",
+        "default":"#37404c"
+      },
+      {
+        "type":     "range",
+        "id":       "label_size_desk",
+        "min":       6,
+        "max":       106,
+        "step":      1,
+        "unit":     "px",
+        "label":    "Font size on desktop",
+        "default":   49
+      },
+      {
+        "type":     "range",
+        "id":       "label_size_mob",
+        "min":       6,
+        "max":       106,
+        "step":      1,
+        "unit":     "px",
+        "label":    "Font size on mobile",
+        "default":   30
+      },
+      {
+        "type": "select",
+        "id": "label_weight",
+        "label": "Font weight",
+        "options": [
+          { "value": "100", "label": "Thin" },
+          { "value": "200", "label": "Extra Light" },
+          { "value": "300", "label": "Light" },
+          { "value": "400", "label": "Normal" },
+          { "value": "500", "label": "Medium" },
+          { "value": "600", "label": "Semi Bold" },
+          { "value": "700", "label": "Bold" },
+          { "value": "800", "label": "Extra Bold" },
+          { "value": "900", "label": "Black " }
+        ],
+        "default": "400"
+      },
+      {
+        "type":"header",
+        "content":"Fields"
+      },
+      {
+        "type":"color",
+        "id":"field_background_color",
+        "label":"Field Background Color",
+        "default":"#fffbf7 "
+      },
+      {
+        "type":"color",
+        "id":"field_border_color",
+        "label":"Field Border Color",
+        "default":"#e8e1c9"
+      },
+      {
+        "type":"color",
+        "id":"field_color",
+        "label":"Field Color",
+		"default":"#37404c"
+      },
+      {
+        "type":     "range",
+        "id":       "field_size_desk",
+        "min":       6,
+        "max":       106,
+        "step":      1,
+        "unit":     "px",
+        "label":    "Font size on desktop",
+        "default":   49
+      },
+      {
+        "type":     "range",
+        "id":       "field_size_mob",
+        "min":       6,
+        "max":       106,
+        "step":      1,
+        "unit":     "px",
+        "label":    "Font size on mobile",
+        "default":   30
+      },
+      {
+        "type":"header",
+        "content":"Description"
+      },
+      {
+        "type":"textarea",
+        "id":"description",
+        "label":"Description"
+      },
+      {
+        "type":"color",
+        "id":"description_color",
+        "label":"Label Color",
+        "default":"#37404c"
+      },
+      {
+        "type":     "range",
+        "id":       "description_size_desk",
+        "min":       6,
+        "max":       106,
+        "step":      1,
+        "unit":     "px",
+        "label":    "Font size on desktop",
+        "default":   18
+      },
+      {
+        "type":     "range",
+        "id":       "description_size_mob",
+        "min":       6,
+        "max":       106,
+        "step":      1,
+        "unit":     "px",
+        "label":    "Font size on mobile",
+        "default":   16
+      },
+      {
+        "type": "select",
+        "id": "description_weight",
+        "label": "Font weight",
+        "options": [
+          { "value": "100", "label": "Thin" },
+          { "value": "200", "label": "Extra Light" },
+          { "value": "300", "label": "Light" },
+          { "value": "400", "label": "Normal" },
+          { "value": "500", "label": "Medium" },
+          { "value": "600", "label": "Semi Bold" },
+          { "value": "700", "label": "Bold" },
+          { "value": "800", "label": "Extra Bold" },
+          { "value": "900", "label": "Black " }
+        ],
+        "default": "400"
+      },
+      {
+        "type":"header",
+        "content":"Button"
+      },
+      {
+        "type":"text",
+        "id":"button",
+        "label":"Button"
+      },
+      {
+        "type":"color",
+        "id":"button_background_color",
+        "label":"Button Background Color",
+        "default":"#fffbf7 "
+      },
+      {
+        "type":"color",
+        "id":"button_border_color",
+        "label":"Button Border Color",
+        "default":"#e8e1c9"
+      },
+      {
+        "type":"color",
+        "id":"button_color",
+        "label":"Button Color",
+		"default":"#ffffff"
+      },
+      {
+        "type":"color",
+        "id":"button_hover_color",
+        "label":"Button Active Color",
+		"default":"#37404c"
+      },
+      {
+        "type":"color",
+        "id":"button_border_hover_color",
+        "label":"Button Border Active Color",
+		"default":"#37404c"
+      },
+      {
+        "type":     "range",
+        "id":       "button_size_desk",
+        "min":       6,
+        "max":       106,
+        "step":      1,
+        "unit":     "px",
+        "label":    "Font size on desktop",
+        "default":   16
+      },
+      {
+        "type":     "range",
+        "id":       "button_size_mob",
+        "min":       6,
+        "max":       106,
+        "step":      1,
+        "unit":     "px",
+        "label":    "Font size on mobile",
+        "default":   16
+      },
+      {
+        "type": "select",
+        "id": "button_weight",
+        "label": "Font weight",
+        "options": [
+          { "value": "100", "label": "Thin" },
+          { "value": "200", "label": "Extra Light" },
+          { "value": "300", "label": "Light" },
+          { "value": "400", "label": "Normal" },
+          { "value": "500", "label": "Medium" },
+          { "value": "600", "label": "Semi Bold" },
+          { "value": "700", "label": "Bold" },
+          { "value": "800", "label": "Extra Bold" },
+          { "value": "900", "label": "Black " }
+        ],
+        "default": "400"
+      }
+    ]
+  }
+{% endschema %}
+
+<style>
+  #cntnct-pg--cntct {
+    padding: 40px 25px;
+  }
+
+  #cntct-pg--ttl {
+    text-align: center;
+    color: var(--title_color);
+    font-weight: var(--title_weight);
+    font-size:  var(--title_size_desk); 
+    text-align: center;
+    margin-bottom: 35px;
+  }
+
+
+  #cntct-pg--frm-scs{
+    padding: 0 10px;
+    text-align: center;
+    width: 100%;
+    font-size: 1.2em;
+  }
+
+  .cntct-pg--frm-blck {
+    margin-top: 25px;
+  }
+
+  .cntct-pg--frm-sbttl {
+    display: block;
+    margin-bottom: 14px;
+    color: var(--label_color);
+    font-weight: var(--label_weight);
+    font-size:  var(--label_size_desk); 
+  }
+  .cntct-pg--tip {
+    color: var(--description_color);
+    font-weight: var(--description_weight);
+    font-size:  var(--description_size_desk); 
+    margin-top: 30px;
+    line-height: 19px;
+    padding: 0 10px;
+    max-width: 400px;
+  }
+    
+  .input-field-error {
+    font-size: {{ settings.m_type_body_small_font_size }}px;
+    font-weight: {{ settings.m_type_body_small_font_weight }};
+    line-height: {{ settings.m_type_body_small_font_line_height }}px;
+  }
+
+  .contact-form .cntct-pg--frm-fld {
+    width: 100% !important;
+    border: 1px solid var(--field_border_color);
+    background-color: var(--field_background_color);
+    color: var(--field_color);
+    font-size: var(--field_size_desk)!important;
+    line-height: 19px !important;
+    padding: .5em 10px !important;
+    margin-bottom: 0 !important;
+    max-width: initial !important;
+    min-height: 42px;
+  }
+  .contact-form .cntct-pg--frm-fld::placeholder {
+    color: var(--field_color);
+  }
+
+  .contact-form .cntct-pg--frm-fld.error{
+    border-color: #c60f13;
+    background-color: rgba(198,15,19,0.1);
+  }
+  .input-field-error{
+    color: #c60f13;
+    padding: 10px 5px 0;
+    display: none;
+  }
+  .input-field-error.visible{
+    display: inline-block;
+  }
+
+  #cntct-pg--frm-btn-wrap {
+    margin-top: 30px;
+  }
+
+  #cntct-pg--frm-btn {
+    min-height: 50px;
+    width: 100%;
+    background-color: var(--button_background_color);
+    color: var(--button_color);
+    font-size: var(--button_size_desk);
+    font-weight: var(--button_weight);
+    letter-spacing: 0.5px;
+    text-align: center;
+    text-transform: uppercase;
+    border-radius: 0;
+    padding: 9px 70px;
+    border: 1px solid var(--button_border_color);
+  }
+
+#cntct-pg--frm-btn:hover,
+#cntct-pg--frm-btn:focus {
+  background-color: var(--button_hover_color);
+  border-color: var(--button_border_hover_color);
+}
+  
+  @media (min-width: 768px) {
+    #cntnct-pg--cntct {
+      padding: 65px 25px 90px;
+      max-width: 670px;
+      margin: 0 auto;
+    }
+
+    #cntct-pg--ttl {
+      margin-bottom: 20px;
+    }
+
+    #cntct-pg--frm {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin: 0 -10px;
+    }
+
+    .cntct-pg--frm-blck {
+      padding: 0 10px;
+    }
+    .cntct-pg--frm-blck:not(#cntct-pg--frm-blck-message) {
+      width: 50%;
+    }
+
+    #cntct-pg--frm-blck-message {
+      width: 100%;
+    }
+
+    #cntct-pg--frm-btn-wrap {
+      margin-top: 20px;
+      padding: 0 10px;
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    .cntct-pg--frm-sbttl {
+      font-size:  var(--label_size_mob); 
+      margin-bottom: 12px;
+    }
+    #cntct-pg--ttl { font-size:  var(--title_size_mob); margin-bottom: 20px; }
+    .cntct-pg--frm-fld { font-size:  var(--field_size_mob); }
+    .cntct-pg--tip { font-size:  var(--description_size_mob); margin-top: 10px; }
+    #cntct-pg--frm-btn { font-size:  var(--button_size_mob);  }
+  }
+
+</style>

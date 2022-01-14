@@ -1,0 +1,25 @@
+{% assign product_slider = true %}
+
+<div class="product-item">
+  <div class="image-wrapper">
+    {% if product.available == false %}
+    <div class="circle sold-out"><span>{{ 'collections.sold_out_html' | t }}</span></div>
+    {% elsif product.compare_at_price > product.price %}
+    <a class="circle sale" href="{{ product.url | within: collection }}"><span>{{ 'collections.sale' | t }}</span></a>
+    {% endif %}
+    <a class="image-link" href="{{ product.url | within: collection }}">
+      <img {% if product_slider %}class="lazyOwl" data-src="{{ product.featured_image.src | product_img_url: '300x300' }}"{% endif %} src="{{ product.featured_image.src | product_img_url: '300x300' }}" alt="{{ product.featured_image.alt | escape }}" />
+    </a>
+  </div><!-- .coll-image-wrap -->
+
+  <div class="caption">
+    <p class="title">
+      <a href="{{ product.url | within: collection }}">
+        {{ product.title }}
+      </a>
+    </p>
+
+    <a href="{{ product.url | within: collection }}" class="ccnt-view-details">CHOOSE OPTIONS</a>
+
+  </div><!-- .coll-prod-caption -->
+</div>

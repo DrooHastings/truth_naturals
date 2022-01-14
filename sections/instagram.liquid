@@ -1,0 +1,217 @@
+{% if section.settings.title != blank %}
+  <h2 class="instafeed--title">{{ section.settings.title }}</h2>
+{% endif %}
+
+{% if section.settings.btn != blank %}
+  <div class="instafeed--btn-wrp">
+    <a href="{{ section.settings.btn_url }}" class="instafeed--lnk">{{ section.settings.btn }}</a>
+  </div>
+{% endif %}
+
+{% if section.settings.client_id != blank %}
+  <div class="instafeed--cntnr">
+    <div class="instafeed--wrap" data-client-id="{{ section.settings.client_id | strip }}" data-count="{{ section.settings.limit }}"></div>
+  </div>
+{% endif %}
+
+<style>
+  #shopify-section-{{ section.id }} .instafeed--title {
+    font-size: {{ section.settings.title_size_mob }}px;
+    color: {{ section.settings.title_color }};
+    font-weight: {{ section.settings.title_weight }};
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .instafeed--lnk {
+    font-size: {{ section.settings.btn_size_mob }}px;
+    color: {{ section.settings.btn_color }};
+    background-color: {{ section.settings.btn_color_bg }};
+    border-color: {{ section.settings.btn_brdr_color }};
+    font-weight: {{ section.settings.btn_weight }};
+  }
+
+  @media screen and (min-width: 768px) {
+    #shopify-section-{{ section.id }} .instafeed--title {
+      font-size: {{ section.settings.title_size_desk }}px;
+    }
+
+    #shopify-section-{{ section.id }} .instafeed--lnk {
+      font-size: {{ section.settings.btn_size_desk }}px;
+    }
+
+    #shopify-section-{{ section.id }} .instafeed--lnk:hover {
+      color: {{ section.settings.btn_color_hover }};
+      background-color: {{ section.settings.btn_color_bg_hover }};
+      border-color: {{ section.settings.btn_brdr_color_hover }};
+    }
+</style>
+
+{% schema %}
+{
+  "name": "Instagram",
+  "class": "instagram instafeed gd-stl",
+  "settings": [
+    {
+      "type": "text",
+      "id": "client_id",
+      "label": "Instagram Access Token ([?](http:\/\/troopthemes.com\/pages\/instagram-integration))"
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "label": "Image count",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Text",
+      "default": "#231F20"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Text",
+      "default": "Follow us on Instagram"
+    },
+    {
+      "type":     "range",
+      "id":       "title_size_desk",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on desktop",
+      "default":   49
+    },
+    {
+      "type":     "range",
+      "id":       "title_size_mob",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on mobile",
+      "default":   30
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "100", "label": "Thin" },
+        { "value": "200", "label": "Extra Light" },
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black " }
+      ],
+      "default": "900"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "color",
+      "id": "btn_color_bg",
+      "label": "Background",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "btn_color_bg_hover",
+      "label": "Background on hover",
+      "default": "#78BFB5"
+    },
+    {
+      "type": "color",
+      "id": "btn_color",
+      "label": "Text",
+      "default": "#78BFB5"
+    },
+    {
+      "type": "color",
+      "id": "btn_color_hover",
+      "label": "Text on hover",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "btn_brdr_color",
+      "label": "Border",
+      "default": "#78BFB5"
+    },
+    {
+      "type": "color",
+      "id": "btn_brdr_color_hover",
+      "label": "Border on hover",
+      "default": "#78BFB5"
+    },
+    {
+      "type": "text",
+      "id": "btn",
+      "label": "Text",
+      "default": "@TRUTHORIGINS"
+    },
+    {
+      "type": "url",
+      "id": "btn_url",
+      "label": "Url"
+    },
+    {
+      "type":     "range",
+      "id":       "btn_size_desk",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on desktop",
+      "default":   16
+    },
+    {
+      "type":     "range",
+      "id":       "btn_size_mob",
+      "min":       6,
+      "max":       106,
+      "step":      1,
+      "unit":     "px",
+      "label":    "Font size on mobile",
+      "default":   16
+    },
+    {
+      "type": "select",
+      "id": "btn_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "100", "label": "Thin" },
+        { "value": "200", "label": "Extra Light" },
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black " }
+      ],
+      "default": "700"
+    }
+  ],
+  "presets": [
+    {
+      "category": "Social media",
+      "name": "Instagram"
+    }
+  ]
+}
+{% endschema %}

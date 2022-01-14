@@ -1,0 +1,115 @@
+{% if section.settings.text != blank %}
+  <p class="contact-us-address__text">{{ section.settings.text }}</p>
+{% endif %}
+
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --background_color: {{ section.settings.background_color }};
+    --text_color: {{ section.settings.text_color }};
+    --text_size_desk: {{ section.settings.text_size_desk }}px;
+    --text_size_mob: {{ section.settings.text_size_mob }}px;
+    --text_weight: {{ section.settings.text_weight }};
+  }
+/*       cntnct-pg-addrss--txt */
+</style>
+
+<style>
+
+  .contact-us-address__section {
+    background-color: var(--background_color);
+    text-align: center;
+    padding-top: 30px;
+    padding-bottom: 30px; 
+  }
+  .contact-us-address__text {
+    color: var(--text_color);
+    font-size: var(--text_size_desk);
+    font-weight: var(--text_weight);
+    max-width: 768px;
+    margin: 0px auto;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+  
+  @media (max-width: 767.98px) {
+    .contact-us-address__section {
+      padding-top: 21px;
+      padding-bottom: 21px; 
+    }
+    .contact-us-address__text {
+      font-size: var(--text_size_mob);
+    }
+          
+  }
+</style>
+{% schema %}
+  {
+    "name":"Address",
+    "class":"contact-us-address__section",
+    "settings":[
+      {
+        "type":"header",
+        "content":"Section"
+      },
+      {
+        "type":"color",
+        "id":"section_background",
+        "label":"Section background color",
+        "default":"#fffbf7"
+      },
+      {
+        "type":"header",
+        "content":"Adress"
+      },
+      {
+        "type":"html",
+        "id":"text",
+        "label":"Text"
+      },
+      {
+        "type":"color",
+        "id":"text_color",
+        "label":"Title color",
+        "default":"#37404c"
+      },
+      {
+        "type":     "range",
+        "id":       "text_size_desk",
+        "min":       6,
+        "max":       106,
+        "step":      1,
+        "unit":     "px",
+        "label":    "Font size on desktop",
+        "default":   16
+      },
+      {
+        "type":     "range",
+        "id":       "text_size_mob",
+        "min":       6,
+        "max":       106,
+        "step":      1,
+        "unit":     "px",
+        "label":    "Font size on mobile",
+        "default":   16
+      },
+      {
+        "type": "select",
+        "id": "text_weight",
+        "label": "Font weight",
+        "options": [
+          { "value": "100", "label": "Thin" },
+          { "value": "200", "label": "Extra Light" },
+          { "value": "300", "label": "Light" },
+          { "value": "400", "label": "Normal" },
+          { "value": "500", "label": "Medium" },
+          { "value": "600", "label": "Semi Bold" },
+          { "value": "700", "label": "Bold" },
+          { "value": "800", "label": "Extra Bold" },
+          { "value": "900", "label": "Black " }
+        ],
+        "default": "400"
+      }
+    ]
+  }
+{% endschema %}

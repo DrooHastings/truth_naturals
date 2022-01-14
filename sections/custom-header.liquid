@@ -1,0 +1,784 @@
+{% if section.settings.offer_enable %}
+  <div class="droo-test-5"id="hdr--offer-bar-wrap">
+    {% if section.settings.offer_txt != blank %}
+      <span id="hdr--offer-bar-txt">{{ section.settings.offer_txt }}</span>
+    {% endif %}
+    {% if section.settings.offer_btn != blank %}
+      <a class="show-subscription-popup manual-optin-trigger hdr--offer-bar-btn droo-test-6" href="{{ settings.theme_optin }}" data-optin-slug="{{ settings.theme_optin }}">{{ section.settings.offer_btn }}</a>
+    {% endif %}
+  </div>
+{% endif %}
+
+<div id='header-overlay'></div>
+
+{% comment %}
+  <div class="ch-top">
+    <div class="ch-top-row">
+      <div class="ch-social">
+      	{% if settings.phone != blank %}
+          <a class="social-link phone" href="tel:{{settings.phone}}">
+            {% include 'icon-phone'%}
+            <span>{{ settings.phone }}</span>
+          </a>
+        {% endif %}
+      </div>
+      <div class="ch-flag-and-promo">
+        <a class="ch-flag" href="{{section.settings.flag_url}}">
+          <img class="ch-flag-image" alt="{{section.settings.flag.alt}}" src="{{ section.settings.flag | img_url:"100x100" }}">
+        </a>
+        <a class="ch-promo" href="{{section.settings.promo_url}}">
+          <span class="ch-promo-text">{{ section.settings.promo_text }}</span>
+        </a>
+      </div>
+      <div class="ch-account-and-cart">
+        <div class="ch-search">
+          <form  action="/search" method="get" role="search">
+            {% if settings.search-products-only %}
+              <input type="hidden" name="type" value="product" />
+            {% endif %}
+            <input name="q" class="ch-search-input" type="text" placeholder="{{ 'layout.header.search_placeholder' | t }}"/>
+            <button class="ch-search-button"><i class="fas fa-search"></i></button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endcomment %}
+
+<div class="ch-bot">
+  <div class="ch-bot-row">
+    <a class="ch-logo" href="/">
+      {% if section.settings.logo != blank %}
+    <img class="ch-logo-image" src="{{section.settings.logo | img_url:'master'}}">
+      {% else %}
+        <span>{{ shop.name }}</span>
+      {% endif %}
+    </a>
+
+    <div class="ch-menu">
+  	  {% for link in linklists[section.settings.menu].links %}
+        <div class="ch-menu-item" >
+          <a href="{{ link.url }}" class="ch-menu-item-text {% if link.active %}active{% endif %}">{{ link.title }}</a>
+          {% if linklists[link.handle].links.size > 0%}
+          	<ul class="ch-menu-item-list">
+              {% for child_link in linklists[link.handle].links %}
+                <li class="ch-menu-item-list-item">
+                  <a class="ch-menu-child-link" href="{{child_link.url}}">
+                    <span class="ch-menu-child-link-text">{{child_link.title}}</span>
+                  </a>
+                </li>
+              {% endfor %}
+          	</ul>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+
+
+    {% for item in cart.items %}
+      {% if forloop.first %}
+        {% assign coll_handle = item.product.collections.first.handle %}
+        {% if coll_handle == 'frontpage' or coll_handle == '' %}{% assign coll_handle = 'all' %}{% endif %}
+      {% endif %}
+    {% endfor %}
+    <a class="ch-return-to-shopping" href="/collections/{{ coll_handle | default:'all-products' }}">
+      {% include 'snippet-symbol' with 'arrow-left' %}
+      {{ 'layout.header.continue_shopping' | t }}
+    </a>
+    <div class="ch-account-and-cart after-subscription">
+      <div class="hdr--srch-wrp">
+        <form  action="/search" method="get" role="search" class="hdr--srch-frm">
+          {% if settings.search-products-only %}
+            <input type="hidden" name="type" value="product" />
+          {% endif %}
+          <input name="q" class="hdr--srch-fld" type="text" placeholder="{{ 'layout.header.search_placeholder' | t }}"/>
+          <button class="hdr--srch-btn">{% include 'icon-search' %}</button>
+        </form>
+      </div>
+      <a class="ch-account" href="/account">
+        {% if customer %}
+          <i class="fas fa-user"></i>
+        {% else %}
+          <i class="fas fa-user"></i>
+        {% endif %}
+      </a>
+      <a class="ch-cart cart-link" href="/cart">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="ch-cart-count number" {%if cart.item_count == 0%}hidden{%endif%}>{{ cart.item_count }}</span>
+      </a>
+      <div class="recently-added">
+        <table width="100%">
+          <thead>
+            <tr>
+              <td colspan="3">Recently Added</td>
+            </tr>
+          </thead>
+
+          <tbody>
+
+
+          </tbody>
+
+          <tfoot>
+            <tr>
+              <td class="items-count"><a href="/cart"><span class="number">0</span> Items</a></td>
+              <td colspan="2" class="text-right all-caps"><strong>Total <span class="total-price money" style="margin-left:5px;">£0.00</span></strong></td>
+            </tr>
+          </tfoot>
+
+        </table>
+
+        <div class="row">
+          <div class="checkout columns">
+            <a class="button" href="/cart">View Cart</a>
+          </div><!-- #cart-meta -->
+        </div>
+
+        <div class="error">
+          <p>The item you just added is unavailable. Please select another product or variant.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class='ch-mobile'>
+  <div class='ch-mobile-item'>
+    <a href='#' class='ch-mobile-menu-open visible'>
+      <i class="fas fa-bars"></i>
+    </a>
+    <a href='#' class='ch-mobile-menu-close'>
+      <i class="fas fa-times"></i>
+    </a>
+  </div>
+  <div class='ch-mobile-logo'>
+    <a class="ch-logo" href="/">
+      {% if section.settings.mobile_logo != blank %}
+      	<img class="ch-logo-image" src="{{section.settings.mobile_logo | img_url:'master'}}">
+      {% else %}
+      	<span>{{ shop.name }}</span>
+      {% endif %}
+    </a>
+  </div>
+
+  <div class='ch-mobile-item'>
+    <a class="ch-mobile-search" href='/search'>
+      <i class="fas fa-search"></i>
+    </a>
+  </div>
+  <div class='ch-mobile-item'>
+    <a class="ch-account" href="/account">
+      {% if customer %}
+    	  <i class="fas fa-user"></i>
+      {% else %}
+    	  <i class="fas fa-user"></i>
+      {% endif %}
+    </a>
+  </div>
+  <div class='ch-mobile-item'>
+    <a class="ch-mobile-store" href='/collections/all-products'>
+      <i class="fas fa-store"></i>
+    </a>
+  </div>
+  <div class='ch-mobile-item ch-account-and-cart'>
+    <a class="ch-mobile-cart cart-link" href="/cart">
+      <i class="fas fa-shopping-cart"></i>
+      <span class="ch-cart-count number" {%if cart.item_count == 0%}hidden{%endif%}>{{ cart.item_count }}</span>
+    </a>
+    <div class="recently-added-mask hide"></div>
+    <div class="recently-added mobile">
+      <a class="close cross" tabindex="0">
+        <svg class="fw--icon fw--icon--cross">
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#fw--icon--cross"></use>
+        </svg>
+      </a>
+
+
+      <div class="row">
+        <div class="columns">
+          <p><strong class="all-caps">Recently Added</strong></p>
+          <p class="mobile-item"></p>
+          <p class="items-count"><a href="/cart"><span class="number">0</span> Items</a></p>
+          <p><strong class="all-caps">Total <span class="total-price money" style="margin-left:5px;">£0.00</span></strong></p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="checkout columns">
+          <a class="button" href="/cart">View Cart</a>
+        </div><!-- #cart-meta -->
+      </div>
+
+      <div class="error">
+        <p>The item you just added is unavailable. Please select another product or variant.</p>
+      </div>
+
+    </div>
+  </div>
+  <div class="ch-search">
+    <form  action="/search" method="get" role="search">
+      {% if settings.search-products-only %}<input type="hidden" name="type" value="product" />{% endif %}
+      <input name="q" class="ch-search-input visible" type="text" placeholder="{{ 'layout.header.search_placeholder' | t }}"/>
+      <button class="ch-search-button active"><i class="fas fa-search"></i></button>
+    </form>
+  </div>
+  <div class='ch-mobile-wrapper'>
+    <div class='ch-mobile-wrapper-overlay'></div>
+    <div class='ch-mobile-menu-item'>
+      {% for link in linklists[section.settings.menu].links %}
+        <div class="ch-menu-item" >
+          {% if linklists[link.handle].links.size > 0%}
+          <a href="{{link.url}}" class="ch-menu-item-text ch-menu-has-child">{{link.title}}
+          	<span class='mobile-menu-chevron'></span>
+          </a>
+          {% else %}
+          	<a href="{{link.url}}" class="ch-menu-item-text {%if link.active %}active{% endif %}">{{link.title}}</a>
+          {% endif %}
+          {% if linklists[link.handle].links.size > 0%}
+          <ul class="ch-menu-item-list">
+            {% for child_link in linklists[link.handle].links %}
+            <li class="ch-menu-item-list-item">
+              <a class="ch-menu-child-link" href="{{child_link.url}}">
+                <span class="ch-menu-child-link-text">{{child_link.title}}</span>
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+      {% endfor %}
+      <a class="show-subscription-popup manual-optin-trigger hdr--offer-bar-btn droo-test-2" href="{{ settings.theme_optin }}" target="_blank" data-optin-slug="{{ settings.theme_optin }}">
+        {{ section.settings.subscription_text }}
+      </a>
+  	</div>
+    {% comment %}
+    <div class='ch-mobile-menu-footer'>
+      <div class="ch-social">
+        {% include 'ch-social'%}
+      </div>
+    </div>
+    {% endcomment %}
+  </div>
+</div>
+
+
+<style>
+  a.hdr--offer-bar-btn {
+    font-size: {{ section.settings.offer_btn_size_mob }}px;
+    font-weight: {{ section.settings.offer_btn_weight }};
+    color: {{ section.settings.offer_btn_color_mob }} !important;
+    background-color: {{ section.settings.offer_btn_color_bg_mob }};
+  }
+
+  a.hdr--offer-bar-btn:hover {
+  	color: {{ section.settings.offer_btn_color_mob_hover }} !important;
+    background-color: {{ section.settings.offer_btn_color_bg_mob_hover }};
+  }
+
+  .ch-top{
+    background: {{section.settings.top_background}};
+  }
+  .ch-top a{
+  	color: {{section.settings.top_color}};
+  }
+  {% comment %}
+  .ch-cart{
+    background: {{section.settings.cart_background}};
+  }
+  {% endcomment %}
+  .ch-bot, .ch-menu-item-list{
+    color: {{section.settings.bot_color}};
+    background: {{section.settings.bot_background}};
+  }
+  .ch-menu-item-list a{
+  	color: {{section.settings.bot_color}};
+  }
+
+  .ch-account-and-cart.after-subscription a {
+    color: #37404C;
+    border-color: #37404C !important;
+  }
+
+  a.ch-subscribe{
+    color: {{section.settings.subscription_color}};
+    background: {{section.settings.subscription_background}};
+  }
+  .ch-cart-count{
+    {% comment %}background: {{section.settings.subscription_background}};{% endcomment %}
+    background: {{section.settings.cart_background}};
+  }
+  .ch-menu-item-text.active{
+    color: {{section.settings.active_item_color}};
+    border-bottom: 2px solid {{section.settings.active_item_border_color}};
+  }
+  .ch-menu-item-text:hover {
+    color: {{section.settings.active_item_color_hover}};
+  }
+  .ch-menu-item-list-item:hover{
+    background: {{section.settings.child_link_bg_hover}};
+  }
+  .ch-menu-item-list-item:hover .ch-menu-child-link{
+    color: {{section.settings.child_link_color_hover}};
+  }
+  .ch-mobile-item a{
+    color: {{section.settings.mobile_menu_color}};
+  }
+
+  @media screen and (min-width: 1024px) {
+    #hdr--offer-bar-wrap {
+      background-color: {{ section.settings.offer_color_bg }};
+    }
+
+    #hdr--offer-bar-txt {
+      font-size: {{ section.settings.offer_txt_size_desk }}px;
+      font-weight: {{ section.settings.offer_txt_weight }};
+      color: {{ section.settings.offer_txt_color }};
+    }
+
+    a.hdr--offer-bar-btn {
+      font-size: {{ section.settings.offer_btn_size_desk }}px;
+      color: {{ section.settings.offer_btn_color_desk }} !important;
+      border-color: {{ section.settings.offer_btn_brdr_color_desk }};
+    }
+
+    a.hdr--offer-bar-btn:hover {
+      color: {{ section.settings.offer_btn_color_desk_hover }} !important;
+      border-color: {{ section.settings.offer_btn_brdr_color_desk_hover }};
+    }
+
+    #shopify-section-{{ section.id }} .hdr--srch-btn:hover g#Group-2 > g > g > g {
+      fill: {{section.settings.active_item_color_hover}};
+    }
+
+    #shopify-section-{{ section.id }} .hdr--srch-btn:hover g#Group-6-Copy-2 {
+      stroke: {{section.settings.active_item_color_hover}};
+    }
+
+    #shopify-section-{{ section.id }} .ch-account:hover,
+    #shopify-section-{{ section.id }} .ch-cart.cart-link:hover {
+      color: {{section.settings.active_item_color_hover}};
+      border-color: {{section.settings.active_item_color_hover}} !important;
+
+    }
+  }
+
+  @media only screen and (max-width:1023px){
+    .ch-flag-and-promo.mobile{
+      background-color: {{section.settings.top_background}};;
+
+    }
+    .ch-flag-and-promo.mobile a{
+      color: {{section.settings.top_color}};
+    }
+    .ch-social .social-link{
+      border-color: {{ section.settings.mobile_menu_border_color }};
+    }
+    .ch-mobile-account{
+      background-color: {{ section.settings.mobile_menu_bg_color}};
+	}
+    .ch-mobile{
+      background: {{section.settings.mobile_menu_bg_color}};
+      color: {{ section.settings.mobile_menu_color }};
+    }
+    .ch-mobile-wrapper{
+      background: {{ section.settings.mobile_menu_bg_color }};
+      color: {{section.settings.mobile_menu_color}};
+    }
+    .mobile-menu-chevron{
+      color: {{section.settings.active_item_border_color}};
+    }
+    .ch-menu-item-list-item:hover .ch-menu-child-link{
+      color: {{section.settings.active_item_border_color}};
+    }
+    .ch-menu-child-link-text{
+      background-color: {{ section.settings.mobile_menu_child_link_bg}};
+      border-bottom: 1px solid {{ section.settings.mobile_menu_border_color }};
+	}
+    .ch-mobile-menu-item .ch-menu-item-text{
+      border-bottom: 1px solid {{ section.settings.mobile_menu_border_color }};
+    }
+    .ch-menu-has-child.active{
+		border-bottom: 1px solid {{section.settings.active_item_border_color}};
+	}
+    .ch-mobile-search.active, .ch-mobile-store.active{
+      color: {{section.settings.cart_background}};
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Custom Header",
+  "class":"custom-header",
+  "settings": [
+    {
+      "type":"header",
+      "content": "Offer bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "offer_enable",
+      "label": "Enable"
+    },
+    {
+      "type": "color",
+      "id": "offer_color_bg",
+      "label": "Background",
+      "default": "#37404C"
+    },
+    {
+      "type": "paragraph",
+      "content": "== Text"
+    },
+    {
+      "type": "color",
+      "id": "offer_txt_color",
+      "label": "Text",
+      "default": "#fff"
+    },
+    {
+      "type": "text",
+      "id": "offer_txt",
+      "label": "Text"
+    },
+    {
+      "type": "range",
+      "id": "offer_txt_size_desk",
+      "min": 6,
+      "max": 106,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size on desktop",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "offer_txt_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "100", "label": "Thin" },
+        { "value": "200", "label": "Extra Light" },
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black " }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "paragraph",
+      "content": "== Button"
+    },
+    {
+      "type": "color",
+      "id": "offer_btn_color_desk",
+      "label": "Button text on desktop",
+      "default": "#78BFB5"
+    },
+	{
+      "type": "color",
+      "id": "offer_btn_color_desk_hover",
+      "label": "Button text on desktop on hover",
+      "default": "#5f6670"
+    },
+    {
+      "type": "color",
+      "id": "offer_btn_color_mob",
+      "label": "Button text on mobile",
+      "default": "#fff"
+    },
+	{
+      "type": "color",
+      "id": "offer_btn_color_mob_hover",
+      "label": "Button text on mobile on hover",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "offer_btn_color_bg_mob",
+      "label": "Button background on mobile",
+      "default": "#78BFB5"
+    },
+	{
+      "type": "color",
+      "id": "offer_btn_color_bg_mob_hover",
+      "label": "Button background on mobile on hover",
+      "default": "#5f6670"
+    },
+    {
+      "type": "color",
+      "id": "offer_btn_brdr_color_desk",
+      "label": "Border on desktop",
+      "default": "#78BFB5"
+    },
+	{
+      "type": "color",
+      "id": "offer_btn_brdr_color_desk_hover",
+      "label": "Border on desktop on hover",
+      "default": "#5f6670"
+    },
+    {
+      "type": "text",
+      "id": "offer_btn",
+      "label": "Button"
+    },
+    {
+      "type": "range",
+      "id": "offer_btn_size_desk",
+      "min": 6,
+      "max": 106,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size on desktop",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "offer_btn_size_mob",
+      "min": 6,
+      "max": 106,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size on mobile",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "offer_btn_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "100", "label": "Thin" },
+        { "value": "200", "label": "Extra Light" },
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" },
+        { "value": "900", "label": "Black " }
+      ],
+      "default": "700"
+    },
+		{
+			"type":"header",
+			"content": "Top row colors"
+		},
+		{
+			"type":"color",
+			"id":"top_color",
+			"label":"Text color",
+			"default":"#fff"
+		},
+		{
+			"type":"color",
+			"id":"top_background",
+			"label":"Background color",
+			"default":"#000"
+		},
+		{
+			"type":"color",
+			"id":"cart_background",
+			"label":"Cart background color",
+			"default":"#0ff"
+		},
+		{
+			"type":"header",
+			"content": "Bottom row"
+		},
+		{
+			"type":"image_picker",
+			"id":"logo",
+			"label":"Logo"
+		},
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+		},
+		{
+			"type":"text",
+			"id": "subscription_text",
+			"label": "Subscription text",
+			"default":"Default subscription text"
+		},
+		{
+			"type":"header",
+			"content": "Bottom row colors"
+		},
+		{
+			"type":"color",
+			"id":"bot_color",
+			"label":"Text color",
+			"default":"#000"
+		},
+		{
+			"type":"color",
+			"id":"bot_background",
+			"label":"Background color",
+			"default":"#fff"
+		},
+		{
+			"type":"color",
+			"id":"subscription_color",
+			"label":"Subscription text color",
+			"default":"#fff"
+		},
+		{
+			"type":"color",
+			"id":"subscription_background",
+			"label":"Subscription background color",
+			"default":"#f0f"
+		},
+		{
+			"type":"color",
+			"id":"active_item_color",
+			"label": "Active menu item text color",
+			"default":"#00f"
+		},
+    {
+      "type":"color",
+      "id":"active_item_color_hover",
+      "label": "Menu item text color on hover",
+      "default":"#78BFB5"
+    },
+		{
+			"type":"color",
+			"id":"active_item_border_color",
+			"label": "Active menu item border color",
+			"default":"#0f0"
+		},
+		{
+			"type":"color",
+			"id":"child_link_bg_hover",
+			"label": "Child link background color on hover",
+			"default":"#f00"
+		},
+		{
+			"type":"color",
+			"id":"child_link_color_hover",
+			"label": "Child link text color on hover",
+			"default":"#fff"
+		},
+		{
+			"type": "header",
+			"content": "Mobile"
+		},
+		{
+			"type": "image_picker",
+			"id": "mobile_logo",
+			"label": "Mobile Logo"
+		},
+		{
+			"type": "color",
+			"id": "mobile_menu_color",
+			"label": "Mobile Menu Color",
+			"default": "#b2b2b2"
+		},
+		{
+			"type": "color",
+			"id": "mobile_menu_bg_color",
+			"label": "Mobile Menu Background Color",
+			"default": "#f4f4f4"
+		},
+		{
+			"type": "color",
+			"id": "mobile_menu_border_color",
+			"label": "Mobile Menu Border Color",
+			"default": "#e6e6e6"
+		},
+		{
+			"type":"color",
+			"id":"mobile_menu_child_link_bg",
+			"label":"Mobile Sub Menu background color",
+			"default":"#fafafa"
+		}
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+$('.ch-mobile-menu-open').on('click', function(){
+	$(this).removeClass('visible');
+	$('html, body').addClass('no-overflow');
+	$('#header-overlay').fadeIn();
+	$('.ch-mobile-menu-close').addClass('visible');
+	$('.ch-mobile-wrapper').addClass('visible');
+});
+$('.ch-mobile-menu-close').on('click', function(){
+	$(this).removeClass('visible');
+	$('html, body').removeClass('no-overflow');
+	$('#header-overlay').fadeOut();
+	$('.ch-mobile-menu-open').addClass('visible');
+	$('.ch-mobile-wrapper').removeClass('visible');
+	$('.ch-mobile-wrapper-overlay').fadeOut();
+  $('.ch-mobile-search').removeClass('active');
+  $('.ch-search').removeClass('visible');
+});
+$('.ch-menu-has-child').on('click', function(e){
+	e.preventDefault();
+	$(this).toggleClass('active');
+	$(this).next('.ch-menu-item-list').toggle();
+});
+$('.ch-search-button').on('click', function(e){
+  if (!$(this).hasClass('active')){
+    e.preventDefault();
+    $(this).addClass('active');
+    $(this).parent().find('.ch-search-input').addClass('visible')
+  }
+});
+$('.ch-mobile-search').on('click', function(e){
+	e.preventDefault();
+	e.stopPropagation();
+	$(this).toggleClass('active');
+	$('.ch-search').toggleClass('visible');
+	$('.ch-mobile-wrapper-overlay').fadeToggle();
+});
+$('.ch-mobile-wrapper-overlay').on('click', function(){
+	$(this).fadeOut();
+	$('.ch-mobile-search').removeClass('active');
+	$('.ch-search').removeClass('visible');
+});
+if (window.location.href.includes('/store')){
+	$('.ch-mobile-store').addClass('active');
+}
+
+if ($(window).width() < 769){
+  header_height = $('.custom-header').height();
+  $('body').css('padding-top', header_height);
+}
+$(window).resize(function(){
+  if ($(window).width() < 769){
+    header_height = $('.custom-header').height();
+    $('body').css('padding-top', header_height);
+  } else {
+    $('body').css('padding-top', 0);
+  }
+});
+var lastScrollTop = 0;
+$(window).scroll(function(event){
+   var st = $(this).scrollTop();
+   if (st > lastScrollTop){
+	  $('.custom-header').removeClass('custom-header--down');
+      $('.custom-header').addClass('custom-header--up');
+	  lastScrollTop = st;
+   } else if(st < lastScrollTop && st > 0){
+	  $('.custom-header').removeClass('custom-header--up');
+      $('.custom-header').addClass('custom-header--down');
+	  lastScrollTop = st;
+   } else if(st <= 0){
+	  $('.custom-header').removeClass('custom-header--up');
+      $('.custom-header').addClass('custom-header--down');
+      lastScrollTop = 0;
+   }
+
+});
+
+{% endjavascript %}
