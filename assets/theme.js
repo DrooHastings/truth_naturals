@@ -2369,7 +2369,7 @@ function(e,t){"object"==typeof exports?module.exports=t():"function"==typeof def
             caption.css('left', left_offset);
           }
           return caption.css('visibility', 'visible');
-        } 
+        }
         if (slide_height > 250 && slide_height < 400) {
           if (caption.hasClass('top')) {
             caption.css('top', top_offset + slide_padding + 20);
@@ -2385,7 +2385,7 @@ function(e,t){"object"==typeof exports?module.exports=t():"function"==typeof def
           }
           return caption.css('visibility', 'visible');
         }
-        
+
         if(slide_height < 250) {
           if (caption.hasClass('top')) {
             caption.css('top', top_offset + slide_padding);
@@ -3579,9 +3579,9 @@ function(e,t){"object"==typeof exports?module.exports=t():"function"==typeof def
       _this = this;
       cart_item = {};
       cart_total = {};
-     
+      console.log(cart_item);
 
-  
+
       if (currency_switcher_enabled) {
         Shopify.money_format = Currency.moneyFormats[theme.shop_currency].money_format;
       }
@@ -3592,22 +3592,22 @@ function(e,t){"object"==typeof exports?module.exports=t():"function"==typeof def
           // NOTE: "cart" should be the variable containing the cart json data
           cart = window.BOLD.common.cartDoctor.fix(cart);
         }
-        
+
         var new_cart_row, new_mobile_item, item_link;
         var recurring_desc = "";
-        
+
          if(cart.items[0].properties_all  && cart.items[0].properties_all.frequency_num){
                 recurring_desc = "<span> Delivered Every " + cart.items[0].properties_all.frequency_num + " " + cart.items[0].properties_all.frequency_type_text + " " + cart.items[0].properties_all.discounted_price + " each" + "</span>";
               }
 
-        
-        
+
+
         cart_item.image_url = Shopify.resizeImage(cart.items[0].image, "compact");
         cart_item.url = cart.items[0].url;
-        cart_item.title = cart.items[0].title;   
-        cart_item.price = Shopify.formatMoney(cart.items[0].price, Shopify.money_with_currency_format);
+        cart_item.title = cart.items[0].title;
+        cart_item.price = Shopify.formatMoney(cart.items[0].price, "£{{amount}}");
         cart_item.type = cart.items[0].product_type;
-        cart_total.price = Shopify.formatMoney(cart.total_price, Shopify.money_with_currency_format);
+        cart_total.price = Shopify.formatMoney(cart.total_price, "£{{amount}}");
         cart_total.quantity = cart.item_count;
         $('.cart-link .number').html(cart_total.quantity).show();
         $('.cart-link .number-wrapper').removeClass('hide');
@@ -3625,7 +3625,7 @@ function(e,t){"object"==typeof exports?module.exports=t():"function"==typeof def
         new_cart_row += '<td class="cart-detail">';
         new_cart_row += '<h5><a href="' + item_link + '">' + cart_item.title + recurring_desc + '</a></h5>';
         new_cart_row += '</td>';
-    
+
         new_cart_row += '<td class="cart-price"><span class="money">' + cart_item.price + '</span></td>';
         new_cart_row += '</tr>';
         new_mobile_item = '<a href="' + item_link + '">';
@@ -3636,7 +3636,7 @@ function(e,t){"object"==typeof exports?module.exports=t():"function"==typeof def
         $('.recently-added .items-count .number').html(cart_total.quantity);
         $('.recently-added .total-price').html(cart_total.price);
         if (currency_switcher_enabled) {
-          $.each($('.recently-added .total-price').get(0).attributes, function(i, attrib) {
+          $.each($('.recently-added .total-price').get(0).attributes, function(i, attrib) { //deleted $. at beginning
             if (attrib.name.match("^data-currency")) {
               return $('.recently-added .total-price').attr(attrib.name, "");
             }
@@ -4342,12 +4342,12 @@ $(function() {
 	  }
 	});
   // BEGIN Loyalty Lion code
-  
+
   if (window.location.href.indexOf("account") > -1) {
     initMenu();
     loadState();
   }
-  
+
   function initMenu() {
   	var elements = document.querySelectorAll("navlist__link");
     for (var i = 0; i < elements.length; i++) {
@@ -4404,7 +4404,7 @@ $(function() {
       initOurTeamSlider();
     }
   });
-    
+
   function detectMob() {
     const toMatch = [
     /Android/i,
@@ -4418,9 +4418,9 @@ $(function() {
     return toMatch.some((toMatchItem) => {
       return navigator.userAgent.match(toMatchItem);
    });
-    
+
   }
-    
+
   var panel = document.getElementsByClassName("adress_panel");
 
   if (document.getElementById("new-address-add")) {
@@ -4454,8 +4454,8 @@ $(function() {
       elements[i].addEventListener('click', function(e) {
         var parentEl = e.target.parentNode;
     	var addresses = document.getElementById("address_tables").querySelectorAll(".adress_panel");
-    
-        if (addresses.length >= 2) { 
+
+        if (addresses.length >= 2) {
             for (var i = 0; i < parentEl.childNodes.length; i++) {
               if (detectMob()) {
                   document.getElementsByClassName("address-container")[0].style.display = "flex";
@@ -4478,13 +4478,13 @@ $(function() {
             }
     		document.getElementsByClassName("update-address-cancel-container")[0].style.display = "none";
     		document.getElementsByClassName("editable-template-addresses__form-row")[0].classList.remove("edit");
-    
+
     		for (var i = 0; i < panel.length; i++) {
               panel[i].style.display = 'block';
               panel[i].classList.add('col');
             }
         }
-          
+
 
         if (document.getElementById("address_tables")) {
           var parent = document.getElementById("address_tables").querySelectorAll(".adress_panel");
@@ -4533,8 +4533,8 @@ $(function() {
             parent[element].style.width = "100%";
           }
         }
-    
-	  // After update customer address return to address page    
+
+	  // After update customer address return to address page
       if (document.getElementsByClassName("update-address")) {
           var updateEl = document.getElementsByClassName("update-address");
           var url =  window.location.origin;
@@ -4551,10 +4551,10 @@ $(function() {
 
       }, false);
     }
-    
+
   }
 
-  // Set same hright to Address item 	        
+  // Set same hright to Address item
   var maxHeight = 0;
 
   if (document.getElementById("address_tables")) {
@@ -4577,6 +4577,6 @@ $(function() {
       parent[element].getElementsByClassName("template-addresses__panel")[0].getElementsByClassName("view_address")[0].setAttribute("style", "height:" + maxHeight + "px");
     }
   }
-    
+
   // END Loyalty Lion code
 });
